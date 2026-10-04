@@ -1,0 +1,6 @@
+Файл: app.py
+функція                           рядок  рядків  Cognitive  Cyclomatic
+register                            634      32          6           7
+_transfer_session_cart_to_user      615      16          4           4
+_validate_registration_input        591       9          3           4
+_create_guest_user                  602      11          1           2
