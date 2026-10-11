@@ -49,17 +49,13 @@
         "record_count": 1
       },
       {
-        "...": "16 more sections"
+        "...": "20 more sections"
       }
     ],
     "omissions": [
       {
         "section": "settings",
         "reason": "Система не зберігає персональних налаштувань профілю."
-      },
-      {
-        "section": "consents",
-        "reason": "Керування згодами ще не ввімкнено в цій версії системи."
       }
     ]
   },
@@ -103,7 +99,7 @@
         "added_date": "2026-10-10T23:14:41.430056"
       }
     ],
-    "...": "16 more sections"
+    "...": "20 more sections"
   }
 }
 ```
@@ -139,6 +135,10 @@
 | `sql_console_history` | `sql_execution_log` | activity_logs | log_id, executed_at, execution_time_ms, rows_affected, status, ip_address |
 | `authored_queries` | `saved_queries` | user_content | query_id, title, description, created_at, is_public |
 | `authored_news` | `news` | user_content | news_id, title, created_at, published_date, is_published |
+| `consents` | `user_consents` | consent | consent_id, purpose, is_granted, policy_version, granted_at, withdrawn_at, updated_at, source |
+| `consent_history` | `user_consent_history` | consent | event_id, purpose, action, policy_version, source, occurred_at |
+| `marketing_messages` | `marketing_outbox` | consent_dependent_activity | outbox_id, campaign, status, queued_at, processed_at |
+| `analytics_events` | `analytics_events` | consent_dependent_activity | event_id, event_name, occurred_at |
 | `privacy_audit` | `privacy_audit_log` | privacy_operations | audit_id, event_type, result, occurred_at |
 
 Усі секції читаються в **одній транзакції `REPEATABLE READ` лише для читання**: це знімок, тож експорт узгоджений, навіть якщо дані змінюються під час читання.
@@ -183,7 +183,7 @@ python -m pytest tests/test_personal_data_export.py -q
 | Що перевіряє | Тести |
 |---|---|
 | Успішний експорт власних даних, контракт | структура `meta`/`data`, UTC, `no-store`, задокументовані пропуски |
-| **Наявність контрольних записів із кожного джерела** | усі 19 секцій непорожні; кожне контрольне значення є у відповіді; `record_count` збігається зі вмістом |
+| **Наявність контрольних записів із кожного джерела** | усі 23 секції непорожні; кожне контрольне значення є у відповіді; `record_count` збігається зі вмістом |
 | Без змішування й дублів | дані двох інших користувачів відсутні; дублів у секціях немає |
 | **Відсутність заборонених полів** | хеш і відкритий пароль не в тексті; жодного ключа з `NEVER_EXPORT`; внутрішні примітки й чужі SQL відсутні; фільтр працює, навіть якщо реєстр помилково містить `password` |
 | **Відмова стороннього** | 403 без даних; **ідентична** відповідь для неіснуючого id; чужий профіль не читається з БД |
@@ -216,4 +216,4 @@ $env:DB_NAME = "computer_store_demo"; python app.py                  # серв�
 * **Аудит best effort.** Збій запису в `privacy_audit_log` не блокує відповідь, але гучно логується (`privacy_audit_write_failed`).
 * Обмеження частоти запитів (rate limiting) і підтвердження особи (повторна автентифікація перед експортом) не реалізовані: це наступний рівень захисту.
 * Адміністратор може експортувати будь-кого; обмеження на рівні організації («навіщо адміну ці дані») це процес, а не код. Тому кожен такий виклик потрапляє в аудит.
-* Секції `settings` і `consents` позначено як `omissions`; `consents` з'явиться після Завд.4.
+* Секцію `settings` позначено як `omissions` (системa не зберігає налаштувань профілю). Секції `consents` і `consent_history` (Завд.4) тепер справжні.

@@ -9,7 +9,7 @@
 |---|---|
 | Проєкт | «Kursova PC Shop»: інтернет-магазин комп'ютерної техніки |
 | Стек | Python 3.11, Flask, Flask-Login, psycopg2 (сирий SQL через `models/database.py`, без ORM), PostgreSQL 18 |
-| Сховище | Одна БД PostgreSQL, 40 таблиць; 4 з них (`service_orders` і застарілі `repairs`, `returns`, `sales`) посилаються на користувача без зовнішнього ключа (див. п. 5) |
+| Сховище | Одна БД PostgreSQL, 40 таблиць до Лаб.4 (+ `privacy_audit_log` і 4 таблиці згод, див. міграції 001 і 002); 4 з них (`service_orders` і застарілі `repairs`, `returns`, `sales`) посилаються на користувача без зовнішнього ключа (див. п. 5) |
 | Автентифікація | Flask-Login: сесійна cookie, підписана `SECRET_KEY`; у cookie лежить `_user_id`. Ролі `keys.access_right`: guest, authorized, operator, admin |
 | Суб'єкт даних | Користувач таблиці `keys` (`user_id`) |
 | Логування (до Лаб.4) | 57 викликів `print(f"...{e}")` у 7 файлах + таблиці `user_activity_log`, `sql_execution_log` |
@@ -24,7 +24,7 @@
 | Історія дій | журнал активності, історія SQL-консолі, історія статусів, кошик, список бажань, конфігурації ПК, відгуки | дії користувача в застосунку | `user_activity_log`, `sql_execution_log`, `repair/software_status_history`, `cart`, `wishlist`, `computer_configurations`, `product_reviews` | частково | так (крім тексту SQL) |
 | Транзакційні записи | замовлення, позиції, сервісні замовлення, заявки | оформлення замовлення, сервісні форми | `orders`, `order_items`, `service_orders`, `repair_requests`, `software_requests` | так | так |
 | Облікові дані | хеш пароля | реєстрація | `keys.password` | не повинен | **ніколи** |
-| Дані про згоду | мета, версія політики, час, канал | Завд.4 (ще не реалізовано) | `user_consents`, `user_consent_history` (з'являться в Етапі 5) | — | так |
+| Дані про згоду | мета, версія політики, час надання й відкликання, канал, хто виконав | команди GRANT / REVOKE (Завд.4) | `user_consents`, `user_consent_history`; дані залежних дій: `marketing_outbox`, `analytics_events` | коди й числа (PII немає) | так (`actor_id` ні) |
 
 ## 3. Поля, які ніколи не повертаються через експорт
 
@@ -55,6 +55,10 @@
 | `query_results.user_id` | ANONYMIZE | за user_id | result_data → NULL, error_message → NULL | — | Збережені результати запитів містять вибірки даних (можливо чужих), тому знеособлюються й не експортуються. |
 | `saved_queries.created_by` | RETAIN | за user_id | — | authored_queries | Збережений запит це робочий артефакт; PII немає, а зв'язок з автором тепер веде на знеособлений обліковий запис. |
 | `news.author_id` | RETAIN | за user_id | — | authored_news | Опублікована новина це публічний контент компанії; PII немає, автор тепер знеособлений обліковий запис. |
+| `user_consents.user_id` | RETAIN | за user_id | — | consents | Поточний стан згоди: лише коди, версії й часові мітки, прямих PII немає. Рядок ЛИШАЄТЬСЯ як доказ, що обробку було припинено. Перед цим анонімізація явно ЗНІМАЄ всі діючі згоди (consent.withdraw_all, з записом в історію), тож стан після операції завжди «відкликано». |
+| `user_consent_history.user_id` | RETAIN | за user_id | — | consent_history | Незмінний (append-only) доказ згод: яку політику, коли, через який канал. PII немає (actor_id і correlation_id це числа/коди; actor_id в експорт не віддається). Це змодельована підстава зберігати докази згоди (Art. 7(1)). |
+| `marketing_outbox.user_id` | DELETE | за user_id | — | marketing_messages | Черга маркетингових листів: поведінкові дані без підстави для зберігання після виходу користувача, тож видаляється (разом із ще не надісланими листами). Адреси в черзі немає: її беруть із keys під час відправки. |
+| `analytics_events.user_id` | DELETE | за user_id | — | analytics_events | Події аналітики: профіль поведінки користувача, лише за його згодою; після виходу видаляються повністю. |
 | `privacy_audit_log.subject_id` | RETAIN | за user_id | — | privacy_audit | Доказ виконання вимог приватності (хто/коли/результат); у таблиці лише числові ідентифікатори, PII немає. actor_id в експорт не віддається: це ідентифікатор іншої особи. |
 | `repairs.client_id` | SKIP | за user_id | — | — | Застаріла порожня таблиця: у коді не використовується, семантика client_id не підтверджена (немає FK). Якщо в ній з'являться дані, потрібне рішення (див. тест порожніх SKIP-таблиць у документі). |
 | `returns.client_id` | SKIP | за user_id | — | — | Застаріла порожня таблиця без FK: як repairs. |
@@ -62,7 +66,7 @@
 
 Способи знеособлення: `NULL` (порожньо), `REMOVED_TEXT` (`[removed]` для NOT NULL колонок), `RANDOM_LOGIN` (унікальний випадковий `anon-<hex>`, зв'язок з оригіналом не зберігається), `UNUSABLE_SECRET` (випадковий рядок замість хеша, вхід неможливий).
 
-Чому **анонімізація** `keys`, а не видалення рядка: на `keys` посилається 20 зовнішніх ключів, і більшість із них (зокрема `orders.user_id`) має `ON DELETE NO ACTION`, тож `DELETE` упав би на замовленнях. До того ж замовлення — фінансовий запис, який за змодельованим правилом утримання лишається, але без PII.
+Чому **анонімізація** `keys`, а не видалення рядка: на `keys` посилається 24 зовнішніх ключі, і більшість із них (зокрема `orders.user_id`) має `ON DELETE NO ACTION`, тож `DELETE` упав би на замовленнях. До того ж замовлення — фінансовий запис, який за змодельованим правилом утримання лишається, але без PII.
 
 Посилання на працівників (`orders.processed_by`, `registration_requests.admin_id`, `registration_requests.processed_by`, `repair_requests.assigned_employee_id`, `repair_status_history.changed_by`, `repairs.employee_id`, `returns.employee_id`, `sales.employee_id`, `service_orders.employee_id`, `software_requests.assigned_employee_id`, `software_status_history.changed_by`, `supply_deliveries.received_by`) не змінюються: рядок належить бізнес-процесові, а не суб'єкту.
 
