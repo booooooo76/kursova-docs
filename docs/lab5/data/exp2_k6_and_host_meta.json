@@ -1,0 +1,25 @@
+{
+ "args": {
+  "out": "C:/Users/zagre/Downloads/тест/lab5_report/evidence/exp2_runner_cpus",
+  "vus": 2,
+  "duration": "20s",
+  "sleep": "0",
+  "repeats": 3,
+  "conditions": "isolated:0",
+  "cpus": 0.0,
+  "host": "127.0.0.1",
+  "port": 5000,
+  "tag": "cpus0"
+ },
+ "k6": {
+  "image": "grafana/k6",
+  "k6_version": "k6 v2.3.0 (commit/e088784614, go1.27.1, linux/amd64)",
+  "image_id": "sha256:e66db15b860113878fa74670e31f5e274830b7b6e42c8bff28b2f2d86a257603"
+ },
+ "host": {
+  "platform": "Windows-10-10.0.26300-SP0",
+  "python": "3.11.9",
+  "logical_cpus": 24,
+  "ram_gb": 23.1
+ }
+}

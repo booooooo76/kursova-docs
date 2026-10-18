@@ -1,0 +1,1737 @@
+{
+ "baseline": {
+  "env": "py3.11",
+  "file": "v0_original_crlf.py",
+  "values": {
+   "lizard.nloc": 944,
+   "lizard.ccn_sum": 204,
+   "lizard.ccn_max": 21,
+   "lizard.functions": 33,
+   "radon_raw.loc": 1178,
+   "radon_raw.sloc": 944,
+   "radon_raw.lloc": 706,
+   "radon_raw.comments": 0,
+   "radon_raw.blank": 229,
+   "radon_cc.cc_sum": 202,
+   "radon_cc.cc_max": 21,
+   "radon_mi.mi": 0.0,
+   "cognitive.cognitive_sum": 194,
+   "cognitive.cognitive_max": 30
+  }
+ },
+ "variants": {
+  "v0_original_crlf.py": "оригінал (Windows, CRLF, UTF-8)",
+  "v1_lf.py": "кінці рядків Unix LF",
+  "v2_mixed_eol.py": "змішані кінці рядків (CRLF через рядок)",
+  "v3_cr_only.py": "старі Mac-кінці рядків (лише CR)",
+  "v4_utf8_bom.py": "UTF-8 з BOM (так зберігає частина редакторів)",
+  "v5_cp1251_cookie.py": "cp1251 з декларацією кодування (+1 рядок коментаря)",
+  "v6_cp1251_no_cookie.py": "cp1251 без декларації (Python очікує UTF-8)"
+ },
+ "rows": [
+  {
+   "mode": "raw",
+   "env": "py3.8",
+   "file": "v0_original_crlf.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "raw",
+   "env": "py3.8",
+   "file": "v1_lf.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "raw",
+   "env": "py3.8",
+   "file": "v2_mixed_eol.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "raw",
+   "env": "py3.8",
+   "file": "v3_cr_only.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "raw",
+   "env": "py3.8",
+   "file": "v4_utf8_bom.py",
+   "identical_to_baseline": false,
+   "diff": {
+    "radon_raw.loc": [
+     1178,
+     null
+    ],
+    "radon_raw.sloc": [
+     944,
+     null
+    ],
+    "radon_raw.lloc": [
+     706,
+     null
+    ],
+    "radon_raw.comments": [
+     0,
+     null
+    ],
+    "radon_raw.blank": [
+     229,
+     null
+    ],
+    "radon_cc.cc_sum": [
+     202,
+     null
+    ],
+    "radon_cc.cc_max": [
+     21,
+     null
+    ],
+    "radon_mi.mi": [
+     0.0,
+     null
+    ]
+   },
+   "errors": {
+    "radon_cc": "RuntimeError: invalid character in identifier (<unknown>, line 1)",
+    "radon_mi": "RuntimeError: invalid character in identifier (<unknown>, line 1)",
+    "radon_raw": "RuntimeError: SyntaxError at line: 1"
+   }
+  },
+  {
+   "mode": "raw",
+   "env": "py3.8",
+   "file": "v5_cp1251_cookie.py",
+   "identical_to_baseline": false,
+   "diff": {
+    "radon_raw.loc": [
+     1178,
+     null
+    ],
+    "radon_raw.sloc": [
+     944,
+     null
+    ],
+    "radon_raw.lloc": [
+     706,
+     null
+    ],
+    "radon_raw.comments": [
+     0,
+     null
+    ],
+    "radon_raw.blank": [
+     229,
+     null
+    ],
+    "radon_cc.cc_sum": [
+     202,
+     null
+    ],
+    "radon_cc.cc_max": [
+     21,
+     null
+    ],
+    "radon_mi.mi": [
+     0.0,
+     null
+    ]
+   },
+   "errors": {
+    "radon_cc": "RuntimeError: 'utf-8' codec can't decode byte 0xc4 in position 797: invalid continuation byte",
+    "radon_mi": "RuntimeError: 'utf-8' codec can't decode byte 0xc4 in position 797: invalid continuation byte",
+    "radon_raw": "RuntimeError: 'utf-8' codec can't decode byte 0xc4 in position 797: invalid continuation byte"
+   }
+  },
+  {
+   "mode": "raw",
+   "env": "py3.8",
+   "file": "v6_cp1251_no_cookie.py",
+   "identical_to_baseline": false,
+   "diff": {
+    "radon_raw.loc": [
+     1178,
+     null
+    ],
+    "radon_raw.sloc": [
+     944,
+     null
+    ],
+    "radon_raw.lloc": [
+     706,
+     null
+    ],
+    "radon_raw.comments": [
+     0,
+     null
+    ],
+    "radon_raw.blank": [
+     229,
+     null
+    ],
+    "radon_cc.cc_sum": [
+     202,
+     null
+    ],
+    "radon_cc.cc_max": [
+     21,
+     null
+    ],
+    "radon_mi.mi": [
+     0.0,
+     null
+    ],
+    "cognitive.cognitive_sum": [
+     194,
+     null
+    ],
+    "cognitive.cognitive_max": [
+     30,
+     null
+    ]
+   },
+   "errors": {
+    "cognitive": "SyntaxError: (unicode error) 'utf-8' codec can't decode byte 0xc4 in position 0: invalid continuation byte (v6_cp1251_no_cookie.py, line 21)",
+    "radon_cc": "RuntimeError: 'utf-8' codec can't decode byte 0xc4 in position 772: invalid continuation byte",
+    "radon_mi": "RuntimeError: 'utf-8' codec can't decode byte 0xc4 in position 772: invalid continuation byte",
+    "radon_raw": "RuntimeError: 'utf-8' codec can't decode byte 0xc4 in position 772: invalid continuation byte"
+   }
+  },
+  {
+   "mode": "raw",
+   "env": "py3.10",
+   "file": "v0_original_crlf.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "raw",
+   "env": "py3.10",
+   "file": "v1_lf.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "raw",
+   "env": "py3.10",
+   "file": "v2_mixed_eol.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "raw",
+   "env": "py3.10",
+   "file": "v3_cr_only.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "raw",
+   "env": "py3.10",
+   "file": "v4_utf8_bom.py",
+   "identical_to_baseline": false,
+   "diff": {
+    "radon_raw.loc": [
+     1178,
+     null
+    ],
+    "radon_raw.sloc": [
+     944,
+     null
+    ],
+    "radon_raw.lloc": [
+     706,
+     null
+    ],
+    "radon_raw.comments": [
+     0,
+     null
+    ],
+    "radon_raw.blank": [
+     229,
+     null
+    ],
+    "radon_cc.cc_sum": [
+     202,
+     null
+    ],
+    "radon_cc.cc_max": [
+     21,
+     null
+    ],
+    "radon_mi.mi": [
+     0.0,
+     null
+    ]
+   },
+   "errors": {
+    "radon_cc": "RuntimeError: invalid non-printable character U+FEFF (<unknown>, line 1)",
+    "radon_mi": "RuntimeError: invalid non-printable character U+FEFF (<unknown>, line 1)",
+    "radon_raw": "RuntimeError: SyntaxError at line: 1"
+   }
+  },
+  {
+   "mode": "raw",
+   "env": "py3.10",
+   "file": "v5_cp1251_cookie.py",
+   "identical_to_baseline": false,
+   "diff": {
+    "radon_raw.loc": [
+     1178,
+     null
+    ],
+    "radon_raw.sloc": [
+     944,
+     null
+    ],
+    "radon_raw.lloc": [
+     706,
+     null
+    ],
+    "radon_raw.comments": [
+     0,
+     null
+    ],
+    "radon_raw.blank": [
+     229,
+     null
+    ],
+    "radon_cc.cc_sum": [
+     202,
+     null
+    ],
+    "radon_cc.cc_max": [
+     21,
+     null
+    ],
+    "radon_mi.mi": [
+     0.0,
+     null
+    ]
+   },
+   "errors": {
+    "radon_cc": "RuntimeError: 'utf-8' codec can't decode byte 0xc4 in position 797: invalid continuation byte",
+    "radon_mi": "RuntimeError: 'utf-8' codec can't decode byte 0xc4 in position 797: invalid continuation byte",
+    "radon_raw": "RuntimeError: 'utf-8' codec can't decode byte 0xc4 in position 797: invalid continuation byte"
+   }
+  },
+  {
+   "mode": "raw",
+   "env": "py3.10",
+   "file": "v6_cp1251_no_cookie.py",
+   "identical_to_baseline": false,
+   "diff": {
+    "radon_raw.loc": [
+     1178,
+     null
+    ],
+    "radon_raw.sloc": [
+     944,
+     null
+    ],
+    "radon_raw.lloc": [
+     706,
+     null
+    ],
+    "radon_raw.comments": [
+     0,
+     null
+    ],
+    "radon_raw.blank": [
+     229,
+     null
+    ],
+    "radon_cc.cc_sum": [
+     202,
+     null
+    ],
+    "radon_cc.cc_max": [
+     21,
+     null
+    ],
+    "radon_mi.mi": [
+     0.0,
+     null
+    ],
+    "cognitive.cognitive_sum": [
+     194,
+     null
+    ],
+    "cognitive.cognitive_max": [
+     30,
+     null
+    ]
+   },
+   "errors": {
+    "cognitive": "SyntaxError: (unicode error) 'utf-8' codec can't decode byte 0xc4 in position 0: invalid continuation byte (v6_cp1251_no_cookie.py, line 21)",
+    "radon_cc": "RuntimeError: 'utf-8' codec can't decode byte 0xc4 in position 772: invalid continuation byte",
+    "radon_mi": "RuntimeError: 'utf-8' codec can't decode byte 0xc4 in position 772: invalid continuation byte",
+    "radon_raw": "RuntimeError: 'utf-8' codec can't decode byte 0xc4 in position 772: invalid continuation byte"
+   }
+  },
+  {
+   "mode": "raw",
+   "env": "py3.11",
+   "file": "v0_original_crlf.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "raw",
+   "env": "py3.11",
+   "file": "v1_lf.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "raw",
+   "env": "py3.11",
+   "file": "v2_mixed_eol.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "raw",
+   "env": "py3.11",
+   "file": "v3_cr_only.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "raw",
+   "env": "py3.11",
+   "file": "v4_utf8_bom.py",
+   "identical_to_baseline": false,
+   "diff": {
+    "radon_raw.loc": [
+     1178,
+     null
+    ],
+    "radon_raw.sloc": [
+     944,
+     null
+    ],
+    "radon_raw.lloc": [
+     706,
+     null
+    ],
+    "radon_raw.comments": [
+     0,
+     null
+    ],
+    "radon_raw.blank": [
+     229,
+     null
+    ],
+    "radon_cc.cc_sum": [
+     202,
+     null
+    ],
+    "radon_cc.cc_max": [
+     21,
+     null
+    ],
+    "radon_mi.mi": [
+     0.0,
+     null
+    ]
+   },
+   "errors": {
+    "radon_cc": "RuntimeError: invalid non-printable character U+FEFF (<unknown>, line 1)",
+    "radon_mi": "RuntimeError: invalid non-printable character U+FEFF (<unknown>, line 1)",
+    "radon_raw": "RuntimeError: SyntaxError at line: 1"
+   }
+  },
+  {
+   "mode": "raw",
+   "env": "py3.11",
+   "file": "v5_cp1251_cookie.py",
+   "identical_to_baseline": false,
+   "diff": {
+    "radon_raw.loc": [
+     1178,
+     null
+    ],
+    "radon_raw.sloc": [
+     944,
+     null
+    ],
+    "radon_raw.lloc": [
+     706,
+     null
+    ],
+    "radon_raw.comments": [
+     0,
+     null
+    ],
+    "radon_raw.blank": [
+     229,
+     null
+    ],
+    "radon_cc.cc_sum": [
+     202,
+     null
+    ],
+    "radon_cc.cc_max": [
+     21,
+     null
+    ],
+    "radon_mi.mi": [
+     0.0,
+     null
+    ]
+   },
+   "errors": {
+    "radon_cc": "RuntimeError: 'utf-8' codec can't decode byte 0xc4 in position 797: invalid continuation byte",
+    "radon_mi": "RuntimeError: 'utf-8' codec can't decode byte 0xc4 in position 797: invalid continuation byte",
+    "radon_raw": "RuntimeError: 'utf-8' codec can't decode byte 0xc4 in position 797: invalid continuation byte"
+   }
+  },
+  {
+   "mode": "raw",
+   "env": "py3.11",
+   "file": "v6_cp1251_no_cookie.py",
+   "identical_to_baseline": false,
+   "diff": {
+    "radon_raw.loc": [
+     1178,
+     null
+    ],
+    "radon_raw.sloc": [
+     944,
+     null
+    ],
+    "radon_raw.lloc": [
+     706,
+     null
+    ],
+    "radon_raw.comments": [
+     0,
+     null
+    ],
+    "radon_raw.blank": [
+     229,
+     null
+    ],
+    "radon_cc.cc_sum": [
+     202,
+     null
+    ],
+    "radon_cc.cc_max": [
+     21,
+     null
+    ],
+    "radon_mi.mi": [
+     0.0,
+     null
+    ],
+    "cognitive.cognitive_sum": [
+     194,
+     null
+    ],
+    "cognitive.cognitive_max": [
+     30,
+     null
+    ]
+   },
+   "errors": {
+    "cognitive": "SyntaxError: (unicode error) 'utf-8' codec can't decode byte 0xc4 in position 0: invalid continuation byte (v6_cp1251_no_cookie.py, line 21)",
+    "radon_cc": "RuntimeError: 'utf-8' codec can't decode byte 0xc4 in position 772: invalid continuation byte",
+    "radon_mi": "RuntimeError: 'utf-8' codec can't decode byte 0xc4 in position 772: invalid continuation byte",
+    "radon_raw": "RuntimeError: 'utf-8' codec can't decode byte 0xc4 in position 772: invalid continuation byte"
+   }
+  },
+  {
+   "mode": "raw",
+   "env": "py3.12",
+   "file": "v0_original_crlf.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "raw",
+   "env": "py3.12",
+   "file": "v1_lf.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "raw",
+   "env": "py3.12",
+   "file": "v2_mixed_eol.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "raw",
+   "env": "py3.12",
+   "file": "v3_cr_only.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "raw",
+   "env": "py3.12",
+   "file": "v4_utf8_bom.py",
+   "identical_to_baseline": false,
+   "diff": {
+    "radon_cc.cc_sum": [
+     202,
+     null
+    ],
+    "radon_cc.cc_max": [
+     21,
+     null
+    ],
+    "radon_mi.mi": [
+     0.0,
+     null
+    ]
+   },
+   "errors": {
+    "radon_cc": "RuntimeError: invalid non-printable character U+FEFF (<unknown>, line 1)",
+    "radon_mi": "RuntimeError: invalid non-printable character U+FEFF (<unknown>, line 1)"
+   }
+  },
+  {
+   "mode": "raw",
+   "env": "py3.12",
+   "file": "v5_cp1251_cookie.py",
+   "identical_to_baseline": false,
+   "diff": {
+    "radon_raw.loc": [
+     1178,
+     null
+    ],
+    "radon_raw.sloc": [
+     944,
+     null
+    ],
+    "radon_raw.lloc": [
+     706,
+     null
+    ],
+    "radon_raw.comments": [
+     0,
+     null
+    ],
+    "radon_raw.blank": [
+     229,
+     null
+    ],
+    "radon_cc.cc_sum": [
+     202,
+     null
+    ],
+    "radon_cc.cc_max": [
+     21,
+     null
+    ],
+    "radon_mi.mi": [
+     0.0,
+     null
+    ]
+   },
+   "errors": {
+    "radon_cc": "RuntimeError: 'utf-8' codec can't decode byte 0xc4 in position 797: invalid continuation byte",
+    "radon_mi": "RuntimeError: 'utf-8' codec can't decode byte 0xc4 in position 797: invalid continuation byte",
+    "radon_raw": "RuntimeError: 'utf-8' codec can't decode byte 0xc4 in position 797: invalid continuation byte"
+   }
+  },
+  {
+   "mode": "raw",
+   "env": "py3.12",
+   "file": "v6_cp1251_no_cookie.py",
+   "identical_to_baseline": false,
+   "diff": {
+    "radon_raw.loc": [
+     1178,
+     null
+    ],
+    "radon_raw.sloc": [
+     944,
+     null
+    ],
+    "radon_raw.lloc": [
+     706,
+     null
+    ],
+    "radon_raw.comments": [
+     0,
+     null
+    ],
+    "radon_raw.blank": [
+     229,
+     null
+    ],
+    "radon_cc.cc_sum": [
+     202,
+     null
+    ],
+    "radon_cc.cc_max": [
+     21,
+     null
+    ],
+    "radon_mi.mi": [
+     0.0,
+     null
+    ],
+    "cognitive.cognitive_sum": [
+     194,
+     null
+    ],
+    "cognitive.cognitive_max": [
+     30,
+     null
+    ]
+   },
+   "errors": {
+    "cognitive": "SyntaxError: (unicode error) 'utf-8' codec can't decode byte 0xc4 in position 0: invalid continuation byte (v6_cp1251_no_cookie.py, line 21)",
+    "radon_cc": "RuntimeError: 'utf-8' codec can't decode byte 0xc4 in position 772: invalid continuation byte",
+    "radon_mi": "RuntimeError: 'utf-8' codec can't decode byte 0xc4 in position 772: invalid continuation byte",
+    "radon_raw": "RuntimeError: 'utf-8' codec can't decode byte 0xc4 in position 772: invalid continuation byte"
+   }
+  },
+  {
+   "mode": "raw",
+   "env": "py3.13",
+   "file": "v0_original_crlf.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "raw",
+   "env": "py3.13",
+   "file": "v1_lf.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "raw",
+   "env": "py3.13",
+   "file": "v2_mixed_eol.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "raw",
+   "env": "py3.13",
+   "file": "v3_cr_only.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "raw",
+   "env": "py3.13",
+   "file": "v4_utf8_bom.py",
+   "identical_to_baseline": false,
+   "diff": {
+    "radon_cc.cc_sum": [
+     202,
+     null
+    ],
+    "radon_cc.cc_max": [
+     21,
+     null
+    ],
+    "radon_mi.mi": [
+     0.0,
+     null
+    ]
+   },
+   "errors": {
+    "radon_cc": "RuntimeError: invalid non-printable character U+FEFF (<unknown>, line 1)",
+    "radon_mi": "RuntimeError: invalid non-printable character U+FEFF (<unknown>, line 1)"
+   }
+  },
+  {
+   "mode": "raw",
+   "env": "py3.13",
+   "file": "v5_cp1251_cookie.py",
+   "identical_to_baseline": false,
+   "diff": {
+    "radon_raw.loc": [
+     1178,
+     null
+    ],
+    "radon_raw.sloc": [
+     944,
+     null
+    ],
+    "radon_raw.lloc": [
+     706,
+     null
+    ],
+    "radon_raw.comments": [
+     0,
+     null
+    ],
+    "radon_raw.blank": [
+     229,
+     null
+    ],
+    "radon_cc.cc_sum": [
+     202,
+     null
+    ],
+    "radon_cc.cc_max": [
+     21,
+     null
+    ],
+    "radon_mi.mi": [
+     0.0,
+     null
+    ]
+   },
+   "errors": {
+    "radon_cc": "RuntimeError: 'utf-8' codec can't decode byte 0xc4 in position 797: invalid continuation byte",
+    "radon_mi": "RuntimeError: 'utf-8' codec can't decode byte 0xc4 in position 797: invalid continuation byte",
+    "radon_raw": "RuntimeError: 'utf-8' codec can't decode byte 0xc4 in position 797: invalid continuation byte"
+   }
+  },
+  {
+   "mode": "raw",
+   "env": "py3.13",
+   "file": "v6_cp1251_no_cookie.py",
+   "identical_to_baseline": false,
+   "diff": {
+    "radon_raw.loc": [
+     1178,
+     null
+    ],
+    "radon_raw.sloc": [
+     944,
+     null
+    ],
+    "radon_raw.lloc": [
+     706,
+     null
+    ],
+    "radon_raw.comments": [
+     0,
+     null
+    ],
+    "radon_raw.blank": [
+     229,
+     null
+    ],
+    "radon_cc.cc_sum": [
+     202,
+     null
+    ],
+    "radon_cc.cc_max": [
+     21,
+     null
+    ],
+    "radon_mi.mi": [
+     0.0,
+     null
+    ],
+    "cognitive.cognitive_sum": [
+     194,
+     null
+    ],
+    "cognitive.cognitive_max": [
+     30,
+     null
+    ]
+   },
+   "errors": {
+    "cognitive": "SyntaxError: (unicode error) 'utf-8' codec can't decode byte 0xc4 in position 0: invalid continuation byte (v6_cp1251_no_cookie.py, line 21)",
+    "radon_cc": "RuntimeError: 'utf-8' codec can't decode byte 0xc4 in position 772: invalid continuation byte",
+    "radon_mi": "RuntimeError: 'utf-8' codec can't decode byte 0xc4 in position 772: invalid continuation byte",
+    "radon_raw": "RuntimeError: 'utf-8' codec can't decode byte 0xc4 in position 772: invalid continuation byte"
+   }
+  },
+  {
+   "mode": "raw",
+   "env": "host-win-py3.11",
+   "file": "v0_original_crlf.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "raw",
+   "env": "host-win-py3.11",
+   "file": "v1_lf.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "raw",
+   "env": "host-win-py3.11",
+   "file": "v2_mixed_eol.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "raw",
+   "env": "host-win-py3.11",
+   "file": "v3_cr_only.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "raw",
+   "env": "host-win-py3.11",
+   "file": "v4_utf8_bom.py",
+   "identical_to_baseline": false,
+   "diff": {
+    "radon_raw.loc": [
+     1178,
+     null
+    ],
+    "radon_raw.sloc": [
+     944,
+     null
+    ],
+    "radon_raw.lloc": [
+     706,
+     null
+    ],
+    "radon_raw.comments": [
+     0,
+     null
+    ],
+    "radon_raw.blank": [
+     229,
+     null
+    ],
+    "radon_cc.cc_sum": [
+     202,
+     null
+    ],
+    "radon_cc.cc_max": [
+     21,
+     null
+    ],
+    "radon_mi.mi": [
+     0.0,
+     null
+    ]
+   },
+   "errors": {
+    "radon_cc": "RuntimeError: invalid non-printable character U+FEFF (<unknown>, line 1)",
+    "radon_mi": "RuntimeError: invalid non-printable character U+FEFF (<unknown>, line 1)",
+    "radon_raw": "RuntimeError: SyntaxError at line: 1"
+   }
+  },
+  {
+   "mode": "raw",
+   "env": "host-win-py3.11",
+   "file": "v5_cp1251_cookie.py",
+   "identical_to_baseline": false,
+   "diff": {
+    "radon_raw.loc": [
+     1178,
+     null
+    ],
+    "radon_raw.sloc": [
+     944,
+     null
+    ],
+    "radon_raw.lloc": [
+     706,
+     null
+    ],
+    "radon_raw.comments": [
+     0,
+     null
+    ],
+    "radon_raw.blank": [
+     229,
+     null
+    ],
+    "radon_cc.cc_sum": [
+     202,
+     null
+    ],
+    "radon_cc.cc_max": [
+     21,
+     null
+    ],
+    "radon_mi.mi": [
+     0.0,
+     null
+    ]
+   },
+   "errors": {
+    "radon_cc": "RuntimeError: 'utf-8' codec can't decode byte 0xc4 in position 797: invalid continuation byte",
+    "radon_mi": "RuntimeError: 'utf-8' codec can't decode byte 0xc4 in position 797: invalid continuation byte",
+    "radon_raw": "RuntimeError: 'utf-8' codec can't decode byte 0xc4 in position 797: invalid continuation byte"
+   }
+  },
+  {
+   "mode": "raw",
+   "env": "host-win-py3.11",
+   "file": "v6_cp1251_no_cookie.py",
+   "identical_to_baseline": false,
+   "diff": {
+    "radon_raw.loc": [
+     1178,
+     null
+    ],
+    "radon_raw.sloc": [
+     944,
+     null
+    ],
+    "radon_raw.lloc": [
+     706,
+     null
+    ],
+    "radon_raw.comments": [
+     0,
+     null
+    ],
+    "radon_raw.blank": [
+     229,
+     null
+    ],
+    "radon_cc.cc_sum": [
+     202,
+     null
+    ],
+    "radon_cc.cc_max": [
+     21,
+     null
+    ],
+    "radon_mi.mi": [
+     0.0,
+     null
+    ],
+    "cognitive.cognitive_sum": [
+     194,
+     null
+    ],
+    "cognitive.cognitive_max": [
+     30,
+     null
+    ]
+   },
+   "errors": {
+    "cognitive": "SyntaxError: (unicode error) 'utf-8' codec can't decode byte 0xc4 in position 0: invalid continuation byte (v6_cp1251_no_cookie.py, line 21)",
+    "radon_cc": "RuntimeError: 'utf-8' codec can't decode byte 0xc4 in position 772: invalid continuation byte",
+    "radon_mi": "RuntimeError: 'utf-8' codec can't decode byte 0xc4 in position 772: invalid continuation byte",
+    "radon_raw": "RuntimeError: 'utf-8' codec can't decode byte 0xc4 in position 772: invalid continuation byte"
+   }
+  },
+  {
+   "mode": "canonical",
+   "env": "py3.8",
+   "file": "v0_original_crlf.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "canonical",
+   "env": "py3.8",
+   "file": "v1_lf.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "canonical",
+   "env": "py3.8",
+   "file": "v2_mixed_eol.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "canonical",
+   "env": "py3.8",
+   "file": "v3_cr_only.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "canonical",
+   "env": "py3.8",
+   "file": "v4_utf8_bom.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "canonical",
+   "env": "py3.8",
+   "file": "v5_cp1251_cookie.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "canonical",
+   "env": "py3.8",
+   "file": "v6_cp1251_no_cookie.py",
+   "identical_to_baseline": false,
+   "diff": {
+    "lizard.nloc": [
+     944,
+     null
+    ],
+    "lizard.ccn_sum": [
+     204,
+     null
+    ],
+    "lizard.ccn_max": [
+     21,
+     null
+    ],
+    "lizard.functions": [
+     33,
+     null
+    ],
+    "radon_raw.loc": [
+     1178,
+     null
+    ],
+    "radon_raw.sloc": [
+     944,
+     null
+    ],
+    "radon_raw.lloc": [
+     706,
+     null
+    ],
+    "radon_raw.comments": [
+     0,
+     null
+    ],
+    "radon_raw.blank": [
+     229,
+     null
+    ],
+    "radon_cc.cc_sum": [
+     202,
+     null
+    ],
+    "radon_cc.cc_max": [
+     21,
+     null
+    ],
+    "radon_mi.mi": [
+     0.0,
+     null
+    ],
+    "cognitive.cognitive_sum": [
+     194,
+     null
+    ],
+    "cognitive.cognitive_max": [
+     30,
+     null
+    ]
+   },
+   "errors": {
+    "canonicalize": "UnicodeDecodeError: 'utf-8' codec can't decode byte 0xc4 in position 772: invalid continuation byte"
+   }
+  },
+  {
+   "mode": "canonical",
+   "env": "py3.10",
+   "file": "v0_original_crlf.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "canonical",
+   "env": "py3.10",
+   "file": "v1_lf.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "canonical",
+   "env": "py3.10",
+   "file": "v2_mixed_eol.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "canonical",
+   "env": "py3.10",
+   "file": "v3_cr_only.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "canonical",
+   "env": "py3.10",
+   "file": "v4_utf8_bom.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "canonical",
+   "env": "py3.10",
+   "file": "v5_cp1251_cookie.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "canonical",
+   "env": "py3.10",
+   "file": "v6_cp1251_no_cookie.py",
+   "identical_to_baseline": false,
+   "diff": {
+    "lizard.nloc": [
+     944,
+     null
+    ],
+    "lizard.ccn_sum": [
+     204,
+     null
+    ],
+    "lizard.ccn_max": [
+     21,
+     null
+    ],
+    "lizard.functions": [
+     33,
+     null
+    ],
+    "radon_raw.loc": [
+     1178,
+     null
+    ],
+    "radon_raw.sloc": [
+     944,
+     null
+    ],
+    "radon_raw.lloc": [
+     706,
+     null
+    ],
+    "radon_raw.comments": [
+     0,
+     null
+    ],
+    "radon_raw.blank": [
+     229,
+     null
+    ],
+    "radon_cc.cc_sum": [
+     202,
+     null
+    ],
+    "radon_cc.cc_max": [
+     21,
+     null
+    ],
+    "radon_mi.mi": [
+     0.0,
+     null
+    ],
+    "cognitive.cognitive_sum": [
+     194,
+     null
+    ],
+    "cognitive.cognitive_max": [
+     30,
+     null
+    ]
+   },
+   "errors": {
+    "canonicalize": "UnicodeDecodeError: 'utf-8' codec can't decode byte 0xc4 in position 772: invalid continuation byte"
+   }
+  },
+  {
+   "mode": "canonical",
+   "env": "py3.11",
+   "file": "v0_original_crlf.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "canonical",
+   "env": "py3.11",
+   "file": "v1_lf.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "canonical",
+   "env": "py3.11",
+   "file": "v2_mixed_eol.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "canonical",
+   "env": "py3.11",
+   "file": "v3_cr_only.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "canonical",
+   "env": "py3.11",
+   "file": "v4_utf8_bom.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "canonical",
+   "env": "py3.11",
+   "file": "v5_cp1251_cookie.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "canonical",
+   "env": "py3.11",
+   "file": "v6_cp1251_no_cookie.py",
+   "identical_to_baseline": false,
+   "diff": {
+    "lizard.nloc": [
+     944,
+     null
+    ],
+    "lizard.ccn_sum": [
+     204,
+     null
+    ],
+    "lizard.ccn_max": [
+     21,
+     null
+    ],
+    "lizard.functions": [
+     33,
+     null
+    ],
+    "radon_raw.loc": [
+     1178,
+     null
+    ],
+    "radon_raw.sloc": [
+     944,
+     null
+    ],
+    "radon_raw.lloc": [
+     706,
+     null
+    ],
+    "radon_raw.comments": [
+     0,
+     null
+    ],
+    "radon_raw.blank": [
+     229,
+     null
+    ],
+    "radon_cc.cc_sum": [
+     202,
+     null
+    ],
+    "radon_cc.cc_max": [
+     21,
+     null
+    ],
+    "radon_mi.mi": [
+     0.0,
+     null
+    ],
+    "cognitive.cognitive_sum": [
+     194,
+     null
+    ],
+    "cognitive.cognitive_max": [
+     30,
+     null
+    ]
+   },
+   "errors": {
+    "canonicalize": "UnicodeDecodeError: 'utf-8' codec can't decode byte 0xc4 in position 772: invalid continuation byte"
+   }
+  },
+  {
+   "mode": "canonical",
+   "env": "py3.12",
+   "file": "v0_original_crlf.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "canonical",
+   "env": "py3.12",
+   "file": "v1_lf.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "canonical",
+   "env": "py3.12",
+   "file": "v2_mixed_eol.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "canonical",
+   "env": "py3.12",
+   "file": "v3_cr_only.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "canonical",
+   "env": "py3.12",
+   "file": "v4_utf8_bom.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "canonical",
+   "env": "py3.12",
+   "file": "v5_cp1251_cookie.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "canonical",
+   "env": "py3.12",
+   "file": "v6_cp1251_no_cookie.py",
+   "identical_to_baseline": false,
+   "diff": {
+    "lizard.nloc": [
+     944,
+     null
+    ],
+    "lizard.ccn_sum": [
+     204,
+     null
+    ],
+    "lizard.ccn_max": [
+     21,
+     null
+    ],
+    "lizard.functions": [
+     33,
+     null
+    ],
+    "radon_raw.loc": [
+     1178,
+     null
+    ],
+    "radon_raw.sloc": [
+     944,
+     null
+    ],
+    "radon_raw.lloc": [
+     706,
+     null
+    ],
+    "radon_raw.comments": [
+     0,
+     null
+    ],
+    "radon_raw.blank": [
+     229,
+     null
+    ],
+    "radon_cc.cc_sum": [
+     202,
+     null
+    ],
+    "radon_cc.cc_max": [
+     21,
+     null
+    ],
+    "radon_mi.mi": [
+     0.0,
+     null
+    ],
+    "cognitive.cognitive_sum": [
+     194,
+     null
+    ],
+    "cognitive.cognitive_max": [
+     30,
+     null
+    ]
+   },
+   "errors": {
+    "canonicalize": "UnicodeDecodeError: 'utf-8' codec can't decode byte 0xc4 in position 772: invalid continuation byte"
+   }
+  },
+  {
+   "mode": "canonical",
+   "env": "py3.13",
+   "file": "v0_original_crlf.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "canonical",
+   "env": "py3.13",
+   "file": "v1_lf.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "canonical",
+   "env": "py3.13",
+   "file": "v2_mixed_eol.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "canonical",
+   "env": "py3.13",
+   "file": "v3_cr_only.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "canonical",
+   "env": "py3.13",
+   "file": "v4_utf8_bom.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "canonical",
+   "env": "py3.13",
+   "file": "v5_cp1251_cookie.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "canonical",
+   "env": "py3.13",
+   "file": "v6_cp1251_no_cookie.py",
+   "identical_to_baseline": false,
+   "diff": {
+    "lizard.nloc": [
+     944,
+     null
+    ],
+    "lizard.ccn_sum": [
+     204,
+     null
+    ],
+    "lizard.ccn_max": [
+     21,
+     null
+    ],
+    "lizard.functions": [
+     33,
+     null
+    ],
+    "radon_raw.loc": [
+     1178,
+     null
+    ],
+    "radon_raw.sloc": [
+     944,
+     null
+    ],
+    "radon_raw.lloc": [
+     706,
+     null
+    ],
+    "radon_raw.comments": [
+     0,
+     null
+    ],
+    "radon_raw.blank": [
+     229,
+     null
+    ],
+    "radon_cc.cc_sum": [
+     202,
+     null
+    ],
+    "radon_cc.cc_max": [
+     21,
+     null
+    ],
+    "radon_mi.mi": [
+     0.0,
+     null
+    ],
+    "cognitive.cognitive_sum": [
+     194,
+     null
+    ],
+    "cognitive.cognitive_max": [
+     30,
+     null
+    ]
+   },
+   "errors": {
+    "canonicalize": "UnicodeDecodeError: 'utf-8' codec can't decode byte 0xc4 in position 772: invalid continuation byte"
+   }
+  },
+  {
+   "mode": "canonical",
+   "env": "host-win-py3.11",
+   "file": "v0_original_crlf.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "canonical",
+   "env": "host-win-py3.11",
+   "file": "v1_lf.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "canonical",
+   "env": "host-win-py3.11",
+   "file": "v2_mixed_eol.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "canonical",
+   "env": "host-win-py3.11",
+   "file": "v3_cr_only.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "canonical",
+   "env": "host-win-py3.11",
+   "file": "v4_utf8_bom.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "canonical",
+   "env": "host-win-py3.11",
+   "file": "v5_cp1251_cookie.py",
+   "identical_to_baseline": true,
+   "diff": {},
+   "errors": {}
+  },
+  {
+   "mode": "canonical",
+   "env": "host-win-py3.11",
+   "file": "v6_cp1251_no_cookie.py",
+   "identical_to_baseline": false,
+   "diff": {
+    "lizard.nloc": [
+     944,
+     null
+    ],
+    "lizard.ccn_sum": [
+     204,
+     null
+    ],
+    "lizard.ccn_max": [
+     21,
+     null
+    ],
+    "lizard.functions": [
+     33,
+     null
+    ],
+    "radon_raw.loc": [
+     1178,
+     null
+    ],
+    "radon_raw.sloc": [
+     944,
+     null
+    ],
+    "radon_raw.lloc": [
+     706,
+     null
+    ],
+    "radon_raw.comments": [
+     0,
+     null
+    ],
+    "radon_raw.blank": [
+     229,
+     null
+    ],
+    "radon_cc.cc_sum": [
+     202,
+     null
+    ],
+    "radon_cc.cc_max": [
+     21,
+     null
+    ],
+    "radon_mi.mi": [
+     0.0,
+     null
+    ],
+    "cognitive.cognitive_sum": [
+     194,
+     null
+    ],
+    "cognitive.cognitive_max": [
+     30,
+     null
+    ]
+   },
+   "errors": {
+    "canonicalize": "UnicodeDecodeError: 'utf-8' codec can't decode byte 0xc4 in position 772: invalid continuation byte"
+   }
+  }
+ ]
+}

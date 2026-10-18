@@ -1,0 +1,13 @@
+# Кожен тест двічі в одному процесі (pytest-плагін повторює список тестів)
+
+## ДО виправлення (tests/test_secure_logging.py з коміту HEAD, getLogger для пробників)
+E       Failed: DID NOT RAISE AssertionError
+FAILED tests/test_tmp_old_logging.py::test_leak_checker_really_fails_on_an_unprotected_logger
+1 failed, 147 passed in 0.71s
+
+## ПІСЛЯ виправлення (private_logger)
+148 passed in 0.65s
+
+## Механізм: обробники логера-пробника при 1-му і 2-му виконанні (ДО виправлення), виміряно плагіном
+PROBE handlers=[('StreamHandler', [])] | msg-before='email=control.user@example.test password=synthetic-password-'
+PROBE handlers=[('StreamHandler', []), ('LogCaptureHandler', ['PIISanitizingFilter']), ('LogCaptureHandler', ['PIISanitizingFilter']), ('StreamHandler', [])] | msg-before='email=control.user@example.test password=synthetic-password-'

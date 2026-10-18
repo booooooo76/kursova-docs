@@ -1,0 +1,22 @@
+прогонів: 42; із зависанням (найдовша ітерація ≥ 10 с): 9
+  session1_pilot               isolated  #3  ітерація до 19.6 с, запитів 320, RPS 8.6, помилок 0.00%
+  session1_pilot               isolated  #4  ітерація до 19.7 с, запитів 258, RPS 7.7, помилок 0.00%
+  session1_pilot               noisy24   #4  ітерація до 30.0 с, запитів 58, RPS 1.7, помилок 1.72%
+  session2_main                noisy12   #4  ітерація до 30.0 с, запитів 141, RPS 4.0, помилок 0.71%
+  session2_main                noisy12   #5  ітерація до 30.0 с, запитів 175, RPS 3.8, помилок 1.14%
+  session2_runner_cpus         isolated  #1  ітерація до 30.0 с, запитів 273, RPS 6.0, помилок 0.37%
+  session2_runner_cpus         isolated  #3  ітерація до 30.0 с, запитів 226, RPS 4.9, помилок 0.88%
+  session2_runner_cpus         isolated  #2  ітерація до 30.0 с, запитів 231, RPS 5.1, помилок 0.43%
+  session2_runner_cpus         isolated  #2  ітерація до 30.0 с, запитів 23, RPS 0.7, помилок 8.70%
+за умовами:
+  isolated  6 з 22
+  noisy12   2 з 10
+  noisy24   1 з 10
+розкид p95 за сеансами, (max-min)/медіана:
+  session1_pilot               isolated  n=5 медіана 199.3 мс, розкид 1.6%
+  session1_pilot               noisy12   n=5 медіана 287.4 мс, розкид 4.1%
+  session1_pilot               noisy24   n=5 медіана 596.2 мс, розкид 4.1%
+  session2_main                isolated  n=5 медіана 204.0 мс, розкид 6.1%
+  session2_main                noisy12   n=5 медіана 283.3 мс, розкид 15.9%
+  session2_main                noisy24   n=5 медіана 605.4 мс, розкид 36.4%
+  session2_runner_cpus         isolated  n=12 медіана 216.1 мс, розкид 6.2%

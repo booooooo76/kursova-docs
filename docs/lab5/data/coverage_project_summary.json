@@ -1,0 +1,25 @@
+{
+ "tests_passed": 219,
+ "total_percent": 39.2,
+ "files": {
+  "app.py": 38.6,
+  "config.py": 88.9,
+  "models/__init__.py": 100.0,
+  "models/database.py": 85.0,
+  "privacy/__init__.py": 100.0,
+  "privacy/actions.py": 96.4,
+  "privacy/api.py": 98.2,
+  "privacy/consent.py": 97.8,
+  "privacy/consent_api.py": 97.1,
+  "privacy/erasure.py": 100.0,
+  "privacy/export.py": 90.2,
+  "privacy/policy.py": 100.0,
+  "privacy/sanitizer.py": 83.0,
+  "privacy/secure_logging.py": 86.3,
+  "routers/admin.py": 10.5,
+  "routers/operator.py": 5.9,
+  "routers/pc_builder.py": 9.2,
+  "routers/sql_queries.py": 11.0,
+  "routers/suppliers.py": 7.6
+ }
+}
