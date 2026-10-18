@@ -120,7 +120,7 @@ Gate і побічний ефект виконуються в **одній тр�
 
 ```
 pytest tests/test_consent.py -v          # усі 43
-pytest tests/test_consent.py -k scenario -v   # GRANT -> ALLOW -> REVOKE -> DENY (маркетинг і аналітика)
+pytest tests/test_consent.py -k scenario -v   # GRANT -> ALLOW -> REVOKE -> DENY (маркетинг, аналітика) і ізоляція цілей: 3 тести
 ```
 
 | Вимога лабораторної | Тести |
@@ -128,7 +128,7 @@ pytest tests/test_consent.py -k scenario -v   # GRANT -> ALLOW -> REVOKE -> DENY
 | Початковий стан DENY | `test_marketing_scenario_...` (крок 0), `test_gate_reasons` |
 | GRANT → ALLOW + побічний ефект у БД | `test_marketing_scenario_grant_allow_revoke_deny`, `test_analytics_scenario_...` |
 | REVOKE → DENY без побічного ефекту | ті самі + `test_gate_denial_has_no_side_effect` (знімок усіх таблиць до/після) |
-| Згода на одну мету не діє на іншу | `test_consent_to_one_purpose_does_not_allow_another`, `test_marketing_consent_does_not_enable_login_analytics` |
+| Згода на одну мету не діє на іншу | `test_scenario_consent_to_one_purpose_does_not_allow_another`, `test_marketing_consent_does_not_enable_login_analytics` |
 | Згода одного користувача не діє на іншого | `test_consent_of_one_user_does_not_apply_to_another` |
 | Версія політики | `test_outdated_policy_version_denies_until_reconsent` |
 | Доказ: політика, час, канал, історія | `test_grant_stores_evidence_metadata`, `test_revoke_records_...`, `test_regrant_after_revoke_...` |
