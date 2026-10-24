@@ -250,4 +250,60 @@ flowchart TD
 Поведінку нових правил зафіксовано тестами `tests/test_consent_rules.py` (11 тестів): вони мають лишитися
 зеленими після рефакторингу.
 
-<!-- Розділ 5 (PASS: Lookup Table) додається на наступному етапі. -->
+## 5. PASS: Data-Driven рефакторинг (таблиця правил)
+
+Замість дроблення функції (Extract Method) логіку рішення винесено у **статичну структуру даних**: впорядковану
+таблицю «умова → причина» `GATE_RULES`. Метод `gate` більше не містить жодного `if`: він збирає факти й бере з
+таблиці першу причину, умова якої істинна (коміт `refactor(audit): eliminate conditional branches using lookup table, PASS`).
+
+**До (FAIL, CC = 16):** 10 операторів `if` і 5 логічних операторів у тілі методу (лістинг у п. 4).
+
+**Після (PASS, CC = 1):**
+
+```python
+GATE_RULES = (
+    (lambda f: f.purpose not in PURPOSES,                                                  R_UNKNOWN_PURPOSE),
+    (lambda f: f.subject is None,                                                          R_NOT_FOUND),
+    (lambda f: f.subject['anonymized_at'] is not None,                                     R_ANONYMIZED),
+    (lambda f: not f.subject['is_active'] or f.subject['access_right'] == 'guest',         R_ACCOUNT_RESTRICTED),
+    (lambda f: f.purpose == MARKETING_EMAIL and f.subject['access_right'] in STAFF_ROLES,  R_STAFF_EXCLUDED),
+    (lambda f: f.row is None,                                                              R_NO_RECORD),
+    (lambda f: not f.row['is_granted'],                                                    R_WITHDRAWN),
+    (lambda f: f.row['policy_version'] != CURRENT_POLICY_VERSION[f.purpose],               R_OUTDATED),
+    (lambda f: f.purpose == MARKETING_EMAIL and f.row['granted_at'] < f.now - MARKETING_CONSENT_TTL, R_CONSENT_EXPIRED),
+    (lambda f: f.purpose == MARKETING_EMAIL and f.sent_last_week >= MARKETING_WEEKLY_CAP,  R_FREQUENCY_CAP),
+)
+NO_RULE_MATCHED = (None, R_GRANTED)
+
+
+def gate(cur, subject_id, purpose):
+    facts = _gate_facts(cur, subject_id, purpose)
+    _, reason = next(filter(lambda rule: rule[0](facts), GATE_RULES), NO_RULE_MATCHED)
+    return Decision(reason == R_GRANTED, reason, purpose)
+```
+
+Як це працює:
+1. `_gate_facts` (CC = 1) лінійно читає з БД усе, що потрібно для рішення: рядок користувача (з блокуванням KEY SHARE),
+   запис згоди (FOR SHARE) і кількість листів за тиждень. Порядок блокувань той самий, що в командах (keys → згода),
+   тож захист від гонки й від deadlock збережено.
+2. `filter` перебирає рядки таблиці **ліниво** і зупиняється на першій істинній умові. Тому рядок, що звертається до
+   `subject` чи `row`, ніколи не виконується раніше, ніж рядок, який уже перевірив, що ці записи існують: пріоритет і
+   безпека старого ланцюжка `if` збережені.
+3. Якщо жодна умова не спрацювала, береться `NO_RULE_MATCHED`, тобто ALLOW.
+
+Чому це саме Data-Driven, а не Extract Method: розгалуження не перенесено в інші функції, їх **немає** як коду керування.
+Правило тепер це рядок таблиці; нове правило додається новим рядком, і CC методу від цього не росте.
+Умови в рядках таблиці лишаються логічними виразами (`and`/`or`), але це дані-предикати, а не гілки керування методу,
+тому вони не впливають на складність `gate`.
+
+**Результат CLI:** `gate - A (1)` (radon), `CCN 1` (lizard); `lizard -C 10` по всьому файлу: «No thresholds exceeded».
+Поведінку перевірено тими самими тестами, що й у стані FAIL: `tests/test_consent_rules.py` (11) і `tests/test_consent.py`
+(43) зелені, весь набір 230 тестів зелений.
+
+## 6. Підсумок трьох станів
+
+| Стан | Коміт | CC `gate` (radon / lizard) | Ручний розрахунок | Вердикт |
+|---|---|---|---|---|
+| Baseline | `docs(audit): Baseline - граф CFG для consent.gate, CC=7 …` | 7 / 7 | 22 − 17 + 2 = 7 | норма |
+| FAIL | `feat(audit): simulate topological CC failure, FAIL` | 16 / 16 | папір 11, уточнений граф 45 − 31 + 2 = 16 | CC > 15 |
+| PASS | `refactor(audit): eliminate conditional branches using lookup table, PASS` | 1 / 1 | граф: START → факти → вибір із таблиці → return → вихід, 4 − 5 + 2 = 1 | CC ≤ 2 |
