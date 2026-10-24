@@ -127,7 +127,7 @@ flowchart TD
     R9 -.-> EXIT
     R10 -.-> EXIT
     R11 -.-> EXIT
-    classDef new stroke-dasharray: 6 4
+    classDef new fill:#fff1dc,stroke:#d9822b,stroke-width:2px,stroke-dasharray: 6 4
     class N1,N2,N3,N4,R8,R9,R10,R11,S3 new
 ```
 
@@ -147,4 +147,107 @@ flowchart TD
 предикати, вставлені в граф, завжди дають ΔCC = +4, тобто ΔE − ΔN = 4. Варіант «+4 вузли й +6 ребер» дав би ΔCC = +2,
 що суперечило б правилу CC = P + 1, тому на кресленні наведено фактичну кількість вузлів і ребер.
 
-<!-- Розділи 4 (FAIL: верифікація прогнозу) і 5 (PASS: Lookup Table) додаються на наступних етапах. -->
+## 4. FAIL: код за кресленням і перевірка прогнозу
+
+Правила N1–N4 дописано в `gate` строго за кресленням, однією монолітною функцією (коміт
+`feat(audit): simulate topological CC failure, FAIL`). Бізнес сформулював їх складеними умовами:
+
+```python
+    if not subject['is_active'] or subject['access_right'] == 'guest':                                   # N1
+        return Decision(False, R_ACCOUNT_RESTRICTED, purpose)
+    if purpose == MARKETING_EMAIL and (subject['access_right'] == 'admin' or subject['access_right'] == 'operator'):  # N2
+        return Decision(False, R_STAFF_EXCLUDED, purpose)
+    ...
+    if purpose == MARKETING_EMAIL and row['granted_at'] < datetime.now(timezone.utc) - MARKETING_CONSENT_TTL:  # N3
+        return Decision(False, R_CONSENT_EXPIRED, purpose)
+    cur.execute("SELECT count(*) AS n FROM marketing_outbox WHERE user_id = %s AND status = 'SENT' "
+                "AND processed_at > now() - interval '7 days'", (subject_id,))                         # S3
+    sent = cur.fetchone()['n']
+    if purpose == MARKETING_EMAIL and sent >= MARKETING_WEEKLY_CAP:                                     # N4
+        return Decision(False, R_FREQUENCY_CAP, purpose)
+```
+
+**Результат CLI: CC = 16** (radon `F 232:0 gate - C (16)`, lizard `CCN 16` і попередження про перевищення порога 15).
+Ліміт CC > 15 перетнуто, стан FAIL.
+
+**Прогноз не збігся: 11 на папері проти 16 у сканера.** Різниця 5 дорівнює кількості логічних операторів у нових
+умовах: `or` у N1, `and` і `or` у N2, `and` у N3, `and` у N4. Помилка моделі: на кресленні кожне правило було *одним*
+ромбом, але Python обчислює `and`/`or` **скорочено** (short-circuit): `a and b` спершу перевіряє `a` і лише якщо воно
+істинне, перевіряє `b`. Тобто складена умова з k частин це k окремих точок розгалуження, і сканери рахують саме так:
+radon додає +1 за кожен додатковий операнд `and`/`or`, lizard +1 за кожне слово `and`/`or`.
+
+| Правило | Умова | Атомарних предикатів |
+|---|---|---|
+| N1 | `not is_active` **or** `access_right == 'guest'` | 2 |
+| N2 | `purpose == MARKETING` **and** (`role == 'admin'` **or** `role == 'operator'`) | 3 |
+| N3 | `purpose == MARKETING` **and** `granted_at < now − 12 міс.` | 2 |
+| N4 | `purpose == MARKETING` **and** `sent ≥ 3` | 2 |
+| **разом** | | **9** (а не 4) |
+
+Уточнений граф: кожну складену умову розгорнуто в ланцюжок атомарних ромбів (N1a, N1b, …).
+
+```mermaid
+%% name: extension_refined
+flowchart TD
+    START(["gate(cur, subject_id, purpose)"]) --> P1{"purpose не в PURPOSES?"}
+    P1 -->|так| R1["return DENY UNKNOWN_PURPOSE"]
+    P1 -->|ні| S1["subject = _lock_subject(KEY SHARE)"]
+    S1 --> P2{"subject is None?"}
+    P2 -->|так| R2["return DENY SUBJECT_NOT_FOUND"]
+    P2 -->|ні| P3{"anonymized_at is not None?"}
+    P3 -->|так| R3["return DENY SUBJECT_ANONYMIZED"]
+    P3 -->|ні| N1a{"N1a: not is_active?"}
+    N1a -->|так| R8["return DENY ACCOUNT_RESTRICTED"]
+    N1a -->|ні| N1b{"N1b: access_right == guest?"}
+    N1b -->|так| R8
+    N1b -->|ні| N2a{"N2a: purpose == MARKETING?"}
+    N2a -->|ні| S2["SELECT згоди FOR SHARE; row = fetchone()"]
+    N2a -->|так| N2b{"N2b: access_right == admin?"}
+    N2b -->|так| R9["return DENY STAFF_EXCLUDED"]
+    N2b -->|ні| N2c{"N2c: access_right == operator?"}
+    N2c -->|так| R9
+    N2c -->|ні| S2
+    S2 --> P4{"row is None?"}
+    P4 -->|так| R4["return DENY NO_CONSENT_RECORD"]
+    P4 -->|ні| P5{"not is_granted?"}
+    P5 -->|так| R5["return DENY CONSENT_WITHDRAWN"]
+    P5 -->|ні| P6{"policy_version != чинна?"}
+    P6 -->|так| R6["return DENY POLICY_VERSION_OUTDATED"]
+    P6 -->|ні| N3a{"N3a: purpose == MARKETING?"}
+    N3a -->|ні| S3["sent = кількість листів за 7 днів"]
+    N3a -->|так| N3b{"N3b: granted_at старша за 12 міс.?"}
+    N3b -->|так| R10["return DENY CONSENT_EXPIRED"]
+    N3b -->|ні| S3
+    S3 --> N4a{"N4a: purpose == MARKETING?"}
+    N4a -->|ні| R7["return ALLOW CONSENT_GRANTED"]
+    N4a -->|так| N4b{"N4b: sent ≥ 3?"}
+    N4b -->|так| R11["return DENY FREQUENCY_CAP"]
+    N4b -->|ні| R7
+    R1 --> EXIT(["вихід"])
+    R2 --> EXIT
+    R3 --> EXIT
+    R4 --> EXIT
+    R5 --> EXIT
+    R6 --> EXIT
+    R7 --> EXIT
+    R8 --> EXIT
+    R9 --> EXIT
+    R10 --> EXIT
+    R11 --> EXIT
+    classDef new fill:#fde2e1,stroke:#c0392b,stroke-width:2px
+    class N1a,N1b,N2a,N2b,N2c,N3a,N3b,N4a,N4b new
+```
+
+| Граф | Вузли N | Ребра E | CC = E − N + 2 | Предикатів P (P + 1) |
+|---|---|---|---|---|
+| базовий | 17 | 22 | 7 | 6 (7) |
+| паперовий прогноз | 26 | 35 | 11 | 10 (11) |
+| уточнений (короткозамкнені `and`/`or`) | 31 | 45 | **16** | 15 (16) |
+
+Уточнена модель збіглася з radon і lizard на 100%: **CC = 16**. Висновок для інженера: прогнозуючи складність,
+рахувати треба не «правила», а атомарні умови; кожен `and`/`or` це ще одна гілка, яку треба покрити тестом.
+
+Поведінку нових правил зафіксовано тестами `tests/test_consent_rules.py` (11 тестів): вони мають лишитися
+зеленими після рефакторингу.
+
+<!-- Розділ 5 (PASS: Lookup Table) додається на наступному етапі. -->
