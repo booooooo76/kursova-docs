@@ -42,4 +42,52 @@
 Сценарій методички: нова функція з CC = 12 не комітиться; після Data-Driven рефакторингу (CC 1..2) комітиться.
 Скріншоти: `Лаб 6\screenshots\t3_*`.
 
-<!-- Розділ 5 (результати демонстрації) додається після неї. -->
+## 5. Результати демонстрації
+
+**FAIL (краш-тест).** У `models/delivery.py` додано функцію `delivery_days(delivery_type, region, express)` (термін
+доставки замовлення в робочих днях) з глибокою вкладеністю умов: **CC = 12** (radon `C (12)`, lizard 12).
+`git add models/delivery.py` + `git commit -m "feat: add messy code"`:
+
+```
+pre-commit: lizard, cyclomatic complexity limit CC <= 10, staged files:
+  models/delivery.py
+  COMPLEXITY VIOLATION: models/delivery.py:4  delivery_days()  CC = 12  (limit CC 10)
+
+pre-commit: COMMIT BLOCKED - 1 function(s) exceed the architectural limit CC <= 10.
+git exit code: 1
+```
+
+Коміт не створено: `git log` не змінився (скріншот `t3_1_hook_FAIL_blocked.png`).
+
+**PASS (відновлення).** Функцію переписано через довідник даних, як у Завд.2:
+
+```python
+REGION_GROUP = {'Chernivtsi': 'Chernivtsi', 'Kyiv': 'Kyiv'}
+DELIVERY_DAYS = {
+    ('pickup',  'Chernivtsi', False): 0, ('pickup',  'Chernivtsi', True): 0,
+    ...                                       # 18 рядків: 3 способи × 3 групи регіонів × 2 значення терміновості
+    ('post',    'other',      False): 4, ('post',    'other',      True): 2,
+}
+
+def delivery_days(delivery_type, region, express):
+    try:
+        return DELIVERY_DAYS[(delivery_type, REGION_GROUP.get(region, 'other'), bool(express))]
+    except KeyError:
+        raise ValueError(f'unknown delivery type: {delivery_type}') from None
+```
+
+**CC = 2** (radon `A (2)`; одиниця за `except`, що зберігає стару поведінку з `ValueError` для невідомого способу доставки).
+Еквівалентність перевірено на 180 комбінаціях вхідних даних (зокрема невідомі міста, невідомі способи, «truthy» значення
+`express`): результати старої й нової версії однакові. Тести: `tests/test_delivery.py` (16).
+Коміт пройшов: `pre-commit: PASS - every function in staged files has CC <= 10`, `git exit code: 0`
+(скріншот `t3_2_hook_PASS_committed.png`).
+
+**«Храповик» (додатково).** Стару функцію з базової лінії `slo_decision.decide` штучно погіршено з CC 19 до 20: хук
+заблокував коміт з поясненням `got worse: baseline CC 19` (скріншот `t3_3_hook_ratchet_legacy_worse.png`); зміну скасовано.
+
+## 6. Висновок
+
+Хук прибирає людський фактор: заплутаний код фізично не може потрапити в історію без явного `--no-verify`. Він дивиться
+лише на те, що йде в коміт (staged-версії файлів), читає код виходу lizard і розбирає його вивід, а старий борг не
+блокує роботу, але й не дає йому рости. Ліміт 10 узгоджено з рефакторингом Завд.2: обидві функції, переписані через
+довідники даних, мають CC 1 і 2.
