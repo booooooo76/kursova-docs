@@ -1,0 +1,665 @@
+{
+ "classes": [
+  {
+   "class": "User",
+   "file": "app.py",
+   "bases": [
+    "UserMixin"
+   ],
+   "WMC": 3,
+   "methods": 2,
+   "CBO": 2,
+   "coupled_to": [
+    "UserMixin",
+    "login"
+   ],
+   "RFC": 3,
+   "LCOM_HS": 0.0,
+   "LCOM4": 1,
+   "DIT": 3,
+   "NOC": 0,
+   "PIM": 1,
+   "NMO": 0,
+   "overridden": [],
+   "NMA": 2
+  },
+  {
+   "class": "Config",
+   "file": "config.py",
+   "bases": [],
+   "WMC": 0,
+   "methods": 0,
+   "CBO": 2,
+   "coupled_to": [
+    "_require_env",
+    "os.environ"
+   ],
+   "RFC": 2,
+   "LCOM_HS": 0.0,
+   "LCOM4": 0,
+   "DIT": 1,
+   "NOC": 0,
+   "PIM": 0,
+   "NMO": 0,
+   "overridden": [],
+   "NMA": 0
+  },
+  {
+   "class": "DependencyUnavailableError",
+   "file": "models/database.py",
+   "bases": [
+    "Exception"
+   ],
+   "WMC": 0,
+   "methods": 0,
+   "CBO": 0,
+   "coupled_to": [],
+   "RFC": 0,
+   "LCOM_HS": 0.0,
+   "LCOM4": 0,
+   "DIT": 3,
+   "NOC": 0,
+   "PIM": 0,
+   "NMO": 0,
+   "overridden": [],
+   "NMA": 0
+  },
+  {
+   "class": "_ProductFormError",
+   "file": "routers/operator.py",
+   "bases": [
+    "Exception"
+   ],
+   "WMC": 0,
+   "methods": 0,
+   "CBO": 0,
+   "coupled_to": [],
+   "RFC": 0,
+   "LCOM_HS": 0.0,
+   "LCOM4": 0,
+   "DIT": 3,
+   "NOC": 0,
+   "PIM": 0,
+   "NMO": 0,
+   "overridden": [],
+   "NMA": 0
+  },
+  {
+   "class": "_QueryError",
+   "file": "routers/sql_queries.py",
+   "bases": [
+    "Exception"
+   ],
+   "WMC": 0,
+   "methods": 0,
+   "CBO": 0,
+   "coupled_to": [],
+   "RFC": 0,
+   "LCOM_HS": 0.0,
+   "LCOM4": 0,
+   "DIT": 3,
+   "NOC": 0,
+   "PIM": 0,
+   "NMO": 0,
+   "overridden": [],
+   "NMA": 0
+  },
+  {
+   "class": "ActionResult",
+   "file": "privacy/actions.py",
+   "bases": [],
+   "WMC": 0,
+   "methods": 0,
+   "CBO": 2,
+   "coupled_to": [
+    "consent.Decision",
+    "dataclass"
+   ],
+   "RFC": 1,
+   "LCOM_HS": 0.0,
+   "LCOM4": 0,
+   "DIT": 1,
+   "NOC": 0,
+   "PIM": 0,
+   "NMO": 0,
+   "overridden": [],
+   "NMA": 0
+  },
+  {
+   "class": "ConsentValidationError",
+   "file": "privacy/consent.py",
+   "bases": [
+    "ValueError"
+   ],
+   "WMC": 1,
+   "methods": 1,
+   "CBO": 0,
+   "coupled_to": [],
+   "RFC": 2,
+   "LCOM_HS": 0.0,
+   "LCOM4": 1,
+   "DIT": 3,
+   "NOC": 0,
+   "PIM": 0,
+   "NMO": 0,
+   "overridden": [],
+   "NMA": 1
+  },
+  {
+   "class": "Decision",
+   "file": "privacy/consent.py",
+   "bases": [],
+   "WMC": 3,
+   "methods": 2,
+   "CBO": 1,
+   "coupled_to": [
+    "dataclass"
+   ],
+   "RFC": 3,
+   "LCOM_HS": 1.0,
+   "LCOM4": 1,
+   "DIT": 1,
+   "NOC": 0,
+   "PIM": 2,
+   "NMO": 0,
+   "overridden": [],
+   "NMA": 2
+  },
+  {
+   "class": "ConsentChange",
+   "file": "privacy/consent.py",
+   "bases": [],
+   "WMC": 0,
+   "methods": 0,
+   "CBO": 2,
+   "coupled_to": [
+    "dataclass",
+    "field"
+   ],
+   "RFC": 1,
+   "LCOM_HS": 0.0,
+   "LCOM4": 0,
+   "DIT": 1,
+   "NOC": 0,
+   "PIM": 0,
+   "NMO": 0,
+   "overridden": [],
+   "NMA": 0
+  },
+  {
+   "class": "GateFacts",
+   "file": "privacy/consent.py",
+   "bases": [],
+   "WMC": 0,
+   "methods": 0,
+   "CBO": 2,
+   "coupled_to": [
+    "dataclass",
+    "datetime"
+   ],
+   "RFC": 1,
+   "LCOM_HS": 0.0,
+   "LCOM4": 0,
+   "DIT": 1,
+   "NOC": 0,
+   "PIM": 0,
+   "NMO": 0,
+   "overridden": [],
+   "NMA": 0
+  },
+  {
+   "class": "ErasureResult",
+   "file": "privacy/erasure.py",
+   "bases": [],
+   "WMC": 0,
+   "methods": 0,
+   "CBO": 2,
+   "coupled_to": [
+    "dataclass",
+    "field"
+   ],
+   "RFC": 2,
+   "LCOM_HS": 0.0,
+   "LCOM4": 0,
+   "DIT": 1,
+   "NOC": 0,
+   "PIM": 0,
+   "NMO": 0,
+   "overridden": [],
+   "NMA": 0
+  },
+  {
+   "class": "SubjectSnapshot",
+   "file": "privacy/erasure.py",
+   "bases": [],
+   "WMC": 5,
+   "methods": 2,
+   "CBO": 2,
+   "coupled_to": [
+    "ErasureResult",
+    "dataclass"
+   ],
+   "RFC": 6,
+   "LCOM_HS": 0.0,
+   "LCOM4": 1,
+   "DIT": 1,
+   "NOC": 0,
+   "PIM": 2,
+   "NMO": 0,
+   "overridden": [],
+   "NMA": 2
+  },
+  {
+   "class": "ErasureParams",
+   "file": "privacy/erasure.py",
+   "bases": [],
+   "WMC": 2,
+   "methods": 2,
+   "CBO": 4,
+   "coupled_to": [
+    "asdict",
+    "dataclass",
+    "new_anonymous_login",
+    "secrets.token_hex"
+   ],
+   "RFC": 6,
+   "LCOM_HS": 0.0,
+   "LCOM4": 1,
+   "DIT": 1,
+   "NOC": 0,
+   "PIM": 2,
+   "NMO": 0,
+   "overridden": [],
+   "NMA": 2
+  },
+  {
+   "class": "ErasureCounts",
+   "file": "privacy/erasure.py",
+   "bases": [],
+   "WMC": 7,
+   "methods": 2,
+   "CBO": 4,
+   "coupled_to": [
+    "_apply_entity",
+    "consent.withdraw_all",
+    "dataclass",
+    "processing_order"
+   ],
+   "RFC": 8,
+   "LCOM_HS": 0.0,
+   "LCOM4": 1,
+   "DIT": 1,
+   "NOC": 0,
+   "PIM": 2,
+   "NMO": 0,
+   "overridden": [],
+   "NMA": 2
+  },
+  {
+   "class": "EntityPolicy",
+   "file": "privacy/policy.py",
+   "bases": [],
+   "WMC": 1,
+   "methods": 1,
+   "CBO": 2,
+   "coupled_to": [
+    "dataclass",
+    "field"
+   ],
+   "RFC": 3,
+   "LCOM_HS": 0.0,
+   "LCOM4": 1,
+   "DIT": 1,
+   "NOC": 0,
+   "PIM": 1,
+   "NMO": 0,
+   "overridden": [],
+   "NMA": 1
+  },
+  {
+   "class": "PIISanitizingFilter",
+   "file": "privacy/secure_logging.py",
+   "bases": [
+    "logging.Filter"
+   ],
+   "WMC": 10,
+   "methods": 1,
+   "CBO": 6,
+   "coupled_to": [
+    "_sanitize_args",
+    "get_correlation_id",
+    "logging.Filter",
+    "logging.Formatter",
+    "sanitize_text",
+    "sanitize_value"
+   ],
+   "RFC": 8,
+   "LCOM_HS": 0.0,
+   "LCOM4": 1,
+   "DIT": 3,
+   "NOC": 0,
+   "PIM": 1,
+   "NMO": 0,
+   "overridden": [],
+   "NMA": 1
+  },
+  {
+   "class": "SanitizingFormatter",
+   "file": "privacy/secure_logging.py",
+   "bases": [
+    "logging.Formatter"
+   ],
+   "WMC": 2,
+   "methods": 1,
+   "CBO": 3,
+   "coupled_to": [
+    "get_correlation_id",
+    "logging.Formatter",
+    "sanitize_text"
+   ],
+   "RFC": 4,
+   "LCOM_HS": 0.0,
+   "LCOM4": 1,
+   "DIT": 3,
+   "NOC": 0,
+   "PIM": 1,
+   "NMO": 0,
+   "overridden": [],
+   "NMA": 1
+  },
+  {
+   "class": "JsonFormatter",
+   "file": "privacy/secure_logging.py",
+   "bases": [
+    "logging.Formatter"
+   ],
+   "WMC": 7,
+   "methods": 1,
+   "CBO": 6,
+   "coupled_to": [
+    "datetime.fromtimestamp",
+    "get_correlation_id",
+    "json.dumps",
+    "logging.Formatter",
+    "sanitize_value",
+    "timezone.utc"
+   ],
+   "RFC": 9,
+   "LCOM_HS": 0.0,
+   "LCOM4": 1,
+   "DIT": 3,
+   "NOC": 0,
+   "PIM": 1,
+   "NMO": 0,
+   "overridden": [],
+   "NMA": 1
+  },
+  {
+   "class": "_LiveStderrHandler",
+   "file": "privacy/secure_logging.py",
+   "bases": [
+    "logging.StreamHandler"
+   ],
+   "WMC": 2,
+   "methods": 2,
+   "CBO": 3,
+   "coupled_to": [
+    "logging.Handler",
+    "logging.StreamHandler",
+    "sys.stderr"
+   ],
+   "RFC": 3,
+   "LCOM_HS": 0.0,
+   "LCOM4": 2,
+   "DIT": 3,
+   "NOC": 0,
+   "PIM": 1,
+   "NMO": 0,
+   "overridden": [],
+   "NMA": 2
+  },
+  {
+   "class": "SanitizingStream",
+   "file": "privacy/secure_logging.py",
+   "bases": [],
+   "WMC": 6,
+   "methods": 4,
+   "CBO": 1,
+   "coupled_to": [
+    "sanitize_text"
+   ],
+   "RFC": 7,
+   "LCOM_HS": 0.5,
+   "LCOM4": 1,
+   "DIT": 1,
+   "NOC": 0,
+   "PIM": 2,
+   "NMO": 0,
+   "overridden": [],
+   "NMA": 4
+  }
+ ],
+ "modules": [
+  {
+   "module": "app",
+   "fan_out": 106,
+   "project_deps": [
+    "config",
+    "models.database",
+    "privacy.actions",
+    "privacy.api",
+    "privacy.consent_api",
+    "privacy.secure_logging",
+    "routers.admin",
+    "routers.operator",
+    "routers.pc_builder",
+    "routers.sql_queries",
+    "routers.suppliers"
+   ],
+   "functions": 47,
+   "classes": 1,
+   "fan_in": 0
+  },
+  {
+   "module": "config",
+   "fan_out": 2,
+   "project_deps": [],
+   "functions": 1,
+   "classes": 1,
+   "fan_in": 2
+  },
+  {
+   "module": "models",
+   "fan_out": 0,
+   "project_deps": [],
+   "functions": 0,
+   "classes": 0,
+   "fan_in": 0
+  },
+  {
+   "module": "models.database",
+   "fan_out": 12,
+   "project_deps": [
+    "config"
+   ],
+   "functions": 7,
+   "classes": 1,
+   "fan_in": 11
+  },
+  {
+   "module": "models.delivery",
+   "fan_out": 0,
+   "project_deps": [],
+   "functions": 1,
+   "classes": 0,
+   "fan_in": 0
+  },
+  {
+   "module": "routers.admin",
+   "fan_out": 12,
+   "project_deps": [
+    "models.database"
+   ],
+   "functions": 10,
+   "classes": 0,
+   "fan_in": 1
+  },
+  {
+   "module": "routers.operator",
+   "fan_out": 26,
+   "project_deps": [
+    "models.database"
+   ],
+   "functions": 32,
+   "classes": 1,
+   "fan_in": 1
+  },
+  {
+   "module": "routers.pc_builder",
+   "fan_out": 9,
+   "project_deps": [
+    "models.database"
+   ],
+   "functions": 5,
+   "classes": 0,
+   "fan_in": 1
+  },
+  {
+   "module": "routers.sql_queries",
+   "fan_out": 22,
+   "project_deps": [
+    "models.database"
+   ],
+   "functions": 13,
+   "classes": 1,
+   "fan_in": 1
+  },
+  {
+   "module": "routers.suppliers",
+   "fan_out": 11,
+   "project_deps": [
+    "models.database"
+   ],
+   "functions": 19,
+   "classes": 0,
+   "fan_in": 1
+  },
+  {
+   "module": "privacy",
+   "fan_out": 0,
+   "project_deps": [],
+   "functions": 0,
+   "classes": 0,
+   "fan_in": 0
+  },
+  {
+   "module": "privacy.actions",
+   "fan_out": 10,
+   "project_deps": [
+    "models.database",
+    "privacy.consent"
+   ],
+   "functions": 5,
+   "classes": 1,
+   "fan_in": 2
+  },
+  {
+   "module": "privacy.api",
+   "fan_out": 18,
+   "project_deps": [
+    "models.database",
+    "privacy.erasure",
+    "privacy.export",
+    "privacy.secure_logging"
+   ],
+   "functions": 7,
+   "classes": 0,
+   "fan_in": 2
+  },
+  {
+   "module": "privacy.consent",
+   "fan_out": 10,
+   "project_deps": [
+    "models.database",
+    "privacy.secure_logging"
+   ],
+   "functions": 14,
+   "classes": 4,
+   "fan_in": 3
+  },
+  {
+   "module": "privacy.consent_api",
+   "fan_out": 24,
+   "project_deps": [
+    "privacy.actions",
+    "privacy.api",
+    "privacy.consent",
+    "privacy.secure_logging"
+   ],
+   "functions": 10,
+   "classes": 0,
+   "fan_in": 1
+  },
+  {
+   "module": "privacy.erasure",
+   "fan_out": 21,
+   "project_deps": [
+    "models.database",
+    "privacy.consent",
+    "privacy.policy",
+    "privacy.secure_logging"
+   ],
+   "functions": 6,
+   "classes": 4,
+   "fan_in": 1
+  },
+  {
+   "module": "privacy.export",
+   "fan_out": 9,
+   "project_deps": [
+    "models.database",
+    "privacy.policy"
+   ],
+   "functions": 4,
+   "classes": 0,
+   "fan_in": 1
+  },
+  {
+   "module": "privacy.policy",
+   "fan_out": 2,
+   "project_deps": [],
+   "functions": 2,
+   "classes": 1,
+   "fan_in": 3
+  },
+  {
+   "module": "privacy.sanitizer",
+   "fan_out": 10,
+   "project_deps": [
+    "privacy.policy"
+   ],
+   "functions": 13,
+   "classes": 0,
+   "fan_in": 1
+  },
+  {
+   "module": "privacy.secure_logging",
+   "fan_out": 19,
+   "project_deps": [
+    "privacy.sanitizer"
+   ],
+   "functions": 8,
+   "classes": 5,
+   "fan_in": 5
+  }
+ ],
+ "mood": {
+  "classes": 20,
+  "methods": 16,
+  "attributes": 41,
+  "MHF": 0.0,
+  "AHF": 0.024,
+  "COF": 0.0026,
+  "couplings": 1
+ }
+}
