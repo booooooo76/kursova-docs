@@ -1,0 +1,491 @@
+{
+ "classes": [
+  {
+   "class": "SessionCart",
+   "file": "services/cart.py",
+   "bases": [],
+   "WMC": 11,
+   "methods": 8,
+   "CBO": 0,
+   "coupled_to": [],
+   "RFC": 14,
+   "LCOM_HS": 0.0,
+   "LCOM4": 1,
+   "DIT": 1,
+   "NOC": 0,
+   "PIM": 7,
+   "NMO": 0,
+   "overridden": [],
+   "NMA": 8
+  },
+  {
+   "class": "DbCart",
+   "file": "services/cart.py",
+   "bases": [],
+   "WMC": 9,
+   "methods": 7,
+   "CBO": 0,
+   "coupled_to": [],
+   "RFC": 7,
+   "LCOM_HS": 0.0,
+   "LCOM4": 1,
+   "DIT": 1,
+   "NOC": 0,
+   "PIM": 6,
+   "NMO": 0,
+   "overridden": [],
+   "NMA": 7
+  },
+  {
+   "class": "ProductCatalog",
+   "file": "services/cart.py",
+   "bases": [],
+   "WMC": 9,
+   "methods": 3,
+   "CBO": 1,
+   "coupled_to": [
+    "CartLine"
+   ],
+   "RFC": 4,
+   "LCOM_HS": 0.0,
+   "LCOM4": 1,
+   "DIT": 1,
+   "NOC": 0,
+   "PIM": 2,
+   "NMO": 0,
+   "overridden": [],
+   "NMA": 3
+  },
+  {
+   "class": "CartSummary",
+   "file": "services/checkout.py",
+   "bases": [],
+   "WMC": 2,
+   "methods": 2,
+   "CBO": 3,
+   "coupled_to": [
+    "CartStore",
+    "Catalog",
+    "PricingPolicy"
+   ],
+   "RFC": 5,
+   "LCOM_HS": 0.0,
+   "LCOM4": 1,
+   "DIT": 1,
+   "NOC": 0,
+   "PIM": 1,
+   "NMO": 0,
+   "overridden": [],
+   "NMA": 2
+  },
+  {
+   "class": "CheckoutService",
+   "file": "services/checkout.py",
+   "bases": [],
+   "WMC": 3,
+   "methods": 2,
+   "CBO": 5,
+   "coupled_to": [
+    "CartStore",
+    "Catalog",
+    "DeliveryEstimator",
+    "OrderRepository",
+    "PricingPolicy"
+   ],
+   "RFC": 8,
+   "LCOM_HS": 0.0,
+   "LCOM4": 1,
+   "DIT": 1,
+   "NOC": 0,
+   "PIM": 1,
+   "NMO": 0,
+   "overridden": [],
+   "NMA": 2
+  },
+  {
+   "class": "CartStore",
+   "file": "services/contracts.py",
+   "bases": [
+    "Protocol"
+   ],
+   "WMC": 6,
+   "methods": 6,
+   "CBO": 1,
+   "coupled_to": [
+    "Protocol"
+   ],
+   "RFC": 6,
+   "LCOM_HS": 0.0,
+   "LCOM4": 6,
+   "DIT": 3,
+   "NOC": 0,
+   "PIM": 6,
+   "NMO": 0,
+   "overridden": [],
+   "NMA": 6
+  },
+  {
+   "class": "Catalog",
+   "file": "services/contracts.py",
+   "bases": [
+    "Protocol"
+   ],
+   "WMC": 2,
+   "methods": 2,
+   "CBO": 1,
+   "coupled_to": [
+    "Protocol"
+   ],
+   "RFC": 2,
+   "LCOM_HS": 0.0,
+   "LCOM4": 2,
+   "DIT": 3,
+   "NOC": 0,
+   "PIM": 2,
+   "NMO": 0,
+   "overridden": [],
+   "NMA": 2
+  },
+  {
+   "class": "PricingPolicy",
+   "file": "services/contracts.py",
+   "bases": [
+    "Protocol"
+   ],
+   "WMC": 1,
+   "methods": 1,
+   "CBO": 1,
+   "coupled_to": [
+    "Protocol"
+   ],
+   "RFC": 1,
+   "LCOM_HS": 0.0,
+   "LCOM4": 1,
+   "DIT": 3,
+   "NOC": 0,
+   "PIM": 1,
+   "NMO": 0,
+   "overridden": [],
+   "NMA": 1
+  },
+  {
+   "class": "DeliveryEstimator",
+   "file": "services/contracts.py",
+   "bases": [
+    "Protocol"
+   ],
+   "WMC": 1,
+   "methods": 1,
+   "CBO": 1,
+   "coupled_to": [
+    "Protocol"
+   ],
+   "RFC": 1,
+   "LCOM_HS": 0.0,
+   "LCOM4": 1,
+   "DIT": 3,
+   "NOC": 0,
+   "PIM": 1,
+   "NMO": 0,
+   "overridden": [],
+   "NMA": 1
+  },
+  {
+   "class": "OrderRepository",
+   "file": "services/contracts.py",
+   "bases": [
+    "Protocol"
+   ],
+   "WMC": 1,
+   "methods": 1,
+   "CBO": 1,
+   "coupled_to": [
+    "Protocol"
+   ],
+   "RFC": 1,
+   "LCOM_HS": 0.0,
+   "LCOM4": 1,
+   "DIT": 3,
+   "NOC": 0,
+   "PIM": 1,
+   "NMO": 0,
+   "overridden": [],
+   "NMA": 1
+  },
+  {
+   "class": "DeliveryWindowEstimator",
+   "file": "services/delivery_estimate.py",
+   "bases": [],
+   "WMC": 6,
+   "methods": 2,
+   "CBO": 2,
+   "coupled_to": [
+    "DeliveryEstimate",
+    "delivery_days"
+   ],
+   "RFC": 5,
+   "LCOM_HS": 0.0,
+   "LCOM4": 1,
+   "DIT": 1,
+   "NOC": 0,
+   "PIM": 2,
+   "NMO": 0,
+   "overridden": [],
+   "NMA": 2
+  },
+  {
+   "class": "SqlOrderRepository",
+   "file": "services/orders.py",
+   "bases": [],
+   "WMC": 3,
+   "methods": 2,
+   "CBO": 2,
+   "coupled_to": [
+    "PlacedOrder",
+    "datetime.now"
+   ],
+   "RFC": 8,
+   "LCOM_HS": 0.0,
+   "LCOM4": 1,
+   "DIT": 1,
+   "NOC": 0,
+   "PIM": 1,
+   "NMO": 0,
+   "overridden": [],
+   "NMA": 2
+  },
+  {
+   "class": "DeliveryPricing",
+   "file": "services/pricing.py",
+   "bases": [],
+   "WMC": 4,
+   "methods": 1,
+   "CBO": 1,
+   "coupled_to": [
+    "Totals"
+   ],
+   "RFC": 3,
+   "LCOM_HS": 0.0,
+   "LCOM4": 1,
+   "DIT": 1,
+   "NOC": 0,
+   "PIM": 1,
+   "NMO": 0,
+   "overridden": [],
+   "NMA": 1
+  },
+  {
+   "class": "DiscountPolicy",
+   "file": "services/promotions.py",
+   "bases": [
+    "Protocol"
+   ],
+   "WMC": 2,
+   "methods": 2,
+   "CBO": 1,
+   "coupled_to": [
+    "Protocol"
+   ],
+   "RFC": 2,
+   "LCOM_HS": 0.0,
+   "LCOM4": 2,
+   "DIT": 3,
+   "NOC": 0,
+   "PIM": 2,
+   "NMO": 0,
+   "overridden": [],
+   "NMA": 2
+  },
+  {
+   "class": "LoyaltyDiscount",
+   "file": "services/promotions.py",
+   "bases": [],
+   "WMC": 10,
+   "methods": 5,
+   "CBO": 0,
+   "coupled_to": [],
+   "RFC": 5,
+   "LCOM_HS": 0.67,
+   "LCOM4": 2,
+   "DIT": 1,
+   "NOC": 0,
+   "PIM": 4,
+   "NMO": 0,
+   "overridden": [],
+   "NMA": 5
+  },
+  {
+   "class": "HolidayDiscount",
+   "file": "services/promotions.py",
+   "bases": [],
+   "WMC": 5,
+   "methods": 3,
+   "CBO": 0,
+   "coupled_to": [],
+   "RFC": 3,
+   "LCOM_HS": 1.0,
+   "LCOM4": 2,
+   "DIT": 1,
+   "NOC": 0,
+   "PIM": 3,
+   "NMO": 0,
+   "overridden": [],
+   "NMA": 3
+  },
+  {
+   "class": "PriceCalculator",
+   "file": "services/promotions.py",
+   "bases": [],
+   "WMC": 21,
+   "methods": 14,
+   "CBO": 0,
+   "coupled_to": [],
+   "RFC": 18,
+   "LCOM_HS": 0.92,
+   "LCOM4": 1,
+   "DIT": 1,
+   "NOC": 0,
+   "PIM": 13,
+   "NMO": 0,
+   "overridden": [],
+   "NMA": 14
+  },
+  {
+   "class": "LoyaltyPriceCalculator",
+   "file": "services/promotions.py",
+   "bases": [],
+   "WMC": 8,
+   "methods": 8,
+   "CBO": 0,
+   "coupled_to": [],
+   "RFC": 14,
+   "LCOM_HS": 0.58,
+   "LCOM4": 1,
+   "DIT": 1,
+   "NOC": 0,
+   "PIM": 7,
+   "NMO": 0,
+   "overridden": [],
+   "NMA": 8
+  },
+  {
+   "class": "HolidayLoyaltyPriceCalculator",
+   "file": "services/promotions.py",
+   "bases": [],
+   "WMC": 11,
+   "methods": 7,
+   "CBO": 0,
+   "coupled_to": [],
+   "RFC": 12,
+   "LCOM_HS": 0.6,
+   "LCOM4": 1,
+   "DIT": 1,
+   "NOC": 0,
+   "PIM": 6,
+   "NMO": 0,
+   "overridden": [],
+   "NMA": 7
+  },
+  {
+   "class": "CartLine",
+   "file": "services/values.py",
+   "bases": [],
+   "WMC": 1,
+   "methods": 1,
+   "CBO": 1,
+   "coupled_to": [
+    "dataclass"
+   ],
+   "RFC": 2,
+   "LCOM_HS": 0.0,
+   "LCOM4": 1,
+   "DIT": 1,
+   "NOC": 0,
+   "PIM": 1,
+   "NMO": 0,
+   "overridden": [],
+   "NMA": 1
+  },
+  {
+   "class": "Totals",
+   "file": "services/values.py",
+   "bases": [],
+   "WMC": 2,
+   "methods": 2,
+   "CBO": 1,
+   "coupled_to": [
+    "dataclass"
+   ],
+   "RFC": 3,
+   "LCOM_HS": 1.0,
+   "LCOM4": 1,
+   "DIT": 1,
+   "NOC": 0,
+   "PIM": 2,
+   "NMO": 0,
+   "overridden": [],
+   "NMA": 2
+  },
+  {
+   "class": "DeliveryEstimate",
+   "file": "services/values.py",
+   "bases": [],
+   "WMC": 4,
+   "methods": 2,
+   "CBO": 1,
+   "coupled_to": [
+    "dataclass"
+   ],
+   "RFC": 3,
+   "LCOM_HS": 0.5,
+   "LCOM4": 1,
+   "DIT": 1,
+   "NOC": 0,
+   "PIM": 2,
+   "NMO": 0,
+   "overridden": [],
+   "NMA": 2
+  },
+  {
+   "class": "OrderRequest",
+   "file": "services/values.py",
+   "bases": [],
+   "WMC": 3,
+   "methods": 2,
+   "CBO": 1,
+   "coupled_to": [
+    "dataclass"
+   ],
+   "RFC": 4,
+   "LCOM_HS": 1.0,
+   "LCOM4": 2,
+   "DIT": 1,
+   "NOC": 0,
+   "PIM": 2,
+   "NMO": 0,
+   "overridden": [],
+   "NMA": 2
+  },
+  {
+   "class": "PlacedOrder",
+   "file": "services/values.py",
+   "bases": [],
+   "WMC": 0,
+   "methods": 0,
+   "CBO": 2,
+   "coupled_to": [
+    "DeliveryEstimate",
+    "dataclass"
+   ],
+   "RFC": 1,
+   "LCOM_HS": 0.0,
+   "LCOM4": 0,
+   "DIT": 1,
+   "NOC": 0,
+   "PIM": 0,
+   "NMO": 0,
+   "overridden": [],
+   "NMA": 0
+  }
+ ]
+}
