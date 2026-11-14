@@ -1,0 +1,117 @@
+[
+ {
+  "filename": "legal-api/migrations/versions/698885b80fc0_review_update.py",
+  "changes": 30,
+  "patch": "+\"\"\"review-update\n+    op.add_column('reviews', sa.Column('contact_email', sa.String(length=150), nullable=True))\n+    op.drop_column('reviews', 'completing_party')\n+    op.add_column('reviews', sa.Column('completing_party', sa.VARCHAR(length=150), nullable=True))\n+    op.drop_column('reviews', 'contact_email')"
+ },
+ {
+  "filename": "legal-api/requirements.txt",
+  "changes": 2,
+  "patch": ""
+ },
+ {
+  "filename": "legal-api/requirements/bcregistry-libraries.txt",
+  "changes": 2,
+  "patch": ""
+ },
+ {
+  "filename": "legal-api/src/legal_api/core/filing.py",
+  "changes": 14,
+  "patch": "+                Filing.Status.AWAITING_REVIEW,\n-                             Filing.Status.AWAITING_REVIEW,"
+ },
+ {
+  "filename": "legal-api/src/legal_api/core/meta/filing.py",
+  "changes": 2,
+  "patch": ""
+ },
+ {
+  "filename": "legal-api/src/legal_api/models/filing.py",
+  "changes": 30,
+  "patch": "-    def resubmit_filing_to_awaiting_review(self, submission_date):\n-        \"\"\"Resubmit filing to awaiting review.\"\"\"\n+    def submit_filing_to_awaiting_review(self, submission_date):\n+        \"\"\"Submit filing to awaiting review.\"\"\"\n-                error='Cannot resubmit this filing to awaiting review status.',\n+                error='Cannot submit this filing to awaiting review status.',"
+ },
+ {
+  "filename": "legal-api/src/legal_api/models/review.py",
+  "changes": 10,
+  "patch": "-        if review_filter.completing_party:\n-            query = query.filter(Review.completing_party.ilike(f'%{review_filter.completing_party}%'))\n+        if review_filter.contact_email:\n+            query = query.filter(Review.contact_email.ilike(f'%{review_filter.contact_email}%'))"
+ },
+ {
+  "filename": "legal-api/src/legal_api/resources/v2/admin/reviews.py",
+  "changes": 22,
+  "patch": ""
+ },
+ {
+  "filename": "legal-api/src/legal_api/resources/v2/business/business.py",
+  "changes": 2,
+  "patch": ""
+ },
+ {
+  "filename": "legal-api/src/legal_api/resources/v2/business/business_filings/business_documents.py",
+  "changes": 4,
+  "patch": "-            Filing.Status.AWAITING_REVIEW,"
+ },
+ {
+  "filename": "legal-api/src/legal_api/resources/v2/business/business_filings/business_filings.py",
+  "changes": 284,
+  "patch": "-        ListFilingResource.resubmit_filing_for_review(filing)\n+        ListFilingResource.submit_filing_for_review(filing)\n-    def resubmit_filing_for_review(filing: Filing):\n-        \"\"\"Resubmit filing for review.\"\"\"\n-        review = Review.get_review(filing.id)\n-        review.status = ReviewStatus.RESUBMITTED\n-        review.nr_number = filing.filing_json['filing'][filing.filing_type].get('nameRequest', {}).get('nrNumber')\n-        review.identifier = filing.filing_json['filing'][filing.filing_type].get(\n-        review.completing_party = ListFilingResource.get_completing_party(\n-        review.submission_date = datetime.datetime.utcnow()\n-        review_result = ReviewResult.get_last_review_result(filing.id)\n-        review_result.submission_date = review.submission_date\n-        review.review_results.append(review_result)\n+                filing_json['filing']['header']['certifiedBy'] = 'submission for review'\n+    def submit_filing_for_review(filing: Filing):\n+        \"\"\"Submit filing for review.\"\"\"\n+            review = Review()\n+            review.filing_id = filing.id\n+            review.status = ReviewStatus.AWAITING_REVIEW\n+            review.creation_date = submission_date\n+            review = Review.get_review(filing.id)\n+            review.status = ReviewStatus.RESUBMITTED\n+            review_result = ReviewResult.get_last_review_result(filing.id)\n+            review_result.submission_date = submission_date  # track when did user responded to this change request\n+            review.review_results.append(review_result)\n+        review.nr_number = filing_data.get('nameRequest', {}).get('nrNumber')\n+        review.identifier = filing_data.get('foreignJurisdiction', {}).get('identifier')\n+        review.contact_email = filing_data.get('contactPoint', {}).get('email')\n+        review.submission_date = submission_date\n-        filing.resubmit_filing_to_awaiting_review(review.submission_date)\n+        filing.submit_filing_to_awaiting_review(submission_date)\n+            {'email': {'filingId': filing.id, 'type': filing.filing_type, 'option': review.status}},"
+ },
+ {
+  "filename": "legal-api/src/legal_api/services/authz.py",
+  "changes": 21,
+  "patch": "+                                Filing.Status.AWAITING_REVIEW.value,"
+ },
+ {
+  "filename": "legal-api/src/legal_api/services/filings/validations/continuation_in.py",
+  "changes": 45,
+  "patch": ""
+ },
+ {
+  "filename": "legal-api/tests/unit/models/test_review.py",
+  "changes": 2,
+  "patch": "-    review.completing_party = 'completing party'\n+    review.contact_email = 'no_one@never.get'"
+ },
+ {
+  "filename": "legal-api/tests/unit/models/test_review_result.py",
+  "changes": 2,
+  "patch": "-    review.completing_party = 'completing party'\n+    review.contact_email = 'no_one@never.get'"
+ },
+ {
+  "filename": "legal-api/tests/unit/resources/v1/test_business_filings/test_filings.py",
+  "changes": 3,
+  "patch": ""
+ },
+ {
+  "filename": "legal-api/tests/unit/resources/v2/test_admin/test_reviews.py",
+  "changes": 12,
+  "patch": "-    review.completing_party = 'completing party'\n+    review.contact_email = 'no_one@never.get'"
+ },
+ {
+  "filename": "legal-api/tests/unit/resources/v2/test_business_filings/test_filing_documents.py",
+  "changes": 250,
+  "patch": "-    ('cben_ci_awaiting_review', 'Tb31yQIuBw', None, Business.LegalTypes.BCOMP_CONTINUE_IN.value,\n-     'continuationIn', CONTINUATION_IN, Filing.Status.AWAITING_REVIEW,"
+ },
+ {
+  "filename": "legal-api/tests/unit/resources/v2/test_business_filings/test_filings.py",
+  "changes": 144,
+  "patch": "-    # filing with awaiting review\n+    'filing_status, review_status',\n+        (Filing.Status.CHANGE_REQUESTED.value, ReviewStatus.CHANGE_REQUESTED),\n+        (Filing.Status.APPROVED.value, ReviewStatus.APPROVED),\n+def test_submit_or_resubmit_filing(session, client, jwt, mocker, requests_mock, filing_status, review_status):\n-    filing._status = Filing.Status.AWAITING_REVIEW.value\n-    review = Review()\n-    review.filing_id = filing.id\n-    review.nr_number = json_data['filing']['continuationIn']['nameRequest']['nrNumber']\n-    review.identifier = json_data['filing']['continuationIn']['foreignJurisdiction']['identifier']\n-    review.completing_party = 'completing party'\n-    review.status = ReviewStatus.AWAITING_REVIEW\n-    review.save()\n-    change_requested = ReviewResult()\n-    change_requested.review_id = review.id\n-    change_requested.status = ReviewStatus.CHANGE_REQUESTED\n-    change_requested.reviewer_id = staff.id\n-    change_requested.submission_date = review.submission_date\n-    review.review_results.append(change_requested)\n-    review.status = ReviewStatus.CHANGE_REQUESTED\n-    review.save()\n-    filing.set_review_decision(Filing.Status.CHANGE_REQUESTED.value)\n+        review = Review()\n+        review.filing_id = filing.id\n+        review.nr_number = json_data['filing']['continuationIn']['nameRequest']['nrNumber']\n+        review.identifier = json_data['filing']['continuationIn']['foreignJurisdiction']['identifier']\n+        review.contact_email = json_data['filing']['continuationIn']['contactPoint']['email']\n+        review.status = review_status\n+        review_result = ReviewResult()\n+        review_result.review_id = review.id\n+        review_result.comments = 'do it'\n+        review_result.status = review_status\n+        review_result.reviewer_id = staff.id\n+        review_result.submission_date = review.submission_date\n+        review.review_results.append(review_result)\n+        review.save()\n-    assert rv.json['filing']['header']['status'] == Filing.Status.AWAITING_REVIEW.value\n-    review = Review.get_review(rv.json['filing']['header']['filingId'])\n-    assert review.status == ReviewStatus.RESUBMITTED\n-    review_results = ReviewResult.get_review_results(review.id)\n-    assert len(review_results) == 1\n-    resubmitted = review_results[0]\n-    assert resubmitted.submission_date == review.submission_date\n+        assert rv.json['filing']['header']['status'] == Filing.Status.AWAITING_REVIEW.value\n+        review = Review.get_review(rv.json['filing']['header']['filingId'])\n+        review_results = ReviewResult.get_review_results(review.id)\n+            assert review.status == ReviewStatus.AWAITING_REVIEW\n+            assert len(review_results) == 0\n+            assert review.status == ReviewStatus.RESUBMITTED\n+            assert len(review_results) == 1\n+            assert review_results[0].submission_date == review.submission_date\n-    \"\"\"Assert that the a filing can be resubmitted when in awaiting review.\"\"\"\n+    'filing_status, review_status',\n+        (Filing.Status.AWAITING_REVIEW.value, ReviewStatus.AWAITING_REVIEW),\n+        (Filing.Status.REJECTED.value, ReviewStatus.REJECTED),\n+        (Filing.Status.AWAITING_REVIEW.value, ReviewStatus.RESUBMITTED),\n+def test_resubmit_filing_failed(session, client, jwt, filing_status, review_status):\n+    \"\"\"Assert that the a filing can be resubmitted when in awaiting review/rejected.\"\"\"\n-    filing._status = Filing.Status.AWAITING_REVIEW.value\n-    review.completing_party = 'completing party'\n-    review.status = ReviewStatus.AWAITING_REVIEW\n+    review.contact_email = json_data['filing']['continuationIn']['contactPoint']['email']\n+    review.status = review_status"
+ },
+ {
+  "filename": "legal-api/tests/unit/services/filings/validations/test_continuation_in.py",
+  "changes": 87,
+  "patch": ""
+ },
+ {
+  "filename": "legal-api/tests/unit/services/test_authorization.py",
+  "changes": 67,
+  "patch": ""
+ },
+ {
+  "filename": "queue_services/business-pay/src/business_pay/resources/pay_filer.py",
+  "changes": 56,
+  "patch": "-from business_pay.database import Filing, Review, ReviewStatus\n-        a. Create a staff review if required else execute b.\n-    staff_review_required = [\"continuationIn\"]\n-    if filing.filing_type in staff_review_required:\n-        # 4.a. Create staff review for the filing\n-        create_staff_review(filing)\n-def create_staff_review(filing: Filing):\n-    \"\"\"Create staff review for the filing.\"\"\"\n-    review = Review()\n-    review.filing_id = filing.id\n-    review.nr_number = filing_data.get(\"nameRequest\", {}).get(\"nrNumber\")\n-    review.identifier = filing_data.get(\n-    review.status = ReviewStatus.AWAITING_REVIEW\n-    review.completing_party = get_completing_party(filing_data[\"parties\"])\n-    review.submission_date = datetime.now(timezone.utc)\n-    review.creation_date = datetime.now(timezone.utc)\n-    review.save()\n-    filing.status = Filing.Status.AWAITING_REVIEW.value"
+ },
+ {
+  "filename": "queue_services/entity-bn/src/entity_bn/worker.py",
+  "changes": 1,
+  "patch": ""
+ }
+]

@@ -1,0 +1,32 @@
+[
+ {
+  "filename": "legal-api/src/legal_api/models/filing.py",
+  "changes": 14,
+  "patch": "+    def set_review_status(self, filing_status):\n+        \"\"\"Set review status.\"\"\""
+ },
+ {
+  "filename": "legal-api/src/legal_api/resources/v2/admin/reviews.py",
+  "changes": 74,
+  "patch": "-from legal_api.models import Filing, Review, UserRoles\n+from legal_api.models import Filing, Review, ReviewResult, ReviewStatus, User, UserRoles\n-@bp_admin.route('/reviews/<int:review_id>', methods=['GET', 'OPTIONS'])\n+@bp_admin.route('/reviews/<int:review_id>', methods=['POST'])\n+def save_review(review_id: int):\n+    \"\"\"Save review.\n+    Current review status -> Allowable review status\n+    AWAITING_REVIEW/RESUBMITTED -> CHANGE_REQUESTED/APPROVED/REJECTED\n+    if review := Review.find_by_id(review_id):\n+        if review.status not in [ReviewStatus.AWAITING_REVIEW, ReviewStatus.RESUBMITTED]:\n+        return jsonify({'message': 'Review not found.'}), HTTPStatus.NOT_FOUND\n+    if not ((status := ReviewStatus[status]) and\n+            (status in [ReviewStatus.CHANGE_REQUESTED,\n+                        ReviewStatus.APPROVED,\n+                        ReviewStatus.REJECTED])):\n+    filing = Filing.find_by_id(review.filing_id)\n+    review_result = ReviewResult()\n+    review_result.reviewer_id = user.id\n+    review_result.status = status\n+    review_result.comments = Sanitizer().sanitize(comment)\n+    review.review_results.append(review_result)\n+    review.status = status\n+    review.save()\n+        ReviewStatus.CHANGE_REQUESTED: Filing.Status.CHANGE_REQUESTED.value,\n+        ReviewStatus.APPROVED: Filing.Status.APPROVED.value,\n+        ReviewStatus.REJECTED: Filing.Status.REJECTED.value,\n+    filing.set_review_status(status_mapping[status])\n+    return jsonify({'message': 'Review saved.'}), HTTPStatus.CREATED\n+@bp_admin.route('/reviews/<int:review_id>', methods=['GET'])\n-    filing = Filing.find_by_id(review.filing_id)\n+    filing = Filing.find_by_id(review.filing_id)"
+ },
+ {
+  "filename": "legal-api/tests/unit/resources/v2/test_reviews.py",
+  "changes": 155,
+  "patch": "+from legal_api.models import Filing, RegistrationBootstrap, Review, ReviewStatus\n-from legal_api.models import Review, ReviewStatus\n+def create_reviews(no_of_reviews=1):\n+    reviews = []\n+    for index in range(no_of_reviews):\n+        review = create_review(f'T1z3a56{index}')\n+        reviews.append(review)\n+    return reviews\n-def create_test_review(no_of_reviews=1):\n+def create_review(identifier, status=ReviewStatus.AWAITING_REVIEW):\n-    reviews = []\n-    for _ in range(no_of_reviews):\n-        review = Review()\n-        review.filing_id = filing.id\n-        review.nr_number = filing_dict['filing']['continuationIn']['nameRequest']['nrNumber']\n-        review.identifier = filing_dict['filing']['continuationIn']['foreignJurisdiction']['identifier']\n-        review.completing_party = 'completing party'\n-        review.status = ReviewStatus.AWAITING_REVIEW\n-        review.save()\n-        reviews.append(review)\n-    return reviews\n+    review = Review()\n+    review.filing_id = filing.id\n+    review.nr_number = filing_dict['filing']['continuationIn']['nameRequest']['nrNumber']\n+    review.identifier = filing_dict['filing']['continuationIn']['foreignJurisdiction']['identifier']\n+    review.completing_party = 'completing party'\n+    review.status = status\n+    review.save()\n+    return review\n-    create_test_review(no_of_reviews)\n+    create_reviews(no_of_reviews)\n-    review = create_test_review(1)[0]\n+    review = create_review('T1z3a567')\n+    filing = Filing.find_by_id(review.filing_id)\n-    review = create_test_review(1)[0]\n+    review = create_review('T1z3a567')\n+    ReviewStatus.CHANGE_REQUESTED,\n+    ReviewStatus.APPROVED,\n+    ReviewStatus.REJECTED,\n+def test_save_review(app, session, client, jwt, mocker, status):\n+    \"\"\"Assert that a review can be saved.\"\"\"\n+    review = create_review('T1z3a567')\n+    mocker.patch('legal_api.resources.v2.admin.reviews.queue.publish_json', side_effect=publish_json)\n+    rv = client.post(f'/api/v2/admin/reviews/{review.id}',\n+    review = Review.find_by_id(review.id)\n+    assert review.status == status\n+    result = review.review_results.all()[0]\n+        ReviewStatus.CHANGE_REQUESTED: Filing.Status.CHANGE_REQUESTED.value,\n+        ReviewStatus.APPROVED: Filing.Status.APPROVED.value,\n+        ReviewStatus.REJECTED: Filing.Status.REJECTED.value,\n+    filing = Filing.find_by_id(review.filing_id)\n+    ({'status': ReviewStatus.APPROVED.name}, 'Status and Comment are required.', HTTPStatus.BAD_REQUEST),\n+    ({'status': ReviewStatus.RESUBMITTED.name, 'comment': 'all docs'}, 'Invalid Status.', HTTPStatus.BAD_REQUEST),\n+def test_save_review_validation(app, session, client, jwt, mocker, data, message, response_code):\n+    \"\"\"Assert that a save review can be validated.\"\"\"\n+    review = create_review('T1z3a567')\n+    mocker.patch('legal_api.resources.v2.admin.reviews.queue.publish_json', return_value=None)\n+    rv = client.post(f'/api/v2/admin/reviews/{review.id}',\n+    ReviewStatus.APPROVED,\n+    ReviewStatus.REJECTED,\n+    ReviewStatus.CHANGE_REQUESTED,\n+def test_save_review_not_allowed(app, session, client, jwt, mocker, status):\n+    \"\"\"Assert that a save review can be validated.\"\"\"\n+    review = create_review('T1z3a567', status)\n+    mocker.patch('legal_api.resources.v2.admin.reviews.queue.publish_json', return_value=None)\n+    rv = client.post(f'/api/v2/admin/reviews/{review.id}',\n+def test_save_no_review_validation(app, session, client, jwt):\n+    \"\"\"Assert that a save review can be validated.\"\"\"\n+    rv = client.post(f'/api/v2/admin/reviews/{857}',\n+    assert rv.json['message'] == 'Review not found.'"
+ },
+ {
+  "filename": "queue_services/business-pay/src/business_pay/database/filings.py",
+  "changes": 5,
+  "patch": ""
+ },
+ {
+  "filename": "queue_services/business-pay/src/business_pay/database/review.py",
+  "changes": 7,
+  "patch": ""
+ },
+ {
+  "filename": "queue_services/business-pay/src/business_pay/resources/pay_filer.py",
+  "changes": 2,
+  "patch": "+    review.submission_date = datetime.now(timezone.utc)\n+    review.creation_date = datetime.now(timezone.utc)"
+ }
+]

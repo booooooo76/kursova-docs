@@ -1,0 +1,57 @@
+[
+ {
+  "filename": "legal-api/src/legal_api/models/filing.py",
+  "changes": 42,
+  "patch": "-    def set_review_status(self, filing_status):\n-        \"\"\"Set review status.\"\"\"\n+    def set_review_decision(self, filing_status):\n+        \"\"\"Set review decision.\"\"\"\n+    def resubmit_filing_to_awaiting_review(self, submission_date):\n+        \"\"\"Resubmit filing to awaiting review.\"\"\"\n+                error='Cannot resubmit this filing to awaiting review status.',\n+        self._status = Filing.Status.AWAITING_REVIEW.value\n+    if (filing._status in [Filing.Status.AWAITING_REVIEW.value,\n+        return  # should not override status in the review process"
+ },
+ {
+  "filename": "legal-api/src/legal_api/resources/v2/admin/reviews.py",
+  "changes": 2,
+  "patch": "-    filing.set_review_status(status_mapping[status])\n+    filing.set_review_decision(status_mapping[status])"
+ },
+ {
+  "filename": "legal-api/src/legal_api/resources/v2/business/business_filings/business_filings.py",
+  "changes": 115,
+  "patch": "+    Review,\n+    ReviewStatus,\n+        ListFilingResource.resubmit_filing_for_review(filing)\n+    def resubmit_filing_for_review(filing: Filing):\n+        \"\"\"Resubmit filing for review.\"\"\"\n+        review = Review.get_review(filing.id)\n+        review.status = ReviewStatus.RESUBMITTED\n+        review.nr_number = filing.filing_json['filing'][filing.filing_type].get('nameRequest', {}).get('nrNumber')\n+        review.identifier = filing.filing_json['filing'][filing.filing_type].get(\n+        review.completing_party = ListFilingResource.get_completing_party(\n+        review.submission_date = datetime.datetime.utcnow()\n+        review_result = ReviewResult.get_last_review_result(filing.id)\n+        review_result.submission_date = review.submission_date\n+        review.review_results.append(review_result)\n+        review.save()\n+        filing.resubmit_filing_to_awaiting_review(review.submission_date)"
+ },
+ {
+  "filename": "legal-api/src/legal_api/services/authz.py",
+  "changes": 9,
+  "patch": ""
+ },
+ {
+  "filename": "legal-api/tests/unit/resources/v1/test_business_filings/test_filings.py",
+  "changes": 8,
+  "patch": ""
+ },
+ {
+  "filename": "legal-api/tests/unit/resources/v2/test_admin/test_administrative_bn.py",
+  "changes": 0,
+  "patch": ""
+ },
+ {
+  "filename": "legal-api/tests/unit/resources/v2/test_admin/test_configuration.py",
+  "changes": 0,
+  "patch": ""
+ },
+ {
+  "filename": "legal-api/tests/unit/resources/v2/test_admin/test_dissolution.py",
+  "changes": 0,
+  "patch": ""
+ },
+ {
+  "filename": "legal-api/tests/unit/resources/v2/test_admin/test_reviews.py",
+  "changes": 0,
+  "patch": ""
+ },
+ {
+  "filename": "legal-api/tests/unit/resources/v2/test_business_filings/test_filings.py",
+  "changes": 145,
+  "patch": "+    Review,\n+    ReviewResult,\n+    ReviewStatus,\n+    # filing with awaiting review\n+    filing._status = Filing.Status.AWAITING_REVIEW.value\n+    review = Review()\n+    review.filing_id = filing.id\n+    review.nr_number = json_data['filing']['continuationIn']['nameRequest']['nrNumber']\n+    review.identifier = json_data['filing']['continuationIn']['foreignJurisdiction']['identifier']\n+    review.completing_party = 'completing party'\n+    review.status = ReviewStatus.AWAITING_REVIEW\n+    review.save()\n+    change_requested = ReviewResult()\n+    change_requested.review_id = review.id\n+    change_requested.status = ReviewStatus.CHANGE_REQUESTED\n+    change_requested.reviewer_id = staff.id\n+    change_requested.submission_date = review.submission_date\n+    review.review_results.append(change_requested)\n+    review.status = ReviewStatus.CHANGE_REQUESTED\n+    review.save()\n+    filing.set_review_decision(Filing.Status.CHANGE_REQUESTED.value)\n+    assert rv.json['filing']['header']['status'] == Filing.Status.AWAITING_REVIEW.value\n+    review = Review.get_review(rv.json['filing']['header']['filingId'])\n+    assert review.status == ReviewStatus.RESUBMITTED\n+    review_results = ReviewResult.get_review_results(review.id)\n+    assert len(review_results) == 1\n+    resubmitted = review_results[0]\n+    assert resubmitted.submission_date == review.submission_date\n+    \"\"\"Assert that the a filing can be resubmitted when in awaiting review.\"\"\"\n+    # filing with awaiting review\n+    filing._status = Filing.Status.AWAITING_REVIEW.value\n+    review = Review()\n+    review.filing_id = filing.id\n+    review.nr_number = json_data['filing']['continuationIn']['nameRequest']['nrNumber']\n+    review.identifier = json_data['filing']['continuationIn']['foreignJurisdiction']['identifier']\n+    review.completing_party = 'completing party'\n+    review.status = ReviewStatus.AWAITING_REVIEW\n+    review.save()"
+ },
+ {
+  "filename": "legal-api/tests/unit/services/test_authorization.py",
+  "changes": 50,
+  "patch": "+    (Filing.Status.AWAITING_REVIEW.value, False),"
+ }
+]

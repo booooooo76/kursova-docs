@@ -1,0 +1,87 @@
+[
+ {
+  "filename": "legal-api/src/legal_api/models/business.py",
+  "changes": 4,
+  "patch": ""
+ },
+ {
+  "filename": "legal-api/tests/unit/models/test_business.py",
+  "changes": 2,
+  "patch": ""
+ },
+ {
+  "filename": "legal-api/tests/unit/resources/v2/test_business_filings/test_filings.py",
+  "changes": 20,
+  "patch": ""
+ },
+ {
+  "filename": "python/common/business-registry-model/.devcontainer/Dockerfile",
+  "changes": 5,
+  "patch": ""
+ },
+ {
+  "filename": "python/common/business-registry-model/poetry.lock",
+  "changes": 149,
+  "patch": ""
+ },
+ {
+  "filename": "python/common/business-registry-model/pyproject.toml",
+  "changes": 4,
+  "patch": ""
+ },
+ {
+  "filename": "python/common/business-registry-model/src/business_model/exceptions/error_messages/utils.py",
+  "changes": 2,
+  "patch": ""
+ },
+ {
+  "filename": "python/common/business-registry-model/src/business_model/models/business.py",
+  "changes": 12,
+  "patch": ""
+ },
+ {
+  "filename": "python/common/business-registry-model/src/business_model/models/filing.py",
+  "changes": 25,
+  "patch": ""
+ },
+ {
+  "filename": "python/common/business-registry-model/src/business_model/utils/datetime.py",
+  "changes": 3,
+  "patch": ""
+ },
+ {
+  "filename": "python/common/business-registry-model/src/business_model_migrations/versions/20250911_134323_9883916ba68f_add_officer_change_filing_permission.py",
+  "changes": 4,
+  "patch": ""
+ },
+ {
+  "filename": "python/common/business-registry-model/src/business_model_migrations/versions/8f3a9c12de4b_create_authorized_role_permissions_table.py",
+  "changes": 4,
+  "patch": ""
+ },
+ {
+  "filename": "python/common/business-registry-model/tests/__init__.py",
+  "changes": 4,
+  "patch": ""
+ },
+ {
+  "filename": "python/common/business-registry-model/tests/models/test_business.py",
+  "changes": 58,
+  "patch": ""
+ },
+ {
+  "filename": "python/common/business-registry-model/tests/models/test_comments.py",
+  "changes": 2,
+  "patch": ""
+ },
+ {
+  "filename": "python/common/business-registry-model/tests/models/test_filing.py",
+  "changes": 4,
+  "patch": ""
+ },
+ {
+  "filename": "python/common/business-registry-model/tests/models/test_review_result.py",
+  "changes": 4,
+  "patch": "-    review.submission_date = datetime.now(timezone.utc)\n+    review.submission_date = datetime.now(UTC)"
+ }
+]

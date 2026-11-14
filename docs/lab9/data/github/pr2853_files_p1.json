@@ -1,0 +1,12 @@
+[
+ {
+  "filename": "legal-api/src/legal_api/resources/v2/admin/reviews.py",
+  "changes": 24,
+  "patch": "+        if not ((status := ReviewStatus[status]) and\n+                (status in [ReviewStatus.CHANGE_REQUESTED,\n+                            ReviewStatus.APPROVED,\n+                            ReviewStatus.REJECTED])):\n-    if not ((status := ReviewStatus[status]) and\n-            (status in [ReviewStatus.CHANGE_REQUESTED,\n-                        ReviewStatus.APPROVED,\n-                        ReviewStatus.REJECTED])):\n+    if (status in [ReviewStatus.CHANGE_REQUESTED, ReviewStatus.REJECTED]\n-    review_result.comments = Sanitizer().sanitize(comment)\n+    review_result.comments = Sanitizer().sanitize(comment) if comment else None"
+ },
+ {
+  "filename": "legal-api/tests/unit/resources/v2/test_reviews.py",
+  "changes": 18,
+  "patch": "-    ReviewStatus.CHANGE_REQUESTED,\n-    ReviewStatus.APPROVED,\n-    ReviewStatus.REJECTED,\n+    (ReviewStatus.CHANGE_REQUESTED, 'Upload all documents'),\n+    (ReviewStatus.APPROVED, None),\n+    (ReviewStatus.REJECTED, 'Upload all documents'),\n-def test_save_review(app, session, client, jwt, mocker, status):\n+def test_save_review(app, session, client, jwt, mocker, status, comment):\n-    ({'status': ReviewStatus.APPROVED.name}, 'Status and Comment are required.', HTTPStatus.BAD_REQUEST),\n+    ({'status': ReviewStatus.CHANGE_REQUESTED.name}, 'Comment is required.', HTTPStatus.BAD_REQUEST),\n+    ({'status': ReviewStatus.REJECTED.name}, 'Comment is required.', HTTPStatus.BAD_REQUEST),"
+ }
+]

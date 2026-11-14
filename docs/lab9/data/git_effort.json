@@ -1,0 +1,301 @@
+[
+ {
+  "pr": 2797,
+  "authors": [
+   "vysakh-menon-aot"
+  ],
+  "commits": 2,
+  "hours": 2.357222222222222,
+  "module_lines": 361,
+  "total_lines": 367,
+  "share": 0.9836512261580381,
+  "module_hours": 2.318684529215864,
+  "date": "2024-07-02"
+ },
+ {
+  "pr": 2822,
+  "authors": [
+   "PaulGreywal"
+  ],
+  "commits": 10,
+  "hours": 9.209166666666668,
+  "module_lines": 70,
+  "total_lines": 70,
+  "share": 1.0,
+  "module_hours": 9.209166666666668,
+  "date": "2024-07-12"
+ },
+ {
+  "pr": 2830,
+  "authors": [
+   "ketaki-deodhar"
+  ],
+  "commits": 6,
+  "hours": 9.917222222222222,
+  "module_lines": 120,
+  "total_lines": 120,
+  "share": 1.0,
+  "module_hours": 9.917222222222222,
+  "date": "2024-07-16"
+ },
+ {
+  "pr": 2838,
+  "authors": [
+   "PaulGreywal"
+  ],
+  "commits": 1,
+  "hours": 2.0,
+  "module_lines": 43,
+  "total_lines": 43,
+  "share": 1.0,
+  "module_hours": 2.0,
+  "date": "2024-07-16"
+ },
+ {
+  "pr": 2842,
+  "authors": [
+   "vysakh-menon-aot"
+  ],
+  "commits": 1,
+  "hours": 2.0,
+  "module_lines": 57,
+  "total_lines": 57,
+  "share": 1.0,
+  "module_hours": 2.0,
+  "date": "2024-07-17"
+ },
+ {
+  "pr": 2851,
+  "authors": [
+   "vysakh-menon-aot"
+  ],
+  "commits": 3,
+  "hours": 4.6375,
+  "module_lines": 233,
+  "total_lines": 257,
+  "share": 0.9066147859922179,
+  "module_hours": 4.204426070038911,
+  "date": "2024-07-23"
+ },
+ {
+  "pr": 2853,
+  "authors": [
+   "vysakh-menon-aot"
+  ],
+  "commits": 1,
+  "hours": 2.0,
+  "module_lines": 42,
+  "total_lines": 42,
+  "share": 1.0,
+  "module_hours": 2.0,
+  "date": "2024-07-23"
+ },
+ {
+  "pr": 2854,
+  "authors": [
+   "vysakh-menon-aot"
+  ],
+  "commits": 2,
+  "hours": 2.1430555555555557,
+  "module_lines": 19,
+  "total_lines": 40,
+  "share": 0.475,
+  "module_hours": 1.017951388888889,
+  "date": "2024-07-24"
+ },
+ {
+  "pr": 2875,
+  "authors": [
+   "vysakh-menon-aot"
+  ],
+  "commits": 4,
+  "hours": 2.7794444444444446,
+  "module_lines": 67,
+  "total_lines": 371,
+  "share": 0.18059299191374664,
+  "module_hours": 0.5019481880802636,
+  "date": "2024-07-31"
+ },
+ {
+  "pr": 2893,
+  "authors": [
+   "vysakh-menon-aot"
+  ],
+  "commits": 2,
+  "hours": 2.421111111111111,
+  "module_lines": 3,
+  "total_lines": 227,
+  "share": 0.013215859030837005,
+  "module_hours": 0.031997063142437596,
+  "date": "2024-08-06"
+ },
+ {
+  "pr": 2938,
+  "authors": [
+   "ketaki-deodhar"
+  ],
+  "commits": 15,
+  "hours": 15.134444444444448,
+  "module_lines": 128,
+  "total_lines": 160,
+  "share": 0.8,
+  "module_hours": 12.107555555555559,
+  "date": "2024-08-23"
+ },
+ {
+  "pr": 2941,
+  "authors": [
+   "ketaki-deodhar"
+  ],
+  "commits": 19,
+  "hours": 18.17027777777778,
+  "module_lines": 3,
+  "total_lines": 3,
+  "share": 1.0,
+  "module_hours": 18.17027777777778,
+  "date": "2024-08-23"
+ },
+ {
+  "pr": 2949,
+  "authors": [
+   "ketaki-deodhar"
+  ],
+  "commits": 2,
+  "hours": 4.0,
+  "module_lines": 125,
+  "total_lines": 125,
+  "share": 1.0,
+  "module_hours": 4.0,
+  "date": "2024-08-28"
+ },
+ {
+  "pr": 2952,
+  "authors": [
+   "ketaki-deodhar"
+  ],
+  "commits": 1,
+  "hours": 2.0,
+  "module_lines": 6,
+  "total_lines": 6,
+  "share": 1.0,
+  "module_hours": 2.0,
+  "date": "2024-08-29"
+ },
+ {
+  "pr": 2953,
+  "authors": [
+   "ketaki-deodhar"
+  ],
+  "commits": 3,
+  "hours": 4.719722222222222,
+  "module_lines": 2,
+  "total_lines": 2,
+  "share": 1.0,
+  "module_hours": 4.719722222222222,
+  "date": "2024-08-29"
+ },
+ {
+  "pr": 2956,
+  "authors": [
+   "ketaki-deodhar"
+  ],
+  "commits": 6,
+  "hours": 8.773611111111112,
+  "module_lines": 35,
+  "total_lines": 35,
+  "share": 1.0,
+  "module_hours": 8.773611111111112,
+  "date": "2024-08-30"
+ },
+ {
+  "pr": 3026,
+  "authors": [
+   "vysakh-menon-aot"
+  ],
+  "commits": 9,
+  "hours": 9.789166666666667,
+  "module_lines": 203,
+  "total_lines": 1092,
+  "share": 0.1858974358974359,
+  "module_hours": 1.819780982905983,
+  "date": "2024-10-15"
+ },
+ {
+  "pr": 3029,
+  "authors": [
+   "ketaki-deodhar"
+  ],
+  "commits": 3,
+  "hours": 4.180833333333333,
+  "module_lines": 49,
+  "total_lines": 53,
+  "share": 0.9245283018867925,
+  "module_hours": 3.8652987421383647,
+  "date": "2024-10-18"
+ },
+ {
+  "pr": 3070,
+  "authors": [
+   "vysakh-menon-aot"
+  ],
+  "commits": 5,
+  "hours": 4.982222222222222,
+  "module_lines": 4,
+  "total_lines": 116,
+  "share": 0.034482758620689655,
+  "module_hours": 0.1718007662835249,
+  "date": "2024-11-08"
+ },
+ {
+  "pr": 3488,
+  "authors": [
+   "hfekete"
+  ],
+  "commits": 14,
+  "hours": 19.524166666666666,
+  "module_lines": 38,
+  "total_lines": 536,
+  "share": 0.0708955223880597,
+  "module_hours": 1.3841759950248755,
+  "date": "2025-05-21"
+ },
+ {
+  "pr": 3617,
+  "authors": [
+   "Rajandeep98"
+  ],
+  "commits": 1,
+  "hours": 2.0,
+  "module_lines": 2,
+  "total_lines": 2,
+  "share": 1.0,
+  "module_hours": 2.0,
+  "date": "2025-06-30"
+ },
+ {
+  "pr": 3623,
+  "authors": [
+   "vysakh-menon-aot"
+  ],
+  "commits": 2,
+  "hours": 2.7644444444444445,
+  "module_lines": 2,
+  "total_lines": 9,
+  "share": 0.2222222222222222,
+  "module_hours": 0.614320987654321,
+  "date": "2025-07-03"
+ },
+ {
+  "pr": 4020,
+  "authors": [
+   "vysakh-menon-aot"
+  ],
+  "commits": 6,
+  "hours": 8.131944444444445,
+  "module_lines": 4,
+  "total_lines": 306,
+  "share": 0.013071895424836602,
+  "module_hours": 0.10629992737835875,
+  "date": "2026-01-23"
+ }
+]

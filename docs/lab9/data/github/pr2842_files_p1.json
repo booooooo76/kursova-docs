@@ -1,0 +1,17 @@
+[
+ {
+  "filename": "legal-api/src/legal_api/models/review_result.py",
+  "changes": 2,
+  "patch": ""
+ },
+ {
+  "filename": "legal-api/src/legal_api/resources/v2/admin/reviews.py",
+  "changes": 2,
+  "patch": "-    return reviews, HTTPStatus.OK\n+    return jsonify(reviews), HTTPStatus.OK"
+ },
+ {
+  "filename": "legal-api/tests/unit/resources/v2/test_reviews.py",
+  "changes": 53,
+  "patch": "-def basic_test_review():\n+def create_test_review(no_of_reviews=1):\n-    review = Review()\n-    review.filing_id = filing.id\n-    review.nr_number = filing_dict['filing']['continuationIn']['nameRequest']['nrNumber']\n-    review.identifier = filing_dict['filing']['continuationIn']['foreignJurisdiction']['identifier']\n-    review.completing_party = 'completing party'\n-    review.status = ReviewStatus.AWAITING_REVIEW\n+    reviews = []\n+    for _ in range(no_of_reviews):\n-    return review\n+        review = Review()\n+        review.filing_id = filing.id\n+        review.nr_number = filing_dict['filing']['continuationIn']['nameRequest']['nrNumber']\n+        review.identifier = filing_dict['filing']['continuationIn']['foreignJurisdiction']['identifier']\n+        review.completing_party = 'completing party'\n+        review.status = ReviewStatus.AWAITING_REVIEW\n+        review.save()\n+        reviews.append(review)\n+    return reviews\n-    review_one = basic_test_review()\n-    review_one.save()\n-    review_two = basic_test_review()\n-    review_two.save()\n-    review_three = basic_test_review()\n-    review_three.save()\n+    no_of_reviews = 11\n+    create_test_review(no_of_reviews)\n-    assert 'reviews' in rv.json\n+    assert len(rv.json.get('reviews')) == 10\n+    assert no_of_reviews == rv.json.get('total')\n-    review = basic_test_review()\n-    review.save()\n+    review = create_test_review(1)[0]\n-    review = basic_test_review()\n-    review.save()\n+    review = create_test_review(1)[0]"
+ }
+]

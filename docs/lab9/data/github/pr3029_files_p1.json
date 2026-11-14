@@ -1,0 +1,17 @@
+[
+ {
+  "filename": "docs/business.yaml",
+  "changes": 5,
+  "patch": "+      description: Represents the filing for a foreign corporation applying to “continue in” to BC. To do so, user must first submit a Continuation Authorization and have it approved by BC Registries before filing a Continuation Application. Authorization is typically in the form of a letter. The authorization must be reviewed and approved prior to complete filing. Once the authorization is approved by registries staff, user can continue with submitting continuation In filing."
+ },
+ {
+  "filename": "legal-api/src/legal_api/models/review.py",
+  "changes": 44,
+  "patch": "-        query = db.session.query(Review, Filing.effective_date). \\\n-            join(Filing, Filing.id == Review.filing_id)\n+        query = db.session.query(Review)\n-        if review_filter.start_effective_date:\n-                                              (review_filter.start_effective_date), datetime.min.time())\n-        if review_filter.end_effective_date:\n-                                            (review_filter.end_effective_date), datetime.max.time())\n-                else Review.__table__.columns[mapped_sort_by_column]\n+            column = Review.__table__.columns[mapped_sort_by_column]\n-        result = Review.build_reviews(results)\n+        reviews_list = [\n+            review.json for review in results\n-            'reviews': result,\n+            'reviews': reviews_list,\n-    def build_reviews(cls, results):\n-        \"\"\"Return reviews with appended future effective date.\"\"\"\n-        for review, effective_date in results:\n-                **review.json,"
+ },
+ {
+  "filename": "legal-api/src/legal_api/resources/v2/admin/reviews.py",
+  "changes": 4,
+  "patch": ""
+ }
+]

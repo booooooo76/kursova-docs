@@ -1,0 +1,12 @@
+[
+ {
+  "filename": "legal-api/src/legal_api/models/review.py",
+  "changes": 31,
+  "patch": "-            start_date_utc = LegislationDatetime.as_utc_timezone_from_legislation_date_str(review_filter.start_date)\n-            query = query.filter(Review.submission_date >= start_of_day)\n+                                          (review_filter.start_date), datetime.min.time())\n+            query = query.filter(Review.submission_date >= start_date)\n-            end_date_utc = LegislationDatetime.as_utc_timezone_from_legislation_date_str(review_filter.end_date)\n-            query = query.filter(Review.submission_date <= end_of_day)\n+                                        (review_filter.end_date), datetime.max.time())\n+            query = query.filter(Review.submission_date <= end_date)\n+        if review_filter.start_effective_date:\n+                                              (review_filter.start_effective_date), datetime.min.time())\n+        if review_filter.end_effective_date:\n+                                            (review_filter.end_effective_date), datetime.max.time())\n-            column = Review.__table__.columns[mapped_sort_by_column]\n-            desc_sort_order = review_filter.submitted_sort_order\n+                else Review.__table__.columns[mapped_sort_by_column]\n+            query = query.order_by(column.desc() if review_filter.submitted_sort_order == 'true' else column.asc())"
+ },
+ {
+  "filename": "legal-api/src/legal_api/resources/v2/admin/reviews.py",
+  "changes": 4,
+  "patch": ""
+ }
+]

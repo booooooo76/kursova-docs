@@ -1,0 +1,22 @@
+[
+ {
+  "filename": "legal-api/src/legal_api/models/review.py",
+  "changes": 15,
+  "patch": "+        \"\"\"Return Review as a JSON object.\"\"\"\n+            'results': [result.json for result in self.review_results]"
+ },
+ {
+  "filename": "legal-api/src/legal_api/models/review_result.py",
+  "changes": 11,
+  "patch": "+        \"\"\"Return ReviewResult as a JSON object.\"\"\"\n+            'reviewer': self.reviewer.display_name,"
+ },
+ {
+  "filename": "legal-api/src/legal_api/resources/v2/admin/__init__.py",
+  "changes": 1,
+  "patch": "+from .reviews import get_review"
+ },
+ {
+  "filename": "legal-api/src/legal_api/resources/v2/admin/reviews.py",
+  "changes": 43,
+  "patch": "+\"\"\"API endpoints for retrieving review data.\"\"\"\n+from legal_api.models import Filing, Review, UserRoles\n+@bp_admin.route('/reviews/<int:review_id>', methods=['GET', 'OPTIONS'])\n+def get_review(review_id: int):\n+    \"\"\"Return specific review.\"\"\"\n+    review = Review.find_by_id(review_id)\n+    if not review:\n+        return jsonify({'message': 'Review not found.'}), HTTPStatus.NOT_FOUND\n+    result = review.json\n+    filing = Filing.find_by_id(review.filing_id)"
+ }
+]

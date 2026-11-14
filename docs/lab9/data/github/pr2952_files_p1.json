@@ -1,0 +1,7 @@
+[
+ {
+  "filename": "legal-api/src/legal_api/models/review.py",
+  "changes": 6,
+  "patch": "-            query = query.filter(Review.submission_date >= start_date_utc)\n+            query = query.filter(Review.submission_date >= start_of_day)\n-            query = query.filter(Review.submission_date <= end_date_utc)\n+            query = query.filter(Review.submission_date <= end_of_day)"
+ }
+]

@@ -1,0 +1,32 @@
+[
+ {
+  "filename": "legal-api/src/legal_api/models/filing.py",
+  "changes": 9,
+  "patch": ""
+ },
+ {
+  "filename": "legal-api/src/legal_api/resources/v2/admin/reviews.py",
+  "changes": 3,
+  "patch": "-    review_result.comments = Sanitizer().sanitize(comment) if comment else None\n+    review_result.comments = comment"
+ },
+ {
+  "filename": "legal-api/src/legal_api/resources/v2/business/colin_sync.py",
+  "changes": 106,
+  "patch": ""
+ },
+ {
+  "filename": "legal-api/src/legal_api/resources/v2/internal_services.py",
+  "changes": 9,
+  "patch": ""
+ },
+ {
+  "filename": "legal-api/tests/unit/resources/v2/test_colin_sync.py",
+  "changes": 45,
+  "patch": ""
+ },
+ {
+  "filename": "legal-api/tests/unit/resources/v2/test_internal_services.py",
+  "changes": 55,
+  "patch": ""
+ }
+]

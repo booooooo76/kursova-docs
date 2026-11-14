@@ -1,0 +1,7 @@
+[
+ {
+  "filename": "legal-api/src/legal_api/models/review.py",
+  "changes": 2,
+  "patch": "-            query = query.filter(Review.identifier.ilike(f'%{review_filter.completing_party}%'))\n+            query = query.filter(Review.completing_party.ilike(f'%{review_filter.completing_party}%'))"
+ }
+]

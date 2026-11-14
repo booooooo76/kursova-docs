@@ -1,0 +1,17 @@
+[
+ {
+  "filename": "legal-api/src/legal_api/models/review.py",
+  "changes": 72,
+  "patch": "-    def get_paginated_reviews(cls, page, limit):\n-        \"\"\"Return paginated reviews.\"\"\"\n+    def get_paginated_reviews(cls, review_filter, mapped_sort_by_column):\n+        \"\"\"Return filtered, sorted and paginated reviews.\"\"\"\n-            join(Filing, Filing.id == Review.filing_id). \\\n-            order_by(Review.creation_date.asc())\n+            join(Filing, Filing.id == Review.filing_id)\n+        if review_filter.start_date:\n+            start_date_utc = LegislationDatetime.as_utc_timezone_from_legislation_date_str(review_filter.start_date)\n+            query = query.filter(Review.submission_date >= start_date_utc)\n+        if review_filter.end_date:\n+            end_date_utc = LegislationDatetime.as_utc_timezone_from_legislation_date_str(review_filter.end_date)\n+            query = query.filter(Review.submission_date <= end_date_utc)\n+        if review_filter.nr_number:\n+            query = query.filter(Review.nr_number.ilike(f'%{review_filter.nr_number}%'))\n+        if review_filter.identifier:\n+            query = query.filter(Review.identifier.ilike(f'%{review_filter.identifier}%'))\n+        if review_filter.completing_party:\n+            query = query.filter(Review.identifier.ilike(f'%{review_filter.completing_party}%'))\n+        if review_filter.status:\n+            query = query.filter(Review.status.in_(review_filter.status))\n+        if review_filter.submitted_sort_by:\n+            column = Review.__table__.columns[mapped_sort_by_column]\n+            desc_sort_order = review_filter.submitted_sort_order\n+            query = query.order_by(Review.creation_date.asc())\n+        pagination = query.paginate(per_page=review_filter.limit, page=review_filter.page)\n+        result = Review.build_reviews(results)\n+        reviews = {\n+            'reviews': result,\n+            'page': review_filter.page,\n+            'limit': review_filter.limit,\n+        return reviews\n+    def build_reviews(cls, results):\n+        \"\"\"Return reviews with appended future effective date.\"\"\"\n-        reviews = {\n-            'reviews': result,\n-        return reviews\n+    class ReviewFilter:\n+        \"\"\"Used for filtering and sorting reviews.\"\"\""
+ },
+ {
+  "filename": "legal-api/src/legal_api/resources/v2/admin/reviews.py",
+  "changes": 34,
+  "patch": "-    result = Review.get_paginated_reviews(page, limit)\n+    review_filter = Review.ReviewFilter(\n+    result = Review.get_paginated_reviews(review_filter, get_mapped_column(review_filter.submitted_sort_by))"
+ },
+ {
+  "filename": "legal-api/tests/unit/resources/v2/test_admin/test_reviews.py",
+  "changes": 19,
+  "patch": "+def test_filterd_get_reviews(app, session, client, jwt, mocker):\n+    \"\"\"Assert reviews are filtered and sorted by given params.\"\"\"\n+    no_of_reviews = 6\n+    create_reviews(no_of_reviews)\n+    nrs_response = create_nr_data(no_of_reviews)\n+    rv = client.get(f'/api/v2/admin/reviews?sortBy=nrNumber&sortDesc=true&page=1&limit=5',\n+    assert len(rv.json.get('reviews')) == 5\n+    assert no_of_reviews == rv.json.get('total')\n+    assert rv.json.get('reviews')[0]['nrNumber'] == 'NR 8798955'\n+    assert rv.json.get('reviews')[4]['nrNumber'] == 'NR 8798951'"
+ }
+]

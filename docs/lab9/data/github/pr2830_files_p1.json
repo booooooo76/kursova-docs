@@ -1,0 +1,17 @@
+[
+ {
+  "filename": "legal-api/src/legal_api/models/review.py",
+  "changes": 21,
+  "patch": "+    def get_paginated_reviews(cls, page, limit):\n+        \"\"\"Return paginated reviews.\"\"\"\n+        query = db.session.query(Review).order_by(Review.creation_date.asc())\n+        reviews_list = [\n+            review.json for review in results\n+        reviews = {\n+            'reviews': reviews_list,\n+        return reviews"
+ },
+ {
+  "filename": "legal-api/src/legal_api/resources/v2/admin/reviews.py",
+  "changes": 14,
+  "patch": "+@bp_admin.route('/reviews', methods=['GET'])\n+def get_reviews():\n+    \"\"\"Return a list of reviews.\"\"\"\n+    reviews = Review.get_paginated_reviews(page, limit)\n+    return reviews, HTTPStatus.OK"
+ },
+ {
+  "filename": "legal-api/tests/unit/resources/v2/test_reviews.py",
+  "changes": 85,
+  "patch": "+\"\"\"Tests to assure the reviews end-point.\n+Test-Suite to ensure that admin/reviews endpoints are working as expected.\n+from legal_api.models import Review, ReviewStatus\n+def basic_test_review():\n+    review = Review()\n+    review.filing_id = filing.id\n+    review.nr_number = filing_dict['filing']['continuationIn']['nameRequest']['nrNumber']\n+    review.identifier = filing_dict['filing']['continuationIn']['foreignJurisdiction']['identifier']\n+    review.completing_party = 'completing party'\n+    review.status = ReviewStatus.AWAITING_REVIEW\n+    return review\n+def test_get_reviews_with_invalid_user(app, session, client, jwt):\n+    rv = client.get(f'/api/v2/admin/reviews',\n+def test_get_reviews_with_valid_user(app, session, client, jwt):\n+    \"\"\"Assert review object returned for STAFF role.\"\"\"\n+    review_one = basic_test_review()\n+    review_one.save()\n+    review_two = basic_test_review()\n+    review_two.save()\n+    review_three = basic_test_review()\n+    review_three.save()\n+    rv = client.get(f'/api/v2/admin/reviews',\n+    assert 'reviews' in rv.json"
+ }
+]

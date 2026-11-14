@@ -1,0 +1,37 @@
+[
+ {
+  "filename": "legal-api/migrations/versions/ec9652171563_review.py",
+  "changes": 56,
+  "patch": "+\"\"\"review\n+    op.create_table('reviews',\n+                    sa.Column('status', sa.Enum('AWAITING_REVIEW', 'CHANGE_REQUESTED', 'RESUBMITTED', 'APPROVED', 'REJECTED', name='review_status'), nullable=False),\n+    op.create_table('review_results',\n+                    sa.Column('status', sa.Enum('AWAITING_REVIEW', 'CHANGE_REQUESTED', 'RESUBMITTED', 'APPROVED', 'REJECTED', name='review_status'), nullable=False),\n+                    sa.Column('reviewer_id', sa.Integer(), nullable=True),\n+                    sa.Column('review_id', sa.Integer(), nullable=False),\n+                    sa.ForeignKeyConstraint(['review_id'], ['reviews.id'], ),\n+                    sa.ForeignKeyConstraint(['reviewer_id'], ['users.id'], ),\n+    op.drop_table('review_results')\n+    op.drop_table('reviews')\n+    op.execute(\"DROP TYPE review_status;\")"
+ },
+ {
+  "filename": "legal-api/src/legal_api/models/__init__.py",
+  "changes": 5,
+  "patch": "+from .review import Review, ReviewStatus\n+from .review_result import ReviewResult\n+    'Review',\n+    'ReviewResult',\n+    'ReviewStatus',"
+ },
+ {
+  "filename": "legal-api/src/legal_api/models/filing.py",
+  "changes": 9,
+  "patch": "+        # filings with staff review\n+        AWAITING_REVIEW = 'AWAITING_REVIEW'\n+    review = db.relationship('Review', lazy='dynamic')"
+ },
+ {
+  "filename": "legal-api/src/legal_api/models/review.py",
+  "changes": 77,
+  "patch": "+\"\"\"This module holds the data about review.\"\"\"\n+class ReviewStatus(BaseEnum):\n+    \"\"\"Render an Enum of the review status.\"\"\"\n+    AWAITING_REVIEW = auto()\n+class Review(db.Model):  # pylint: disable=too-many-instance-attributes\n+    \"\"\"This class manages the review.\"\"\"\n+    __tablename__ = 'reviews'\n+    status = db.Column('status', db.Enum(ReviewStatus), nullable=False)\n+    review_results = db.relationship('ReviewResult', lazy='dynamic')\n+    def find_by_id(cls, review_id) -> Review:\n+        \"\"\"Return review by the id.\"\"\"\n+        review = None\n+        if review_id:\n+            review = cls.query.filter_by(id=review_id).one_or_none()\n+        return review\n+    def get_review(cls, filing_id) -> Review:\n+        \"\"\"Return review by the filing id.\"\"\"\n+        review = None\n+            review = (db.session.query(Review).\n+                      filter(Review.filing_id == filing_id).\n+        return review"
+ },
+ {
+  "filename": "legal-api/src/legal_api/models/review_result.py",
+  "changes": 71,
+  "patch": "+\"\"\"This module holds the data about review result.\"\"\"\n+from .review import ReviewStatus\n+class ReviewResult(db.Model):  # pylint: disable=too-many-instance-attributes\n+    \"\"\"This class manages the review result.\"\"\"\n+    __tablename__ = 'review_results'\n+    status = db.Column('status', db.Enum(ReviewStatus), nullable=False)\n+    reviewer_id = db.Column('reviewer_id', db.Integer, db.ForeignKey('users.id'))\n+    reviewer = db.relationship('User',\n+                               backref=backref('reviewer', uselist=False),\n+                               foreign_keys=[reviewer_id])\n+    review_id = db.Column('review_id', db.Integer, db.ForeignKey('reviews.id'), nullable=False)\n+    def get_review_results(cls, review_id) -> List[ReviewResult]:\n+        \"\"\"Return review results by the review id.\"\"\"\n+        review_results = None\n+        if review_id:\n+            review_results = (db.session.query(ReviewResult).\n+                              filter(ReviewResult.review_id == review_id).\n+        return review_results\n+    def get_last_review_result(cls, review_id) -> ReviewResult:\n+        \"\"\"Return the last review result by the review id.\"\"\"\n+        review_result = None\n+        if review_id:\n+            review_result = (db.session.query(ReviewResult).\n+                             filter(ReviewResult.review_id == review_id).\n+                             order_by(ReviewResult.creation_date.desc()).\n+        return review_result"
+ },
+ {
+  "filename": "legal-api/tests/unit/models/test_review.py",
+  "changes": 58,
+  "patch": "+\"\"\"Tests to assure the Review Model.\n+Test-Suite to ensure that the Review Model is working as expected.\n+from legal_api.models import Review, ReviewStatus\n+def test_review_save(session):\n+    \"\"\"Assert that the review was saved.\"\"\"\n+    review = Review()\n+    review.filing_id = filing.id\n+    review.nr_number = filing_dict['filing']['continuationIn']['nameRequest']['nrNumber']\n+    review.identifier = filing_dict['filing']['continuationIn']['foreignJurisdiction']['identifier']\n+    review.completing_party = 'completing party'\n+    review.status = ReviewStatus.AWAITING_REVIEW\n+    review.save()\n+    assert review.id\n+    review = Review.find_by_id(review.id)\n+    assert review\n+    review = Review.get_review(review.filing_id)\n+    assert review"
+ },
+ {
+  "filename": "legal-api/tests/unit/models/test_review_result.py",
+  "changes": 91,
+  "patch": "+\"\"\"Tests to assure the Review Result Model.\n+Test-Suite to ensure that the Review Result Model is working as expected.\n+from legal_api.models import Review, ReviewResult, ReviewStatus, User\n+def test_review_result_save(session):\n+    \"\"\"Assert that the review result was saved.\"\"\"\n+    review = Review()\n+    review.filing_id = filing.id\n+    review.nr_number = filing_dict['filing']['continuationIn']['nameRequest']['nrNumber']\n+    review.identifier = filing_dict['filing']['continuationIn']['foreignJurisdiction']['identifier']\n+    review.completing_party = 'completing party'\n+    review.status = ReviewStatus.AWAITING_REVIEW\n+    review.save()\n+    assert review.id\n+    change_requested = ReviewResult()\n+    change_requested.review_id = review.id\n+    change_requested.status = ReviewStatus.CHANGE_REQUESTED\n+    change_requested.reviewer_id = user.id\n+    change_requested.submission_date = review.submission_date\n+    review.review_results.append(change_requested)\n+    review.save()\n+    review.status = ReviewStatus.APPROVED\n+    review.submission_date = datetime.now(timezone.utc)\n+    approved = ReviewResult()\n+    approved.review_id = review.id\n+    approved.status = ReviewStatus.APPROVED\n+    approved.reviewer_id = user.id\n+    approved.submission_date = review.submission_date\n+    review.review_results.append(approved)\n+    review.save()\n+    review_results = ReviewResult.get_review_results(review.id)\n+    assert len(review_results) == 2\n+    last_review_result = ReviewResult.get_last_review_result(review.id)\n+    assert last_review_result.id == approved.id"
+ }
+]

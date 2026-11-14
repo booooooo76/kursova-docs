@@ -1,0 +1,22 @@
+[
+ {
+  "filename": "legal-api/src/legal_api/models/review.py",
+  "changes": 22,
+  "patch": "-        query = db.session.query(Review).order_by(Review.creation_date.asc())\n+        query = db.session.query(Review, Filing.effective_date). \\\n+            join(Filing, Filing.id == Review.filing_id). \\\n+            order_by(Review.creation_date.asc())\n-        reviews_list = [\n-            review.json for review in results\n+        for review, effective_date in results:\n+                **review.json,\n-            'reviews': reviews_list,\n+            'reviews': result,"
+ },
+ {
+  "filename": "legal-api/src/legal_api/resources/v2/admin/reviews.py",
+  "changes": 44,
+  "patch": "-    reviews = Review.get_paginated_reviews(page, limit)\n+    result = Review.get_paginated_reviews(page, limit)\n+    reviews = result['reviews']\n-    return jsonify(reviews), HTTPStatus.OK\n+    nr_numbers = get_applicable_nr_numbers(reviews)\n+        update_reviews(reviews, nr_expiry_dates)\n+def get_applicable_nr_numbers(reviews):\n+    \"\"\"Return list of NR numbers of review with status CHANGE_REQUESTED/AWAITING_REVIEW/RESUBMITTED.\"\"\"\n+    for review in reviews:\n+        current_nr = review['nrNumber']\n+        current_status = review['status']\n+            current_status in [ReviewStatus.CHANGE_REQUESTED.name,\n+                               ReviewStatus.AWAITING_REVIEW.name,\n+                               ReviewStatus.RESUBMITTED.name]):\n+def update_reviews(reviews, nr_expiry_date):\n+    \"\"\"Update review by appending NR Expiry date.\"\"\"\n+    for review in reviews:\n+        nr = review['nrNumber']\n+                review['nrExpiryDate'] = match['expiry_date']"
+ },
+ {
+  "filename": "legal-api/src/legal_api/services/namex.py",
+  "changes": 32,
+  "patch": ""
+ },
+ {
+  "filename": "legal-api/tests/unit/resources/v2/test_admin/test_reviews.py",
+  "changes": 62,
+  "patch": "-        review = create_review(f'T1z3a56{index}')\n+        review = create_review(f'T1z3a56{index}', f'NR 879895{index}')\n-def create_review(identifier, status=ReviewStatus.AWAITING_REVIEW):\n+def create_review(identifier, nr, status=ReviewStatus.AWAITING_REVIEW):\n+def create_nr_data(no_of_reviews):\n+    nrs = create_nrs(no_of_reviews)\n+def create_nrs(no_of_reviews):\n+    for index in range(no_of_reviews):\n-def test_get_reviews_with_valid_user(app, session, client, jwt):\n+def test_get_reviews_with_valid_user(app, session, client, jwt, mocker):\n+    nrs_response = create_nr_data(no_of_reviews)\n-    review = create_review('T1z3a567')\n+    review = create_review('T1z3a567', 'NR 8798951')\n-    review = create_review('T1z3a567')\n+    review = create_review('T1z3a567', 'NR 8798951')\n-    review = create_review('T1z3a567')\n+    review = create_review('T1z3a567', 'NR 8798951')\n-    review = create_review('T1z3a567')\n+    review = create_review('T1z3a567', 'NR 8798951')\n-    review = create_review('T1z3a567', status)\n+    review = create_review('T1z3a567', 'NR 8798951', status)"
+ }
+]

@@ -1,0 +1,7 @@
+[
+ {
+  "filename": "legal-api/tests/unit/resources/v2/test_reviews.py",
+  "changes": 43,
+  "patch": "+def test_get_specific_review_with_valid_user(app, session, client, jwt, mocker):\n+    \"\"\"Assert specific review object returned for STAFF role.\"\"\"\n+    review = basic_test_review()\n+    review.save()\n+    mocker.patch('legal_api.resources.v2.admin.reviews.current_app.config.get', return_value=base_url)\n+    rv = client.get(f'/api/v2/admin/reviews/{review.id}',\n+    assert rv.json['id'] == review.id\n+def test_get_specific_review_with_invalid_user(app, session, client, jwt):\n+    \"\"\"Assert unauthorized for BASIC_USER role when getting a specific review.\"\"\"\n+    review = basic_test_review()\n+    review.save()\n+    rv = client.get(f'/api/v2/admin/reviews/{review.id}',\n+def test_get_nonexistent_review(app, session, client, jwt):\n+    \"\"\"Assert not found for non-existent review ID.\"\"\"\n+    rv = client.get('/api/v2/admin/reviews/99999',\n+    assert rv.json['message'] == 'Review not found.'"
+ }
+]

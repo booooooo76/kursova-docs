@@ -1,0 +1,22 @@
+[
+ {
+  "filename": "legal-api/src/legal_api/core/meta/filing.py",
+  "changes": 3,
+  "patch": ""
+ },
+ {
+  "filename": "legal-api/src/legal_api/models/filing.py",
+  "changes": 3,
+  "patch": ""
+ },
+ {
+  "filename": "legal-api/src/legal_api/models/review_result.py",
+  "changes": 4,
+  "patch": ""
+ },
+ {
+  "filename": "legal-api/src/legal_api/resources/v2/business/business_filings/business_filings.py",
+  "changes": 106,
+  "patch": ""
+ }
+]

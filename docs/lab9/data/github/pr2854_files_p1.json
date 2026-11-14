@@ -1,0 +1,22 @@
+[
+ {
+  "filename": "legal-api/src/legal_api/core/filing.py",
+  "changes": 7,
+  "patch": "+        # filings with staff review\n+        AWAITING_REVIEW = 'AWAITING_REVIEW'"
+ },
+ {
+  "filename": "legal-api/src/legal_api/models/review_result.py",
+  "changes": 12,
+  "patch": "-from .review import ReviewStatus\n+from .review import Review, ReviewStatus\n-    def get_last_review_result(cls, review_id) -> ReviewResult:\n-        \"\"\"Return the last review result by the review id.\"\"\"\n+    def get_last_review_result(cls, filing_id) -> ReviewResult:\n+        \"\"\"Return the last review result by the filing id.\"\"\"\n-        if review_id:\n-            review_result = (db.session.query(ReviewResult).\n-                             filter(ReviewResult.review_id == review_id).\n+            review_result = (db.session.query(ReviewResult).join(Review).\n+                             filter(Review.filing_id == filing_id)."
+ },
+ {
+  "filename": "legal-api/src/legal_api/resources/v2/business/business_filings/business_filings.py",
+  "changes": 19,
+  "patch": "+    ReviewResult,\n+              (review_result := ReviewResult.get_last_review_result(rv.id))):\n+            filing_json['filing']['header']['latestReviewComment'] = review_result.comments"
+ },
+ {
+  "filename": "legal-api/tests/unit/models/test_review_result.py",
+  "changes": 2,
+  "patch": "-    last_review_result = ReviewResult.get_last_review_result(review.id)\n+    last_review_result = ReviewResult.get_last_review_result(review.filing_id)"
+ }
+]
