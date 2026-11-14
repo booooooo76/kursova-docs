@@ -1,0 +1,352 @@
+{
+ "functions": [
+  {
+   "id": "D1",
+   "kind": "ILF",
+   "name": "Рецензія з історією рішень (reviews + review_results)",
+   "source": "models/review.py :: Review; models/review_result.py :: ReviewResult",
+   "dets": [
+    "id",
+    "nr_number",
+    "identifier",
+    "contact_email",
+    "status",
+    "submission_date",
+    "creation_date",
+    "filing_id",
+    "result.status",
+    "result.comments",
+    "result.reviewer_id",
+    "result.creation_date",
+    "result.submission_date"
+   ],
+   "refs": [
+    "Review",
+    "ReviewResult"
+   ],
+   "complexity": "Простий",
+   "fp": 7
+  },
+  {
+   "id": "D2",
+   "kind": "EIF",
+   "name": "Заява (filings) модуля Filing",
+   "source": "Filing.find_by_id, set_review_decision, submit_filing_to_awaiting_review",
+   "dets": [
+    "id",
+    "temp_reg",
+    "filing_type",
+    "status",
+    "nameRequest.nrNumber",
+    "foreignJurisdiction.identifier",
+    "contactPoint.email"
+   ],
+   "refs": [
+    "Filing"
+   ],
+   "complexity": "Простий",
+   "fp": 5
+  },
+  {
+   "id": "D3",
+   "kind": "EIF",
+   "name": "Користувач-рецензент (users)",
+   "source": "User.get_or_create_user_by_jwt, reviewer.display_name",
+   "dets": [
+    "id",
+    "username",
+    "display_name"
+   ],
+   "refs": [
+    "User"
+   ],
+   "complexity": "Простий",
+   "fp": 5
+  },
+  {
+   "id": "D4",
+   "kind": "EIF",
+   "name": "Name Request сервісу NameX",
+   "source": "namex.query_nr_numbers -> POST {NAMEX_SVC_URL}/requests/search",
+   "dets": [
+    "nrNum",
+    "expirationDate"
+   ],
+   "refs": [
+    "NameRequest"
+   ],
+   "complexity": "Простий",
+   "fp": 5
+  },
+  {
+   "id": "T1",
+   "kind": "EI",
+   "name": "Подати заяву continuation-in на рецензію",
+   "source": "POST /api/v2/businesses/<id>/filings -> submit_filing_for_review (DRAFT)",
+   "dets": [
+    "identifier",
+    "filing_id",
+    "filing_type",
+    "nrNumber",
+    "foreignJurisdiction.identifier",
+    "contactPoint.email",
+    "isPaymentActionRequired"
+   ],
+   "refs": [
+    "Review",
+    "Filing"
+   ],
+   "complexity": "Середній",
+   "fp": 4
+  },
+  {
+   "id": "T2",
+   "kind": "EI",
+   "name": "Повторно подати після CHANGE_REQUESTED",
+   "source": "POST /api/v2/businesses/<id>/filings/<fid> -> submit_filing_for_review (CHANGE_REQUESTED)",
+   "dets": [
+    "identifier",
+    "filing_id",
+    "nrNumber",
+    "foreignJurisdiction.identifier",
+    "contactPoint.email",
+    "result.submission_date",
+    "isPaymentActionRequired"
+   ],
+   "refs": [
+    "Review",
+    "Filing"
+   ],
+   "complexity": "Середній",
+   "fp": 4
+  },
+  {
+   "id": "T3",
+   "kind": "EI",
+   "name": "Зберегти рішення рецензента",
+   "source": "POST /api/v2/admin/reviews/<review_id> -> save_review",
+   "dets": [
+    "review_id",
+    "status",
+    "comment",
+    "reviewer_id",
+    "message"
+   ],
+   "refs": [
+    "Review",
+    "Filing",
+    "User"
+   ],
+   "complexity": "Складний",
+   "fp": 6
+  },
+  {
+   "id": "T4",
+   "kind": "EO",
+   "name": "Черга рецензій із фільтрами, сортуванням і строком дії NR",
+   "source": "GET /api/v2/admin/reviews -> get_reviews, Review.get_paginated_reviews",
+   "dets": [
+    "startDate",
+    "endDate",
+    "sortBy",
+    "sortDesc",
+    "id",
+    "nrNumber",
+    "identifier",
+    "contactEmail",
+    "status",
+    "submissionDate",
+    "creationDate",
+    "filingId",
+    "results.status",
+    "results.comments",
+    "results.reviewer",
+    "results.submissionDate",
+    "results.creationDate",
+    "nrExpiryDate",
+    "page",
+    "limit",
+    "total"
+   ],
+   "refs": [
+    "Review",
+    "User",
+    "NameRequest"
+   ],
+   "complexity": "Складний",
+   "fp": 7
+  },
+  {
+   "id": "T5",
+   "kind": "EO",
+   "name": "Картка рецензії з обчисленим filingLink",
+   "source": "GET /api/v2/admin/reviews/<review_id> -> get_review",
+   "dets": [
+    "id",
+    "nrNumber",
+    "identifier",
+    "contactEmail",
+    "status",
+    "submissionDate",
+    "creationDate",
+    "filingId",
+    "results.status",
+    "results.comments",
+    "results.reviewer",
+    "results.creationDate",
+    "filingLink"
+   ],
+   "refs": [
+    "Review",
+    "Filing",
+    "User"
+   ],
+   "complexity": "Середній",
+   "fp": 5
+  },
+  {
+   "id": "T6",
+   "kind": "EQ",
+   "name": "Останній коментар рецензента в заяві",
+   "source": "GET /api/v2/businesses/<id>/filings/<fid> -> header.latestReviewComment",
+   "dets": [
+    "identifier",
+    "filing_id",
+    "latestReviewComment"
+   ],
+   "refs": [
+    "Review",
+    "Filing"
+   ],
+   "complexity": "Простий",
+   "fp": 3
+  }
+ ],
+ "actors": [
+  {
+   "name": "Staff-рецензент BC Registries",
+   "interface": "людина через GUI (staff UI)",
+   "weight": 3
+  },
+  {
+   "name": "Заявник (бізнес-клієнт)",
+   "interface": "людина через GUI (Business Registry UI)",
+   "weight": 3
+  },
+  {
+   "name": "NameX API",
+   "interface": "REST по HTTP",
+   "weight": 2
+  },
+  {
+   "name": "Business Emailer",
+   "interface": "API черги GCP Pub/Sub (publish_to_queue)",
+   "weight": 1
+  }
+ ],
+ "use_cases": [
+  {
+   "id": "UC1",
+   "name": "Подати заяву на рецензію",
+   "actor": "Заявник",
+   "source": "submit_filing_for_review (DRAFT)",
+   "steps": [
+    "перевірити staffApprovalRequired і статус DRAFT",
+    "створити Review(AWAITING_REVIEW)",
+    "скопіювати nrNumber, identifier, contactEmail із заяви",
+    "зберегти Review",
+    "перевести Filing в AWAITING_REVIEW",
+    "надіслати подію листа в Emailer"
+   ],
+   "weight": 10
+  },
+  {
+   "id": "UC2",
+   "name": "Повторно подати після запиту змін",
+   "actor": "Заявник",
+   "source": "submit_filing_for_review (CHANGE_REQUESTED)",
+   "steps": [
+    "перевірити статус CHANGE_REQUESTED",
+    "знайти Review за filing_id",
+    "встановити RESUBMITTED",
+    "оновити submission_date останнього ReviewResult",
+    "оновити поля й зберегти Review",
+    "перевести Filing в AWAITING_REVIEW",
+    "надіслати подію листа в Emailer"
+   ],
+   "weight": 10
+  },
+  {
+   "id": "UC3",
+   "name": "Переглянути чергу рецензій",
+   "actor": "Staff-рецензент",
+   "source": "get_reviews",
+   "steps": [
+    "перевірити роль staff",
+    "зібрати ReviewFilter із 10 параметрів",
+    "зіставити колонку сортування",
+    "відфільтрувати, відсортувати, розбити на сторінки",
+    "вибрати NR в активних статусах",
+    "запитати строки дії NR у NameX",
+    "додати nrExpiryDate до рецензій",
+    "повернути сторінку JSON"
+   ],
+   "weight": 15
+  },
+  {
+   "id": "UC4",
+   "name": "Відкрити картку рецензії",
+   "actor": "Staff-рецензент",
+   "source": "get_review",
+   "steps": [
+    "перевірити роль staff",
+    "знайти Review або 404",
+    "завантажити Filing",
+    "побудувати filingLink",
+    "повернути JSON з історією рішень"
+   ],
+   "weight": 10
+  },
+  {
+   "id": "UC5",
+   "name": "Ухвалити рішення (схвалити / запросити зміни / відхилити)",
+   "actor": "Staff-рецензент",
+   "source": "save_review",
+   "steps": [
+    "перевірити роль staff",
+    "отримати або створити User з JWT",
+    "знайти Review або 404",
+    "перевірити, що статус ще можна змінити",
+    "перевірити новий статус",
+    "вимагати коментар для CR і REJECTED",
+    "створити ReviewResult",
+    "оновити статус Review і зберегти",
+    "встановити рішення у Filing",
+    "надіслати подію листа в Emailer"
+   ],
+   "weight": 15
+  },
+  {
+   "id": "UC6",
+   "name": "Побачити коментар рецензента",
+   "actor": "Заявник",
+   "source": "get_single_filing",
+   "steps": [
+    "перевірити статус заяви CR / APPROVED / REJECTED",
+    "взяти останній ReviewResult",
+    "додати latestReviewComment у відповідь"
+   ],
+   "weight": 5
+  }
+ ],
+ "totals": {
+  "FP": 51,
+  "UAW": 9,
+  "UUCW": 65,
+  "UUCP": 74,
+  "UCP": 74.0,
+  "effort": 92.93424019630736,
+  "PF_UCP": 1.2558681107609102,
+  "PF_FP": 1.822240003849164
+ }
+}
