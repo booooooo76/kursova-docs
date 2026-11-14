@@ -1,0 +1,1 @@
+{"component":{"id":"AZlwg1kcepR4Ek6Dlvph","key":"vcatest_redis","name":"redis","qualifier":"TRK","measures":[{"metric":"ncloc","value":"237215"},{"metric":"sqale_index","value":"1296375","bestValue":false},{"metric":"sqale_rating","value":"3.0","bestValue":false}]}}
