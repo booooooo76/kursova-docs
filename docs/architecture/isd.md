@@ -75,6 +75,8 @@ Production-середовища немає; вимоги до нього нав�
 
 ### <a id="web"></a>3.1. Вебзастосунок
 
+- Довідка API працюючого екземпляра: `GET /api/docs` (Swagger UI), контракт `GET /api/openapi.yaml`.
+
 - Python 3.11.9 у `venv`, залежності закріплені: `requirements.txt` (Flask 3.1.3, Flask-Login 0.6.3, psycopg2-binary
   2.9.10, Werkzeug 3.1.6), інструменти якості в `requirements-dev.txt`.
 - Dev-запуск: `python app.py` (вбудований сервер Flask, `debug=True`, слухає 0.0.0.0:5000). Для production debug
@@ -137,10 +139,11 @@ flowchart LR
 | pre-commit, етап 1 | кожен `git commit` (`git config core.hooksPath .githooks`) | секрети в staged-змінах (gitleaks, `.gitleaks.toml`) | так |
 | pre-commit, етап 2 | кожен коміт зі staged `*.py` | CC ≤ 10 для нових функцій (lizard), старий борг у `.complexity-baseline` | так |
 | GitHub Actions `quality-metrics` | push, pull_request, вручну | складність, churn за 90 днів, матриця Hotspots | ні, інформує (артефакт) |
+| GitHub Actions `docs` (публічний репозиторій `kursova-docs`) | push у main, pull_request, вручну | markdownlint, Spectral (0 errors), аудит `review_date`, `mkdocs build --strict`; деплой на GitHub Pages | так: будь-яке попередження = Exit Code 1, сайт не оновлюється |
 | SonarQube | вручну, `scan.ps1` | баги, вразливості, code smells, дублікати | Quality Gate «Sonar way» |
 | pytest | вручну перед злиттям | 315 тестів, потрібен PostgreSQL | за регламентом |
 
-CD немає: розгортання ручне за розділом 4. Прогалина: тести не запускаються в CI, бо потребують PostgreSQL. План:
+Документація має власний CD: Kursova приватний, тому `scripts/publish_docs.ps1` переносить у публічний репозиторій `booooooo76/kursova-docs` лише файли бази знань (зі збереженням історії комітів), а там `docs.yml` збирає й публікує сайт <https://booooooo76.github.io/kursova-docs/>. Код застосунку розгортається вручну за розділом 4. Прогалина: тести не запускаються в CI, бо потребують PostgreSQL. План:
 додати в workflow service-контейнер `postgres:18`.
 
 ## 6. Моніторинг і резервне копіювання

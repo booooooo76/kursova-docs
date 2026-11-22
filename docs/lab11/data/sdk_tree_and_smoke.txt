@@ -1,0 +1,27 @@
+kursova_client\api_client.py
+kursova_client\api_response.py
+kursova_client\configuration.py
+kursova_client\exceptions.py
+kursova_client\rest.py
+kursova_client\__init__.py
+kursova_client\api\cart_api.py
+kursova_client\api\ops_api.py
+kursova_client\api\privacy_api.py
+kursova_client\api\__init__.py
+kursova_client\models\cart_count.py
+kursova_client\models\consent_change.py
+kursova_client\models\consent_event.py
+kursova_client\models\consent_list.py
+kursova_client\models\consent_state.py
+kursova_client\models\error.py
+kursova_client\models\grant_request.py
+kursova_client\models\health_status.py
+kursova_client\models\health_status_checks.py
+kursova_client\models\purpose.py
+kursova_client\models\__init__.py
+
+getHealth -> status='ok' checks=HealthStatusChecks(database='ok', migrations='ok') missing_tables=None
+getCartCount -> count=0
+listConsents без сесії -> 401 {
+  "error": "authentication_required"
+}

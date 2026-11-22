@@ -21,7 +21,11 @@ def on_files(files, config):
 
 
 def _resolve(name, page_uri):
-    candidates = _index.get(name.strip().lower(), [])
+    name = name.strip()
+    if "/" in name:  # [[adr/index]]: шлях без розширення, як в Obsidian
+        suffix = name.lower() + ".md"
+        return next((u for uris in _index.values() for u in uris if u.lower().endswith(suffix)), None)
+    candidates = _index.get(name.lower(), [])
     if len(candidates) > 1:
         here = posixpath.dirname(page_uri)
         candidates = [c for c in candidates if posixpath.dirname(c) == here] or candidates

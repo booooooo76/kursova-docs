@@ -1,0 +1,102 @@
+Unable to find image 'openapitools/openapi-generator-cli:v7.10.0' locally
+v7.10.0: Pulling from openapitools/openapi-generator-cli
+16a2e87c8432: Pulling fs layer
+8b95c30512ba: Pulling fs layer
+4ec0d48772e2: Pulling fs layer
+c206fa8d0304: Pulling fs layer
+521f275cc58b: Pulling fs layer
+4f82fb5fa4a4: Pulling fs layer
+f36698d7f25c: Pulling fs layer
+16a2e87c8432: Download complete
+f36698d7f25c: Download complete
+4f82fb5fa4a4: Download complete
+c206fa8d0304: Download complete
+521f275cc58b: Download complete
+4ec0d48772e2: Download complete
+8b95c30512ba: Download complete
+521f275cc58b: Pull complete
+4ec0d48772e2: Pull complete
+c206fa8d0304: Pull complete
+f36698d7f25c: Pull complete
+4f82fb5fa4a4: Pull complete
+8b95c30512ba: Pull complete
+16a2e87c8432: Pull complete
+Digest: sha256:f2054a5a7908ad81017d0f0839514ba5eab06ae628914ff71554d46fac1bcf7a
+Status: Downloaded newer image for openapitools/openapi-generator-cli:v7.10.0
+[main] INFO  o.o.codegen.DefaultGenerator - Generating with dryRun=false
+[main] INFO  o.o.c.ignore.CodegenIgnoreProcessor - Output directory (/out/sdk-client) does not exist, or is inaccessible. No file (.openapi-generator-ignore) will be evaluated.
+[main] INFO  o.o.codegen.DefaultGenerator - OpenAPI Generator: python (client)
+[main] INFO  o.o.codegen.DefaultGenerator - Generator 'python' is considered stable.
+[main] INFO  o.o.c.l.AbstractPythonCodegen - Environment variable PYTHON_POST_PROCESS_FILE not defined so the Python code may not be properly formatted. To define it, try 'export PYTHON_POST_PROCESS_FILE="/usr/local/bin/yapf -i"' (Linux/Mac)
+[main] INFO  o.o.c.l.AbstractPythonCodegen - NOTE: To enable file post-processing, 'enablePostProcessFile' must be set to `true` (--enable-post-process-file for CLI).
+[main] INFO  o.o.codegen.InlineModelResolver - Inline schema created as HealthStatus_checks. To have complete control of the model name, set the `title` field or use the modelNameMapping option (e.g. --model-name-mappings HealthStatus_checks=NewModel,ModelA=NewModelA in CLI) or inlineSchemaNameMapping option (--inline-schema-name-mappings HealthStatus_checks=NewModel,ModelA=NewModelA in CLI).
+[main] WARN  o.o.codegen.utils.ModelUtils - Failed to get the schema name: null
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/kursova_client/models/cart_count.py
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/test/test_cart_count.py
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/docs/CartCount.md
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/kursova_client/models/consent_change.py
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/test/test_consent_change.py
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/docs/ConsentChange.md
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/kursova_client/models/consent_event.py
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/test/test_consent_event.py
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/docs/ConsentEvent.md
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/kursova_client/models/consent_list.py
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/test/test_consent_list.py
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/docs/ConsentList.md
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/kursova_client/models/consent_state.py
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/test/test_consent_state.py
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/docs/ConsentState.md
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/kursova_client/models/error.py
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/test/test_error.py
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/docs/Error.md
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/kursova_client/models/grant_request.py
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/test/test_grant_request.py
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/docs/GrantRequest.md
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/kursova_client/models/health_status.py
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/test/test_health_status.py
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/docs/HealthStatus.md
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/kursova_client/models/health_status_checks.py
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/test/test_health_status_checks.py
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/docs/HealthStatusChecks.md
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/kursova_client/models/purpose.py
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/test/test_purpose.py
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/docs/Purpose.md
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/kursova_client/api/cart_api.py
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/test/test_cart_api.py
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/docs/CartApi.md
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/kursova_client/api/ops_api.py
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/test/test_ops_api.py
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/docs/OpsApi.md
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/kursova_client/api/privacy_api.py
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/test/test_privacy_api.py
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/docs/PrivacyApi.md
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/README.md
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/tox.ini
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/test-requirements.txt
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/requirements.txt
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/setup.cfg
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/git_push.sh
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/.gitignore
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/.travis.yml
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/.github/workflows/python.yml
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/.gitlab-ci.yml
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/setup.py
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/pyproject.toml
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/kursova_client/py.typed
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/kursova_client/configuration.py
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/kursova_client/__init__.py
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/kursova_client/models/__init__.py
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/kursova_client/api/__init__.py
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/kursova_client/exceptions.py
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/test/__init__.py
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/kursova_client/api_client.py
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/kursova_client/api_response.py
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/kursova_client/rest.py
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/.openapi-generator-ignore
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/.openapi-generator/VERSION
+[main] INFO  o.o.codegen.TemplateManager - writing file /out/sdk-client/.openapi-generator/FILES
+################################################################################
+# Thanks for using OpenAPI Generator.                                          #
+# Please consider donation to help us maintain this project 🙏                 #
+# https://opencollective.com/openapi_generator/donate                          #
+################################################################################

@@ -1,0 +1,82 @@
+# Лаб.11, Завд.3: конвеєр документації «не збирається — не їде».
+# Будь-який дефект документації (мертве посилання, сторінка поза nav, зламана розмітка, поганий контракт API)
+# завершує job з Exit Code 1, і сайт на GitHub Pages НЕ оновлюється: користувачі бачать останню справну версію.
+name: docs
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write       # публікація на GitHub Pages
+  id-token: write    # OIDC-токен для actions/deploy-pages
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. Повна історія: git-revision-date-localized бере дату останнього коміту кожної сторінки
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # 2. Python для MkDocs і скриптів аудиту
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: requirements-docs.txt
+
+      # 3. Залежності закріплені в requirements-docs.txt
+      - name: Install MkDocs Material and plugins
+        run: pip install -r requirements-docs.txt
+
+      # 4. Node для лінтерів
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      # 5. Стиль Markdown (правила й перелік сторінок у .markdownlint-cli2.jsonc)
+      - name: Lint Markdown (markdownlint)
+        run: npx --yes markdownlint-cli2@0.14.0
+
+      # 6. Якість контракту API: поріг 0 errors (правила в .spectral.yaml)
+      - name: Lint OpenAPI contract (Spectral)
+        run: npx --yes @stoplight/spectral-cli@6.11.1 lint docs/api/openapi.yaml --fail-severity error
+
+      # 7. Безперервний аудит актуальності: прострочені review_date -> ::warning::, сторінка без паспорта -> помилка
+      - name: Audit review_date (front matter)
+        run: python tools/doc_review_dates.py
+
+      # 8. Strict-збірка: будь-яке попередження MkDocs = Exit Code 1
+      - name: Build site (mkdocs build --strict)
+        run: mkdocs build --strict
+
+      - name: Upload Pages artifact
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  # 9. Деплой лише зі справної збірки гілки main
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

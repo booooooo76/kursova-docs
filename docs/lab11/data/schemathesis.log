@@ -1,0 +1,69 @@
+
+===== Schemathesis: анонімний клієнт =====
+======================= Schemathesis test session starts =======================
+Schema location: file:///D:/%D0%9F%D0%B0%D1%80%D0%B8/%D0%86%D0%BD%D0%B6%D0%B5%D0%BD%D0%B5%D1%80%D1%96%D1%8F%20%D1%8F%D0%BA%D0%BE%D1%81%D1%82%D1%96%20%D1%82%D0%B0%20%D1%81%D1%83%D0%BF%D1%80%D0%BE%D0%B2%D1%96%D0%B4%20%D0%BF%D1%80%D0%BE%D0%B3%D1%80%D0%B0%D0%BC%D0%BD%D0%B8%D1%85%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%20%28%D0%92%D0%98%D0%91%D0%86%D0%A0%D0%9A%D0%9E%D0%92%D0%90%29/%D0%9F%D1%80%D0%BE%D1%94%D0%BA%D1%82%20%D1%82%D0%B5%D1%81%D1%82/Project/docs/api/openapi.yaml
+Base URL: http://localhost:5000
+Specification version: Open API 3.0.3
+Random seed: 11
+Workers: 1
+Collected API operations: 4
+Collected API links: 0
+API probing: ...
+API probing: SUCCESS
+Schema analysis: ...
+Schema analysis: SKIP
+
+GET /api/health .                                                         [ 25%]
+GET /api/cart/count .                                                     [ 50%]
+GET /api/users/{user_id}/consents .                                       [ 75%]
+POST /api/users/{user_id}/consents/{purpose}/grant .                      [100%]
+
+=================================== SUMMARY ====================================
+
+Performed checks:
+    not_a_server_error                              56 / 56 passed          PASSED 
+    status_code_conformance                         56 / 56 passed          PASSED 
+    content_type_conformance                        56 / 56 passed          PASSED 
+    response_headers_conformance                    56 / 56 passed          PASSED 
+    response_schema_conformance                     56 / 56 passed          PASSED 
+    negative_data_rejection                         56 / 56 passed          PASSED 
+    ignored_auth                                    56 / 56 passed          PASSED 
+
+WARNINGS:
+  - Most of the responses from `GET /api/users/{user_id}/consents` have a 401 status code. Did you specify proper API credentials?
+  - Most of the responses from `POST /api/users/{user_id}/consents/{purpose}/grant` have a 401 status code. Did you specify proper API credentials?
+
+============================= 4 passed in 118.06s ==============================
+
+===== Schemathesis: сесія demo_alice (id 1) =====
+======================= Schemathesis test session starts =======================
+Schema location: file:///D:/%D0%9F%D0%B0%D1%80%D0%B8/%D0%86%D0%BD%D0%B6%D0%B5%D0%BD%D0%B5%D1%80%D1%96%D1%8F%20%D1%8F%D0%BA%D0%BE%D1%81%D1%82%D1%96%20%D1%82%D0%B0%20%D1%81%D1%83%D0%BF%D1%80%D0%BE%D0%B2%D1%96%D0%B4%20%D0%BF%D1%80%D0%BE%D0%B3%D1%80%D0%B0%D0%BC%D0%BD%D0%B8%D1%85%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%20%28%D0%92%D0%98%D0%91%D0%86%D0%A0%D0%9A%D0%9E%D0%92%D0%90%29/%D0%9F%D1%80%D0%BE%D1%94%D0%BA%D1%82%20%D1%82%D0%B5%D1%81%D1%82/Project/docs/api/openapi.yaml
+Base URL: http://localhost:5000
+Specification version: Open API 3.0.3
+Random seed: 11
+Workers: 1
+Collected API operations: 4
+Collected API links: 0
+API probing: ...
+API probing: SUCCESS
+Schema analysis: ...
+Schema analysis: SKIP
+
+GET /api/health .                                                         [ 25%]
+GET /api/cart/count .                                                     [ 50%]
+GET /api/users/{user_id}/consents .                                       [ 75%]
+POST /api/users/{user_id}/consents/{purpose}/grant .                      [100%]
+
+=================================== SUMMARY ====================================
+
+Performed checks:
+    not_a_server_error                              56 / 56 passed          PASSED 
+    status_code_conformance                         56 / 56 passed          PASSED 
+    content_type_conformance                        56 / 56 passed          PASSED 
+    response_headers_conformance                    56 / 56 passed          PASSED 
+    response_schema_conformance                     56 / 56 passed          PASSED 
+    negative_data_rejection                         56 / 56 passed          PASSED 
+
+============================= 4 passed in 127.98s ==============================
+
+RESULT: PASS (анонімно: 0, з сесією: 0)
