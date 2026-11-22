@@ -1,0 +1,5 @@
+build	Build site (mkdocs build --strict)	2026-11-22T13:51:47.0857665Z WARNING -  Doc file 'architecture/isd.md' contains a link 'rollback-runbook.md', but the target 'architecture/rollback-runbook.md' is not found among documentation files.
+build	Build site (mkdocs build --strict)	2026-11-22T13:51:47.5378718Z INFO    -  DeprecationWarning: Call to deprecated method replaceWith. (Replaced by replace_with) -- Deprecated since version 4.0.0.
+build	Build site (mkdocs build --strict)	2026-11-22T13:51:47.5385723Z     warnings.warn(
+build	Build site (mkdocs build --strict)	2026-11-22T13:51:48.3358285Z Aborted with 1 warnings in strict mode!
+build	Build site (mkdocs build --strict)	2026-11-22T13:51:48.4291544Z ##[error]Process completed with exit code 1.
