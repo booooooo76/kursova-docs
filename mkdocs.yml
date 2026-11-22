@@ -1,0 +1,105 @@
+# Лаб.11: база знань Kursova PC Shop (Documentation as Code).
+# Збирання:  .\venv\Scripts\python.exe -m mkdocs build --strict   (будь-яке попередження = Exit Code 1)
+site_name: Kursova PC Shop — база знань
+site_description: Документація вебзастосунку комп'ютерного магазину із сервісним центром
+site_url: https://booooooo76.github.io/kursova-docs/
+repo_url: https://github.com/booooooo76/kursova-docs
+repo_name: kursova-docs
+edit_uri: edit/main/docs/
+copyright: Загребенюк Б., 2026
+
+theme:
+  name: material
+  language: uk
+  features:
+    - navigation.sections
+    - navigation.indexes
+    - navigation.top
+    - search.highlight
+    - content.code.copy
+
+# Документація процесу (протоколи лаб і їхні дані) не публікується: вона історична, а не опис поточної системи.
+exclude_docs: |
+  lab3/*
+  !lab3/secrets_prevention.md
+  lab5/
+  lab6/*
+  !lab6/precommit.md
+  lab7/
+  lab8/
+  lab9/
+  lab10/
+  archive/database/
+
+nav:
+  - Головна: index.md
+  - "Рівень 2. Розробникам":
+      - developer/CONTRIBUTING.md
+      - developer/local-setup.md
+      - developer/code-standards.md
+  - "Рівень 3. API":
+      - api/index.md
+      - api/openapi-contract.md
+      - api/reference.md
+  - "Рівень 4. Архітектура":
+      - architecture/sdd.md
+      - architecture/isd.md
+      - ADR:
+          - architecture/adr/index.md
+          - architecture/adr/0001-postgresql-psycopg2.md
+          - architecture/adr/0002-privacy-by-design-module.md
+      - architecture/maintenance.md
+      - architecture/handover.md
+      - Політики приватності:
+          - lab4/consent.md
+          - lab4/logging_policy.md
+          - lab4/pii_inventory.md
+          - lab4/anonymization.md
+          - lab4/personal_data_export.md
+      - Ворота якості:
+          - lab3/secrets_prevention.md
+          - lab6/precommit.md
+      - archive/README.md
+
+plugins:
+  - search:
+      lang: [uk, en]
+  - tags
+  - mermaid2                     # C4- і ER-діаграми з Лаб.10
+  - swagger-ui-tag               # <swagger-ui src="openapi.yaml"/>: довідка рендериться з контракту (SSOT)
+  - git-revision-date-localized: # дата останнього коміту сторінки: основа метрики актуальності
+      type: date
+      locale: uk
+      fallback_to_build_date: true
+      strict: false              # нова, ще не закомічена сторінка отримує дату збірки без попередження
+  - redirects:                   # переспрямування зі старих адрес паспорта Лаб.10
+      redirect_maps:
+        sdd.md: architecture/sdd.md
+        isd.md: architecture/isd.md
+        maintenance.md: architecture/maintenance.md
+        handover.md: architecture/handover.md
+
+hooks:
+  - docs_hooks/wikilinks.py      # [[wikilinks]] Obsidian -> посилання сайту; невідомий wikilink = попередження
+
+validation:
+  omitted_files: warn            # сторінка поза nav -> попередження -> у --strict падіння
+  unrecognized_links: warn
+  absolute_links: info
+  anchors: warn
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - tables
+  - toc:
+      permalink: true
+      slugify: !!python/object/apply:pymdownx.slugs.slugify {kwds: {case: lower}}
+  - pymdownx.snippets:
+      base_path: ["."]
+      check_paths: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:mermaid2.fence_mermaid_custom

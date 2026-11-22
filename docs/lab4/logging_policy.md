@@ -1,3 +1,11 @@
+---
+owner: Загребенюк Б. (booooooo76)
+status: published
+review_date: 2027-04-16
+tags:
+  - architecture
+---
+
 # Лаб.4, Завд.1: Secure Logging та маскування PII
 
 Усі значення в документі синтетичні (`example.test`, `203.0.113.x`, вигадані паролі).
@@ -9,7 +17,7 @@
 Головний канал витоку: **текст винятку**. Повідомлення СУБД цитують значення рядка, і локалізований Postgres робить це так
 (це реальний фрагмент помилки з наших власних тестів):
 
-```
+```text
 Помилковий рядок містить (1, 1, Control Person 1, +380500000001, demo_u1@example.test, laptop, null, ...)
 ```
 
@@ -92,32 +100,32 @@
 
 **До** (як було б, якби повідомлення надрукували як є):
 
-```
+```text
 profile update: email=demo.user@example.test phone=+380500000001 password=synthetic-password-value token=synthetic-session-token-value ip=203.0.113.7
 ```
 
 **Після, текстовий формат:**
 
-```
+```text
 2026-10-10 23:00:01,460 INFO kursova.demo [-] profile update: email=d***@example.test phone=+380*******01 password=[REDACTED] token=[REDACTED] ip=203.0.113.x
 ```
 
 **Після, структурований JSON** (формат не зруйновано, `operation` і `user_id` збережено, є `correlation_id`):
 
-```
+```text
 {"timestamp": "2026-10-10T20:00:01.460+00:00", "level": "INFO", "logger": "kursova.demo", "correlation_id": "-", "message": "profile_update", "email": "d***@example.test", "phone": "+380*******01", "password": "[REDACTED]", "operation": "PROFILE_UPDATE", "user_id": 7}
 ```
 
 **Події безпеки зі справжнього застосунку** (БД підмінено, жодного PII):
 
-```
+```text
 2026-10-10 23:00:01,637 INFO kursova.app [1bdc3596df224535] security_event event=USER_REGISTERED actor_id=None subject_id=7 result=SUCCESS
 2026-10-10 23:00:01,637 INFO kursova.app [0a7ce4804ae44ebb] security_event event=LOGIN actor_id=None subject_id=12 result=FAILURE
 ```
 
 **Повідомлення винятку** (`Key (email)=(...)` цитує значення, рядок БД теж):
 
-```
+```text
 2026-10-10 23:00:01,460 ERROR kursova.demo [-] save_failed
 Traceback (most recent call last):
   ...
@@ -126,13 +134,13 @@ RuntimeError: DETAIL: Key (email)=([REDACTED]) already exists. password=[REDACTE
 
 **Старий `print(...)`** (шар 3):
 
-```
+```text
 Error in legacy handler: email=d***@example.test password=[REDACTED] phone=+380*******01
 ```
 
 ## 5. Тести (`tests/test_secure_logging.py`, 74 тести)
 
-```
+```text
 python -m pytest tests/test_secure_logging.py -q
 ```
 
@@ -168,3 +176,7 @@ python -m pytest tests/test_secure_logging.py -q
 * **Чотирикомпонентні версії** (`8.3.3.1`) схожі на IPv4 і маскуються (`8.3.3.x`): свідомий вибір на користь приватності.
 * Рядки коду всередині трейсбеку теж проходять знеособлення, тому цитований вихідний код може трохи змінитись: це безпечна поведінка.
 * Регулярні вирази ловлять відомі шаблони (email, телефони у типових форматах, Bearer, JWT). Це не гарантія для довільного нового формату.
+
+## Пов'язані у базі знань
+
+[[0002-privacy-by-design-module]] · [[sdd]] · [[consent]] · [[pii_inventory]] #architecture

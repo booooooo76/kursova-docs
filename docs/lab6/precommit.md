@@ -1,3 +1,12 @@
+---
+title: Pre-commit хук
+owner: Загребенюк Б. (booooooo76)
+status: published
+review_date: 2027-02-20
+tags:
+  - ops
+---
+
 # Лаб.6, Завдання 3. Локальний «воротар якості»: pre-commit хук складності
 
 ## 1. Де лежить хук і чому не в `.git/hooks/`
@@ -48,7 +57,7 @@
 доставки замовлення в робочих днях) з глибокою вкладеністю умов: **CC = 12** (radon `C (12)`, lizard 12).
 `git add models/delivery.py` + `git commit -m "feat: add messy code"`:
 
-```
+```text
 pre-commit: lizard, cyclomatic complexity limit CC <= 10, staged files:
   models/delivery.py
   COMPLEXITY VIOLATION: models/delivery.py:4  delivery_days()  CC = 12  (limit CC 10)
@@ -91,3 +100,7 @@ def delivery_days(delivery_type, region, express):
 лише на те, що йде в коміт (staged-версії файлів), читає код виходу lizard і розбирає його вивід, а старий борг не
 блокує роботу, але й не дає йому рости. Ліміт 10 узгоджено з рефакторингом Завд.2: обидві функції, переписані через
 довідники даних, мають CC 1 і 2.
+
+## Пов'язані у базі знань
+
+[[isd]] · [[code-standards]] · [[secrets_prevention]] #ops

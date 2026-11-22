@@ -1,3 +1,12 @@
+---
+title: Запобігання витоку секретів
+owner: Загребенюк Б. (booooooo76)
+status: published
+review_date: 2027-02-20
+tags:
+  - ops
+---
+
 # Лаб.3 Завд.3 — Secrets Leak Prevention
 
 Реальних секретів у цьому документі немає. Усі значення в логах приховані (`--redact`), а токен у краш-тесті синтетичний.
@@ -34,7 +43,7 @@ Hook перевіряє **staged-зміни**, тобто те, що саме з
 
 У спеціальному файлі `secrets_trap.py` створено синтетичне значення у форматі GitHub-токена (`ghp_` + 36 випадкових символів, згенерованих під час демо; воно не відкриває доступу до жодного сервісу). Файл додано в staging і виконано коміт:
 
-```
+```text
 > git commit -m 'test: secrets trap'; "exit: $LASTEXITCODE"
 Finding:     API_TOKEN = 'REDACTED
 Secret:      REDACTED
@@ -77,14 +86,14 @@ class Config:
 
 **`.gitignore`.** Локальний файл зі значеннями не відстежується git:
 
-```
+```text
 # Environment variables / secrets
 .env
 ```
 
 **`.env.example`.** Шаблон без реальних значень. Секрети порожні навмисно: з порожнім значенням застосунок не стартує, тож забути їх заповнити неможливо:
 
-```
+```text
 SECRET_KEY=
 DB_HOST=localhost
 DB_PORT=5432
@@ -99,7 +108,7 @@ DB_PASSWORD=
 
 Токен із файлу-пастки замінено на читання зі змінної середовища, у `.env.example` додано порожній плейсхолдер `API_TOKEN=`, значення передано через `$env:API_TOKEN`:
 
-```
+```text
 > $env:API_TOKEN = $tok; python -c "import secrets_trap; print('token from env:', bool(secrets_trap.API_TOKEN))"
 token from env: True
 > git add secrets_trap.py .env.example
@@ -114,7 +123,7 @@ exit: 0
 
 **Очищення Git-стану.** Токена немає ні в staged, ні в історії жодної гілки:
 
-```
+```text
 > git log --all --oneline -S'ghp_'                  # порожньо
 > git diff --cached --name-only                     # порожньо
 > .\scripts\secrets_scan.ps1 -History; "exit: $LASTEXITCODE"
@@ -144,7 +153,7 @@ exit: 0
 
 ## 8. Відтворення на чистому клоні
 
-```
+```text
 winget install Gitleaks.Gitleaks            # один раз
 git config core.hooksPath .githooks         # підключити hook
 copy .env.example .env                      # і заповнити свої значення
@@ -158,3 +167,7 @@ copy .env.example .env                      # і заповнити свої з�
 | Secret scan, staged (hook) | PASS (змін немає) | **FAIL**: `github-pat`, `secrets_trap.py:1`, exit 1 | **PASS**, exit 0 |
 | Secret scan, уся історія | стандартні правила: 0 знахідок (хибно); власні правила: **FAIL, 4** | — | **PASS**, exit 0 (4 відкликані відбитки в `.gitleaksignore`) |
 | Git repository state | реальні секрети в історії (`a68b439`) | коміт заблоковано, `HEAD` не змінився | без секретів у коді, `.env` в `.gitignore`, значення відкликані |
+
+## Пов'язані у базі знань
+
+[[isd]] · [[code-standards]] · [[precommit]] #ops

@@ -1,3 +1,12 @@
+---
+title: Реєстр ADR
+owner: Загребенюк Б. (booooooo76)
+status: published
+review_date: 2027-05-21
+tags:
+  - architecture
+---
+
 # Architecture Decision Records
 
 Кожне архітектурне рішення записується окремим файлом `NNNN-назва.md` за шаблоном: номер, статус, контекст,
@@ -12,3 +21,7 @@
 Статуси: `Proposed` → `Accepted` → (`Deprecated` | `Superseded by ADR-NNNN`).
 
 Власник реєстру: Загребенюк Б. · цикл перегляду 180 днів · переглянуто 2026-11-22.
+
+## Пов'язані у базі знань
+
+[[0001-postgresql-psycopg2]] · [[0002-privacy-by-design-module]] · [[sdd]] #architecture

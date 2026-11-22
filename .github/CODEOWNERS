@@ -1,0 +1,9 @@
+# Власники документації (Лаб.11): зміна в цих шляхах вимагає рев'ю власника перед злиттям
+# (у налаштуваннях гілки main: Require review from Code Owners).
+/docs/                          @booooooo76
+/docs/api/openapi.yaml          @booooooo76
+/docs/architecture/             @booooooo76
+/mkdocs.yml                     @booooooo76
+/README.md                      @booooooo76
+/CHANGELOG.md                   @booooooo76
+/.github/workflows/docs.yml     @booooooo76

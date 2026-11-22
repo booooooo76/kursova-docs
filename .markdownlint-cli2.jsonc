@@ -1,0 +1,26 @@
+// Лаб.11: стиль Markdown бази знань. Запуск: npx markdownlint-cli2@0.14.0
+{
+  "config": {
+    "default": true,
+    "MD013": false,          // довжина рядка: таблиці й посилання природно довгі
+    "MD033": false,          // inline HTML: якорі <a id>, <swagger-ui>
+    "MD041": false,          // перший рядок - front matter / snippet, а не заголовок
+    "MD024": {"siblings_only": true},
+    "MD025": {"front_matter_title": ""},   // title у front matter - для навігації сайту, H1 - у тексті
+    "MD046": {"style": "fenced"},
+    "MD060": false
+  },
+  // перевіряємо опубліковані сторінки; протоколи лаб (документація процесу) не публікуються й не лінтяться
+  "globs": [
+    "README.md",
+    "CHANGELOG.md",
+    "docs/index.md",
+    "docs/developer/**/*.md",
+    "docs/api/**/*.md",
+    "docs/architecture/**/*.md",
+    "docs/lab4/*.md",
+    "docs/lab3/secrets_prevention.md",
+    "docs/lab6/precommit.md",
+    "docs/archive/README.md"
+  ]
+}

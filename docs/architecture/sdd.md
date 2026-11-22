@@ -1,7 +1,12 @@
 ---
+title: "SDD: будова системи"
+owner: Загребенюк Б. (booooooo76)
+status: published
+review_date: 2027-05-21
+tags:
+  - architecture
 document: SDD (System Design Document)
 system: Kursova PC Shop
-owner: Загребенюк Б. (booooooo76)
 category: архітектурна
 review_cycle_days: 180
 last_reviewed: 2026-11-22
@@ -10,7 +15,7 @@ last_reviewed: 2026-11-22
 # SDD: як влаштована система Kursova PC Shop
 
 Документ відповідає на питання **«з чого складається система і як частини взаємодіють»**. Де і на чому вона працює,
-описує [ISD](isd.md), чому прийнято саме такі рішення — [ADR](architecture/adr/). Швидкий старт є в [README](../README.md).
+описує [ISD](isd.md), чому прийнято саме такі рішення — [ADR](adr/index.md). Швидкий старт є на [головній сторінці](../index.md).
 
 ## 1. Призначення й межі
 
@@ -83,6 +88,8 @@ flowchart LR
     SV --> DLV[models/delivery.py]
     R --> HC[routers/health.py<br/>GET /api/health]
     HC --> DAL
+    R --> AD[routers/api_docs.py<br/>GET /api/docs, /api/openapi.yaml]
+    AD --> SPEC[/docs/api/openapi.yaml/]
   end
   DAL --> DB[(PostgreSQL)]
   RT --> FS[/static/uploads/]
@@ -91,18 +98,19 @@ flowchart LR
 
 | Компонент | Відповідальність | Ключові файли | Залежить від | Розгортання |
 |---|---|---|---|---|
-| <a id="c-web"></a>**Маршрути й сесія** | точка входу Flask: 34 власні маршрути (каталог, кошик, обране, замовлення, профіль, заявки, новини), реєстрація 62 маршрутів з `routers/` через `add_url_rule`, 2 blueprint-и приватності; авторизація Flask-Login і декоратор `require_permission(role)` | `app.py`, `config.py`, `templates/`, `static/js/` | [Операційні модулі](#c-routers), [Оформлення замовлення](#c-services), [Приватність](#c-privacy), [Перевірка стану](#c-health), [Доступ до даних](#c-dal), [Журнал](#c-log) | [ISD: вебзастосунок](isd.md#web) |
+| <a id="c-web"></a>**Маршрути й сесія** | точка входу Flask: 34 власні маршрути (каталог, кошик, обране, замовлення, профіль, заявки, новини), реєстрація 64 маршрутів з `routers/` через `add_url_rule`, 2 blueprint-и приватності; авторизація Flask-Login і декоратор `require_permission(role)` | `app.py`, `config.py`, `templates/`, `static/js/` | [Операційні модулі](#c-routers), [Оформлення замовлення](#c-services), [Приватність](#c-privacy), [Перевірка стану](#c-health), [Доступ до даних](#c-dal), [Журнал](#c-log) | [ISD: вебзастосунок](isd.md#web) |
 | <a id="c-routers"></a>**Операційні модулі** | `operator.py` товари, зображення, замовлення, заявки, новини; `admin.py` користувачі, заявки на права, статистика; `suppliers.py` постачальники, контракти, зобов'язання, поставки; `sql_queries.py` SQL-консоль, бібліотека й історія запитів; `pc_builder.py` конфігуратор ПК | `routers/*.py` | [Доступ до даних](#c-dal), файлове сховище | [ISD: файли](isd.md#files) |
 | <a id="c-services"></a>**Оформлення замовлення** | сценарій checkout після декомпозиції God Object (Лаб.8): кошик, каталог, ціни й доставка, термін доставки, запис замовлення в одній транзакції; залежить лише від Protocol-контрактів, реалізації підставляє Composition Root | `services/contracts.py`, `checkout.py`, `cart.py`, `pricing.py`, `delivery_estimate.py`, `orders.py`, `composition.py`, `values.py`, `promotions.py` | [Доступ до даних](#c-dal), `models/delivery.py` | [ISD: вебзастосунок](isd.md#web) |
 | <a id="c-privacy"></a>**Приватність** | REST API експорту даних суб'єкта й анонімізації (право на забуття), згоди за цілями з історією, черга маркетингу (outbox), аналітика лише за згодою, аудит без PII; правила в `consent.py`, політики в `policy.py` (Лаб.4, 7) | `privacy/api.py`, `consent_api.py`, `consent.py`, `erasure.py`, `export.py`, `actions.py`, `policy.py` | [Доступ до даних](#c-dal), [Журнал](#c-log) | [ISD: вебзастосунок](isd.md#web) |
 | <a id="c-dal"></a>**Доступ до даних** | з'єднання psycopg2 (`get_db_connection`), `execute_query`, `transaction()` (Лаб.7), `execute_query_resilient` з обмеженими повторами й експоненційною паузою (Лаб.2), перевірка пароля за хешем | `models/database.py` | PostgreSQL | [ISD: БД](isd.md#db) |
+| <a id="c-apidocs"></a>**Довідка API** | `GET /api/openapi.yaml` віддає контракт `docs/api/openapi.yaml` без змін (Single Source of Truth), `GET /api/docs` — Swagger UI на тому самому домені для «Try it out» | `routers/api_docs.py`, `docs/api/openapi.yaml` | файл контракту | [ISD: вебзастосунок](isd.md#web) |
 | <a id="c-health"></a>**Перевірка стану** | `GET /api/health`: перевіряє з'єднання з БД (`SELECT 1`) і наявність таблиць міграцій (`privacy_audit_log`, `user_consents`, `user_consent_history`, `marketing_outbox`); 200 `ok` або 503 `degraded` без деталей помилок і PII; використовується скриптом розгортання й моніторингом | `routers/health.py` | [Доступ до даних](#c-dal) | [ISD: порядок підняття](isd.md#4-порядок-підняття), [моніторинг](isd.md#6-моніторинг-і-резервне-копіювання) |
 | <a id="c-log"></a>**Безпечний журнал** | формат text або JSON (`LOG_FORMAT`), correlation ID на кожен запит, санітайзер PII і секретів, `security_event` для подій безпеки (Лаб.4) | `privacy/secure_logging.py`, `privacy/sanitizer.py` | stderr | [ISD: журнал](isd.md#logs) |
 
 ## 4. Модель даних
 
 Джерело правди: `tests/db/schema_base.sql` (`pg_dump --schema-only`) + `migrations/001_privacy_core.sql`,
-`002_consent.sql`. Старий документ схеми перенесено в [архів](archive/README.md) як застарілий.
+`002_consent.sql`. Старий документ схеми перенесено в [архів](../archive/README.md) як застарілий.
 
 ```mermaid
 %% name: er-core
@@ -220,6 +228,8 @@ erDiagram
 
 | Метод і шлях | Що робить | Доступ |
 |---|---|---|
+| `GET /api/docs` | Swagger UI працюючого екземпляра | без автентифікації |
+| `GET /api/openapi.yaml` | контракт OpenAPI (той самий файл, що й на сайті документації) | без автентифікації |
 | `GET /api/health` | стан екземпляра: БД і міграції; 200 `{"status": "ok", "checks": {...}}` або 503 `degraded` (+ `missing_tables`) | без автентифікації (моніторинг) |
 | `GET /api/cart/count` | кількість позицій у кошику (сесія або БД) | guest / authorized |
 | `GET /api/wishlist/count` | кількість товарів в обраному | authorized |
@@ -235,6 +245,8 @@ erDiagram
 | `POST /api/queries/<id>/execute` | виконати збережений SQL-запит | admin |
 | `POST /api/queries/<id>/delete` | видалити збережений запит | admin |
 | `POST /api/queries/export` | вивантажити результат запиту | admin |
+
+Формальний контракт чотирьох маршрутів (схеми, приклади, коди відповідей) — `docs/api/openapi.yaml`. Помилки всіх JSON-маршрутів, включно з 404 і 500 для `/api/...`, повертаються єдиним об'єктом `{"error": "<код>"}`; HTML-сторінку помилки отримують лише звичайні сторінки.
 
 ### 5.4. Внутрішні контракти
 
@@ -255,6 +267,10 @@ erDiagram
 
 ## 7. Пов'язані документи
 
-[README](../README.md) · [ISD](isd.md) · [ADR-0001 PostgreSQL](architecture/adr/0001-postgresql-psycopg2.md) ·
-[ADR-0002 приватність](architecture/adr/0002-privacy-by-design-module.md) · [регламент](maintenance.md) ·
-політики приватності [docs/lab4/](lab4/) · [архів](archive/README.md)
+[головна](../index.md) · [ISD](isd.md) · [ADR-0001 PostgreSQL](adr/0001-postgresql-psycopg2.md) ·
+[ADR-0002 приватність](adr/0002-privacy-by-design-module.md) · [регламент](maintenance.md) ·
+політики приватності [docs/lab4/](../lab4/consent.md) · [архів](../archive/README.md)
+
+## Пов'язані у базі знань
+
+[[isd]] · [[0001-postgresql-psycopg2]] · [[0002-privacy-by-design-module]] · [[maintenance]] · [[openapi-contract]] · [[consent]] #architecture

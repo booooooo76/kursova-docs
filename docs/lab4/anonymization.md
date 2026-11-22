@@ -1,3 +1,11 @@
+---
+owner: Загребенюк Б. (booooooo76)
+status: published
+review_date: 2027-04-16
+tags:
+  - architecture
+---
+
 # Лаб.4, Завд.3: Right to Erasure та Anonymization Workflow (GDPR Art. 17)
 
 Усі значення в документі синтетичні (демо-БД з вигаданими користувачами, `example.test`).
@@ -104,7 +112,7 @@
 
 ## 6. Тести (`tests/test_anonymization.py`, 29 інтеграційних тестів на справжній БД)
 
-```
+```text
 python -m pytest tests/test_anonymization.py -q
 ```
 
@@ -143,3 +151,7 @@ python -m pytest tests/test_anonymization.py -q
 * **Адміністратор** може анонімізувати будь-кого; обмеження «за яких умов» це процес, а не код. Кожен виклик потрапляє в audit.
 * Рядок `keys` із випадковим логіном лишається: це «нейтральний системний запис», на який посилаються бізнес-записи. Він не містить PII, але факт існування облікового запису зберігається.
 * **Робоча БД:** перед використанням на ній виконайте `python scripts/migrate.py` (додає `keys.anonymized_at` і `privacy_audit_log`).
+
+## Пов'язані у базі знань
+
+[[0002-privacy-by-design-module]] · [[sdd]] · [[consent]] · [[pii_inventory]] #architecture

@@ -1,3 +1,11 @@
+---
+owner: Загребенюк Б. (booooooo76)
+status: published
+review_date: 2027-04-16
+tags:
+  - architecture
+---
+
 # Лаб.4, Завд.2: Right of Access та Personal Data Export (GDPR Art. 15)
 
 Усі приклади отримано з **демо-БД з вигаданими користувачами** (`example.test`), реальних PII тут немає.
@@ -176,7 +184,7 @@
 
 ## 7. Тести (`tests/test_personal_data_export.py`, 22 інтеграційні тести на справжній тестовій БД)
 
-```
+```text
 python -m pytest tests/test_personal_data_export.py -q
 ```
 
@@ -201,7 +209,7 @@ python -m pytest tests/test_personal_data_export.py -q
 
 ## 7.1. Демонстрація (крок 2 захисту)
 
-```
+```text
 python scripts/demo_db.py                                            # одноразова демо-БД з вигаданими користувачами
 $env:DB_NAME = "computer_store_demo"; python app.py                  # сервер на демо-БД (термінал 1)
 .\scripts\privacy_demo.ps1                                            # API-клієнт (термінал 2)
@@ -217,3 +225,7 @@ $env:DB_NAME = "computer_store_demo"; python app.py                  # серв�
 * Обмеження частоти запитів (rate limiting) і підтвердження особи (повторна автентифікація перед експортом) не реалізовані: це наступний рівень захисту.
 * Адміністратор може експортувати будь-кого; обмеження на рівні організації («навіщо адміну ці дані») це процес, а не код. Тому кожен такий виклик потрапляє в аудит.
 * Секцію `settings` позначено як `omissions` (система не зберігає налаштувань профілю). Секції `consents` і `consent_history` (Завд.4) тепер справжні.
+
+## Пов'язані у базі знань
+
+[[0002-privacy-by-design-module]] · [[sdd]] · [[consent]] · [[pii_inventory]] #architecture

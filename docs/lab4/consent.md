@@ -1,3 +1,11 @@
+---
+owner: Загребенюк Б. (booooooo76)
+status: published
+review_date: 2027-04-16
+tags:
+  - architecture
+---
+
 # Лаб.4, Завд.4: Consent Management Engine (GDPR Art. 7)
 
 Усі приклади синтетичні: користувачі `demo_alice`, `demo_bob`, `demo_admin` існують лише в одноразовій демо-БД.
@@ -118,7 +126,7 @@ Gate і побічний ефект виконуються в **одній тр�
 
 ## 6. Тести (`tests/test_consent.py`, 43 інтеграційних тести на справжній БД)
 
-```
+```text
 pytest tests/test_consent.py -v          # усі 43
 pytest tests/test_consent.py -k scenario -v   # GRANT -> ALLOW -> REVOKE -> DENY (маркетинг, аналітика) і ізоляція цілей: 3 тести
 ```
@@ -160,7 +168,7 @@ pytest tests/test_consent.py -k scenario -v   # GRANT -> ALLOW -> REVOKE -> DENY
 
 ## 7. Відтворення (жива демонстрація)
 
-```
+```text
 python scripts/demo_db.py                                          # скинути демо-БД (обов'язково перед кожним прогоном)
 $env:DB_NAME = "computer_store_demo"; python app.py                # сервер (термінал 1)
 .\scripts\consent_demo.ps1                                         # клієнт (термінал 2)
@@ -179,3 +187,7 @@ pytest tests/test_consent.py -k scenario -v                        # завер�
 * **Інші підстави обробки.** Згода тут одна з підстав; договірні й законні підстави (виконання замовлення, облік) Gate не стосуються навмисно.
 * **Rate limiting та повторна автентифікація** перед зміною згоди не реалізовані.
 * **Робоча БД:** перед використанням виконайте `python scripts/migrate.py` (міграція `002_consent.sql`).
+
+## Пов'язані у базі знань
+
+[[0002-privacy-by-design-module]] · [[sdd]] · [[consent]] · [[pii_inventory]] #architecture

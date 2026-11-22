@@ -1,13 +1,28 @@
+---
+title: Архів (deprecated)
+owner: Загребенюк Б. (booooooo76)
+status: deprecated
+tags:
+  - architecture
+---
+
 # Архів: застаріла документація (DEPRECATED)
+
+!!! warning "Сторінка застаріла (status: deprecated)"
+    Актуальна модель даних — у [SDD, розділ 4](../architecture/sdd.md#4-модель-даних).
 
 Файли цієї папки **не описують поточну систему**. Їх збережено за вердиктом аудиту Лаб.10 (`docs/lab10/antipatterns.md`)
 як історичний запис. Для роботи користуйтеся актуальними джерелами праворуч.
 
 | Файл | Що описував | Стан на | Чому deprecated | Актуальне джерело |
 |---|---|---|---|---|
-| `database/create_db.txt` | схема БД (CREATE TABLE) | 17.10.2025 | 23 таблиці проти 45 реальних; clients, employees більше не існують | `tests/db/schema_base.sql`, `migrations/*.sql`, `docs/sdd.md` розділ 4 |
+| `database/create_db.txt` | схема БД (CREATE TABLE) | 17.10.2025 | 23 таблиці проти 45 реальних; clients, employees більше не існують | `tests/db/schema_base.sql`, `migrations/*.sql`, [SDD](../architecture/sdd.md) розділ 4 |
 | `database/users_table_sql.txt` | таблиці користувачів і заявок | 17.10.2025 | немає згод і аудиту приватності (Лаб.4); стартові паролі вилучено при архівації | те саме |
 | `database/insert_sample_data.txt` | тестове наповнення | 17.10.2025 | дані під стару схему | `tests/factories.py`, `scripts/demo_db.py` |
 
 Правило: архівні файли не редагуються. Якщо щось із них знову знадобиться, перенесіть знання в документ продукту
 (README, SDD, ISD) і зробіть посилання звідти.
+
+## Пов'язані у базі знань
+
+Актуальна модель даних: [[sdd]] #architecture

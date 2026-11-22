@@ -1,10 +1,10 @@
 # Kursova PC Shop
 
 Вебзастосунок комп'ютерного магазину із сервісним центром: каталог і продаж техніки, конфігуратор ПК, заявки на
-ремонт і встановлення ПЗ, облік постачальників і поставок, адміністрування користувачів. Побудований на Flask і
-PostgreSQL, із вбудованим захистом персональних даних (експорт, право на забуття, згоди).
+ремонт і встановлення ПЗ, облік постачальників і поставок, адміністрування користувачів. Flask + PostgreSQL, із
+вбудованим захистом персональних даних (експорт, право на забуття, згоди).
 
-> Власник документа: Загребенюк Б. · категорія: експлуатаційна · цикл перегляду 90 днів · переглянуто 2026-11-22
+**База знань (сайт документації): <https://booooooo76.github.io/kursova-docs/>**
 
 ## Для кого і що вміє
 
@@ -12,84 +12,44 @@ PostgreSQL, із вбудованим захистом персональних 
 |---|---|
 | Відвідувач (guest) | переглядає каталог і новини, збирає кошик |
 | Клієнт (authorized) | оформлює замовлення, веде обране, подає заявки на ремонт і ПЗ, керує профілем, згодами й своїми персональними даними |
-| Оператор (operator) | веде товари й зображення, обробляє замовлення та заявки, публікує новини, працює з постачальниками, контрактами й поставками |
+| Оператор (operator) | веде товари, обробляє замовлення та заявки, публікує новини, працює з постачальниками й поставками |
 | Адміністратор (admin) | керує користувачами й правами, дивиться статистику, працює із SQL-консоллю |
 
 ## Швидкий старт (Windows, PowerShell)
 
-Потрібно: Python 3.11, PostgreSQL 18 (служба `postgresql-x64-18`), Git.
+Потрібно: Python 3.11, PostgreSQL 18, Git.
 
 ```powershell
 git clone https://github.com/booooooo76/Kursova.git; cd Kursova
 python -m venv venv
 .\venv\Scripts\python.exe -m pip install -r requirements.txt -r requirements-dev.txt
-Copy-Item .env.example .env        # заповнити SECRET_KEY і DB_PASSWORD (підказка всередині файлу)
-.\venv\Scripts\python.exe scripts\demo_db.py          # демо-БД computer_store_demo: схема + міграції + синтетичні дані
+Copy-Item .env.example .env        # заповнити SECRET_KEY і DB_PASSWORD
+.\venv\Scripts\python.exe scripts\demo_db.py          # демо-БД: схема + міграції + синтетичні дані
 $env:DB_NAME = "computer_store_demo"; .\venv\Scripts\python.exe app.py
 ```
 
-Відкрийте http://localhost:5000. Демо-користувачі та їхній пароль описані в docstring `scripts/demo_db.py`.
+Відкрийте <http://localhost:5000>. Перевірка стану: `Invoke-RestMethod http://localhost:5000/api/health` повертає
+`status: ok`; 503 з `migrations: missing` означає, що треба виконати `scripts\migrate.py`. Інтерактивна довідка API
+працюючого екземпляра: <http://localhost:5000/api/docs>.
 
-Перевірка стану: `Invoke-RestMethod http://localhost:5000/api/health` повертає `status: ok`. Відповідь 503 з
-`migrations: missing` означає, що БД не мігрована: виконайте `.\venv\Scripts\python.exe scripts\migrate.py`.
+## Документація: чотири рівні
 
-Робоча БД замість демо: створіть `computer_store`, розгорніть схему з `tests/db/schema_base.sql`, застосуйте
-`scripts\migrate.py` (докладно: [ISD, порядок підняття](docs/isd.md#4-порядок-підняття)).
+| Рівень | Питання | Де |
+|---|---|---|
+| 1. README | що це і як запустити? | цей файл |
+| 2. Developer Docs | як приєднатися до розробки? | [Розробникам](https://booooooo76.github.io/kursova-docs/developer/CONTRIBUTING/) (`docs/developer/`) |
+| 3. API Docs | як інтегруватися? | [API](https://booooooo76.github.io/kursova-docs/api/) (`docs/api/openapi.yaml`) |
+| 4. Architecture Docs | чому система влаштована саме так? | [Архітектура](https://booooooo76.github.io/kursova-docs/architecture/sdd/) (`docs/architecture/`: SDD, ISD, ADR) |
 
-## Шлях онбордингу нового розробника
+## Definition of Done для документації
 
-1. **Цей README**: призначення, ролі, швидкий старт; підняти демо-версію локально (≈15 хв).
-2. **[SDD](docs/sdd.md)**: C4-діаграма, компоненти, модель даних, API-контракти. Знайдіть компонент, з яким працюватимете.
-3. **[ISD](docs/isd.md)**: середовища, змінні оточення, CI, резервні копії.
-4. **[ADR](docs/architecture/adr/)**: чому PostgreSQL без ORM і чому приватність винесена в окремий модуль.
-5. **Перша зміна**: увімкнути хуки `git config core.hooksPath .githooks`, прогнати тести
-   `.\venv\Scripts\python.exe -m pytest -q` (315 тестів, потрібен PostgreSQL) і прочитати [регламент документації](docs/maintenance.md).
+| Що перевіряється | Інструмент | Де запускається |
+|---|---|---|
+| Контракт API | Spectral, 0 errors (`.spectral.yaml`) | CI `docs.yml` |
+| Розмітка Markdown | markdownlint (`.markdownlint.jsonc`) | CI `docs.yml` |
+| Посилання й навігація | `mkdocs build --strict` | CI `docs.yml` |
+| Актуальність | `review_date` у front matter (`tools/doc_review_dates.py`) | CI `docs.yml` |
+| Код і документи разом | `tools/doc_currency.py` | перед злиттям |
 
-## Тести й якість
-
-| Команда | Що перевіряє |
-|---|---|
-| `.\venv\Scripts\python.exe -m pytest -q` | 315 тестів; тестову БД `<DB_NAME>_test` pytest створює сам |
-| `git commit` | pre-commit: gitleaks (секрети) і lizard (CC ≤ 10 для нових функцій) |
-| GitHub Actions `quality-metrics` | складність, churn і Hotspots при кожному push |
-| `.\scan.ps1` | SonarQube (окремий сервер у Docker, див. ISD) |
-| `tools\doc_currency.py` | ворота документації: код не змінено без оновлення README / SDD / ISD |
-
-## Клавіатура
-
-| Клавіша | Дія |
-|---|---|
-| F1 | довідка з усіма скороченнями |
-| Esc | закрити діалог або повернутися назад |
-| Enter | перейти до наступного поля форми / надіслати форму в останньому полі |
-| Ctrl + S | зберегти форму, що редагується |
-
-## Структура
-
-```
-app.py          маршрути, ролі, сесія (точка входу)
-routers/        оператор, адміністратор, постачальники, SQL-консоль, конфігуратор ПК, перевірка стану (health)
-services/       оформлення замовлення через контракти (Protocol) і Composition Root
-privacy/        експорт, анонімізація, згоди, безпечний журнал
-models/         доступ до БД, термін доставки
-migrations/     ідемпотентні SQL-міграції
-templates/, static/   сторінки Jinja2, JS, завантажені зображення
-tests/          pytest; tests/db/schema_base.sql - знімок схеми
-tools/, scripts/      метрики якості, демо, міграції
-docs/           SDD, ISD, ADR, регламент; docs/labN - протоколи лабораторних (історія)
-```
-
-## Документація
-
-| Документ | Питання, на яке відповідає |
-|---|---|
-| [docs/sdd.md](docs/sdd.md) | з чого складається система і як частини взаємодіють |
-| [docs/isd.md](docs/isd.md) | де й на чому працює, як підняти, перевірити й відновити |
-| [docs/architecture/adr/](docs/architecture/adr/) | чому прийнято ключові рішення |
-| [docs/maintenance.md](docs/maintenance.md) | хто відповідає за документи, як часто їх переглядати, які зміни коду вимагають оновлення |
-| [docs/handover.md](docs/handover.md) | пакет передачі системи команді супроводу: онбординг, Bus Factor, темні зони |
-| [docs/lab4/](docs/lab4/) | політики приватності (згоди, журнали, інвентар PII) |
-| [docs/archive/](docs/archive/README.md) | застарілі документи, лише для історії |
-
-Правило: **зміна коду = зміна документації**. Зміна поведінки, маршруту, схеми чи розгортання потрапляє в
-основну гілку лише разом з оновленням README / SDD / ISD.
+Правило: **docs-or-don't-merge** — зміна публічної поведінки не зливається без оновлення `docs/`, OpenAPI та
+`CHANGELOG.md` (чек-лист у [CONTRIBUTING](https://booooooo76.github.io/kursova-docs/developer/CONTRIBUTING/)).

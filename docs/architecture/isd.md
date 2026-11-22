@@ -1,7 +1,13 @@
 ---
+title: "ISD: інфраструктура"
+owner: Загребенюк Б. (booooooo76)
+status: published
+review_date: 2027-02-20
+tags:
+  - ops
+  - architecture
 document: ISD (Infrastructure Specification Document)
 system: Kursova PC Shop
-owner: Загребенюк Б. (booooooo76)
 category: експлуатаційна
 review_cycle_days: 90
 last_reviewed: 2026-11-22
@@ -10,7 +16,7 @@ last_reviewed: 2026-11-22
 # ISD: де і на чому працює Kursova PC Shop
 
 Документ відповідає на питання **«як підняти, налаштувати, перевірити й відновити систему»**. Внутрішню будову
-описує [SDD](sdd.md), рішення — [ADR](architecture/adr/).
+описує [SDD](sdd.md), рішення — [ADR](adr/index.md).
 
 ## 1. Топологія розгортання
 
@@ -52,7 +58,7 @@ Production-середовища немає; вимоги до нього нав�
 
 ### Змінні середовища (без секретів)
 
-Шаблон: [`.env.example`](../.env.example); файл `.env` у `.gitignore`. Секрети читає `config.py` лише з оточення: без
+Шаблон: `.env.example` у корені репозиторію; файл `.env` у `.gitignore`. Секрети читає `config.py` лише з оточення: без
 `SECRET_KEY` чи `DB_PASSWORD` застосунок не стартує.
 
 | Змінна | Обов'язкова | За замовчуванням | Призначення |
@@ -108,7 +114,7 @@ Production-середовища немає; вимоги до нього нав�
 5. **Дочекатися готовності**: `Invoke-RestMethod http://localhost:5000/api/health` має повернути `status: ok`.
    503 `database: unavailable` → повернутися до кроку 1; 503 `migrations: missing` → крок 3 не виконано. Лише після
    `ok` екземпляр вважається готовим приймати користувачів.
-6. Відкрити http://localhost:5000 (якщо БД зникне під час роботи, `/products` покаже сторінку-заглушку замість 500).
+6. Відкрити <http://localhost:5000> (якщо БД зникне під час роботи, `/products` покаже сторінку-заглушку замість 500).
 
 Відкат релізу: `git checkout <попередній тег або коміт>`, перезапуск застосунку. Міграції лише додають об'єкти
 (`IF NOT EXISTS`), тому старий код працює з новою схемою; руйнівні міграції заборонені регламентом.
@@ -150,5 +156,9 @@ CD немає: розгортання ручне за розділом 4. Про
 
 ## 7. Пов'язані документи
 
-[README](../README.md) · [SDD](sdd.md) · [ADR](architecture/adr/) · [регламент](maintenance.md) ·
-[запобігання секретам](lab3/secrets_prevention.md) · [pre-commit](lab6/precommit.md)
+[головна](../index.md) · [SDD](sdd.md) · [ADR](adr/index.md) · [регламент](maintenance.md) ·
+[запобігання секретам](../lab3/secrets_prevention.md) · [pre-commit](../lab6/precommit.md)
+
+## Пов'язані у базі знань
+
+[[sdd]] · [[local-setup]] · [[maintenance]] · [[handover]] · [[secrets_prevention]] · [[precommit]] #ops

@@ -1,0 +1,8 @@
+# Документація як код (Лаб.11): збирання сайту MkDocs. Версії закріплені, як і для коду.
+mkdocs==1.6.1
+mkdocs-material==9.5.39
+mkdocs-mermaid2-plugin==1.1.1
+mkdocs-git-revision-date-localized-plugin==1.2.9
+mkdocs-swagger-ui-tag==0.6.10
+mkdocs-redirects==1.2.1
+PyYAML>=6.0
