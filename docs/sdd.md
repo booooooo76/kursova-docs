@@ -210,7 +210,29 @@ erDiagram
 
 Усі дії пишуться в `privacy_audit_log` (тип, хто, над ким, результат, correlation ID) без самих персональних даних.
 
-### 5.3. Внутрішні контракти
+### 5.3. Повний перелік JSON-ендпоінтів
+
+Регламент ([maintenance.md](maintenance.md)) вимагає, щоб тут був **кожен** маршрут `/api/...` з коду: ворота
+`tools/doc_currency.py` звіряють цей перелік із кодом автоматично. Ендпоінти приватності описано в 5.2.
+
+| Метод і шлях | Що робить | Доступ |
+|---|---|---|
+| `GET /api/cart/count` | кількість позицій у кошику (сесія або БД) | guest / authorized |
+| `GET /api/wishlist/count` | кількість товарів в обраному | authorized |
+| `POST /api/products/<id>/delete` | приховати товар (м'яке видалення) | operator |
+| `POST /api/products/<id>/delete-permanently` | видалити товар остаточно | operator |
+| `POST /api/products/<id>/restore` | відновити прихований товар | operator |
+| `POST /api/products/<id>/upload-image` | завантажити зображення товару в `static/uploads/products/` | operator |
+| `POST /api/products/images/<id>/delete` | видалити зображення | operator |
+| `POST /api/products/images/<id>/set-main` | зробити зображення головним | operator |
+| `POST /api/orders/update-status` | змінити статус замовлення | operator |
+| `POST /api/orders/cancel` | скасувати замовлення | operator |
+| `GET /api/orders/export` | вивантажити замовлення | operator |
+| `POST /api/queries/<id>/execute` | виконати збережений SQL-запит | admin |
+| `POST /api/queries/<id>/delete` | видалити збережений запит | admin |
+| `POST /api/queries/export` | вивантажити результат запиту | admin |
+
+### 5.4. Внутрішні контракти
 
 | Контракт | Хто викликає | Реалізація |
 |---|---|---|
@@ -230,5 +252,5 @@ erDiagram
 ## 7. Пов'язані документи
 
 [README](../README.md) · [ISD](isd.md) · [ADR-0001 PostgreSQL](architecture/adr/0001-postgresql-psycopg2.md) ·
-[ADR-0002 приватність](architecture/adr/0002-privacy-by-design-module.md) ·
+[ADR-0002 приватність](architecture/adr/0002-privacy-by-design-module.md) · [регламент](maintenance.md) ·
 політики приватності [docs/lab4/](lab4/) · [архів](archive/README.md)

@@ -1,0 +1,26 @@
+{
+ "_about": "Лаб.10, Завд.3: документи архітектурного паспорта для повторного аудиту метрик (до / FAIL / PASS). Компоненти = тригери з tools/doc_currency.py.",
+ "owner_default": "Загребенюк Б. (booooooo76)",
+ "artifacts": [
+  {"id": "P1", "name": "README.md", "paths": ["README.md"], "type": "продукт", "category": "експлуатаційна",
+   "audiences": ["новачок", "бізнес"], "uncovered": "-",
+   "component": ["app.py", "routers", "requirements.txt", ".env.example", "scripts/demo_db.py", "static/js/keyboard-shortcuts.js"],
+   "verdict": "оновити", "diagnosis": "паспорт", "rationale": "вхід у проєкт; цикл 90 днів"},
+  {"id": "P2", "name": "SDD docs/sdd.md", "paths": ["docs/sdd.md"], "type": "продукт", "category": "архітектурна",
+   "audiences": ["розробники", "QA"], "uncovered": "-",
+   "component": ["app.py", "routers", "services", "privacy", "models", "migrations", "tests/db/schema_base.sql"],
+   "verdict": "оновити", "diagnosis": "паспорт", "rationale": "будова системи; цикл 180 днів"},
+  {"id": "P3", "name": "ISD docs/isd.md", "paths": ["docs/isd.md"], "type": "продукт", "category": "експлуатаційна",
+   "audiences": ["DevOps"], "uncovered": "-",
+   "component": ["app.py", "config.py", ".env.example", "requirements.txt", "migrations", "scripts/migrate.py", ".github/workflows", ".githooks", "sonar-project.properties", "scan.ps1"],
+   "verdict": "оновити", "diagnosis": "паспорт", "rationale": "розгортання; цикл 90 днів"},
+  {"id": "P4", "name": "ADR docs/architecture/adr/", "paths": ["docs/architecture/adr"], "type": "продукт", "category": "архітектурна",
+   "audiences": ["розробники"], "uncovered": "-",
+   "component": ["requirements.txt", "models/database.py", "privacy/policy.py", "migrations"],
+   "verdict": "оновити", "diagnosis": "паспорт", "rationale": "рішення; цикл 180 днів"},
+  {"id": "P5", "name": "Регламент docs/maintenance.md", "paths": ["docs/maintenance.md"], "type": "процес", "category": "експлуатаційна",
+   "audiences": ["розробники", "DevOps"], "uncovered": "-",
+   "component": [],
+   "verdict": "оновити", "diagnosis": "паспорт", "rationale": "регламент; цикл 90 днів"}
+ ]
+}

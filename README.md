@@ -40,7 +40,7 @@ $env:DB_NAME = "computer_store_demo"; .\venv\Scripts\python.exe app.py
 3. **[ISD](docs/isd.md)**: середовища, змінні оточення, CI, резервні копії.
 4. **[ADR](docs/architecture/adr/)**: чому PostgreSQL без ORM і чому приватність винесена в окремий модуль.
 5. **Перша зміна**: увімкнути хуки `git config core.hooksPath .githooks`, прогнати тести
-   `.\venv\Scripts\python.exe -m pytest -q` (315 тестів, потрібен PostgreSQL).
+   `.\venv\Scripts\python.exe -m pytest -q` (315 тестів, потрібен PostgreSQL) і прочитати [регламент документації](docs/maintenance.md).
 
 ## Тести й якість
 
@@ -82,6 +82,7 @@ docs/           SDD, ISD, ADR, регламент; docs/labN - протокол�
 | [docs/sdd.md](docs/sdd.md) | з чого складається система і як частини взаємодіють |
 | [docs/isd.md](docs/isd.md) | де й на чому працює, як підняти, перевірити й відновити |
 | [docs/architecture/adr/](docs/architecture/adr/) | чому прийнято ключові рішення |
+| [docs/maintenance.md](docs/maintenance.md) | хто відповідає за документи, як часто їх переглядати, які зміни коду вимагають оновлення |
 | [docs/lab4/](docs/lab4/) | політики приватності (згоди, журнали, інвентар PII) |
 | [docs/archive/](docs/archive/README.md) | застарілі документи, лише для історії |
 

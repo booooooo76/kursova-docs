@@ -146,5 +146,5 @@ CD немає: розгортання ручне за розділом 4. Про
 
 ## 7. Пов'язані документи
 
-[README](../README.md) · [SDD](sdd.md) · [ADR](architecture/adr/) ·
+[README](../README.md) · [SDD](sdd.md) · [ADR](architecture/adr/) · [регламент](maintenance.md) ·
 [запобігання секретам](lab3/secrets_prevention.md) · [pre-commit](lab6/precommit.md)
