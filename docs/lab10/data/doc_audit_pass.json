@@ -1,0 +1,170 @@
+{
+ "today": "2026-11-22",
+ "metrics": {
+  "P1": {
+   "updated": "2026-11-22",
+   "sha": "29342de68a1346ff201939944c484228d983243d",
+   "age": 0,
+   "age_flag": "свіжий",
+   "doc_commits": 3,
+   "refs": [
+    ".github/pull_request_template.md",
+    "docs/isd.md",
+    "docs/maintenance.md",
+    "docs/sdd.md",
+    "tests/test_doc_audit.py",
+    "tools/doc_currency.py"
+   ],
+   "touched_30d": 3,
+   "code_total": 23,
+   "code_after": 0,
+   "drift": false,
+   "consumer": true
+  },
+  "P2": {
+   "updated": "2026-11-22",
+   "sha": "29342de68a1346ff201939944c484228d983243d",
+   "age": 0,
+   "age_flag": "свіжий",
+   "doc_commits": 3,
+   "refs": [
+    ".github/pull_request_template.md",
+    "README.md",
+    "docs/architecture/adr/0001-postgresql-psycopg2.md",
+    "docs/architecture/adr/0002-privacy-by-design-module.md",
+    "docs/archive/README.md",
+    "docs/archive/database/create_db.txt",
+    "docs/archive/database/users_table_sql.txt",
+    "docs/isd.md",
+    "docs/maintenance.md",
+    "tools/doc_currency.py"
+   ],
+   "touched_30d": 3,
+   "code_total": 32,
+   "code_after": 0,
+   "drift": false,
+   "consumer": true
+  },
+  "P3": {
+   "updated": "2026-11-22",
+   "sha": "29342de68a1346ff201939944c484228d983243d",
+   "age": 0,
+   "age_flag": "свіжий",
+   "doc_commits": 3,
+   "refs": [
+    ".github/pull_request_template.md",
+    "README.md",
+    "docs/architecture/adr/0001-postgresql-psycopg2.md",
+    "docs/maintenance.md",
+    "docs/sdd.md",
+    "tools/doc_currency.py"
+   ],
+   "touched_30d": 3,
+   "code_total": 27,
+   "code_after": 0,
+   "drift": false,
+   "consumer": true
+  },
+  "P4": {
+   "updated": "2026-11-22",
+   "sha": "5b59e70c904347beff269b176664f6c3b438ffaf",
+   "age": 0,
+   "age_flag": "свіжий",
+   "doc_commits": 2,
+   "refs": [
+    ".github/pull_request_template.md",
+    "README.md",
+    "docs/isd.md",
+    "docs/maintenance.md",
+    "docs/sdd.md",
+    "tools/doc_currency.py"
+   ],
+   "touched_30d": 2,
+   "code_total": 12,
+   "code_after": 0,
+   "drift": false,
+   "consumer": true
+  },
+  "P5": {
+   "updated": "2026-11-22",
+   "sha": "29342de68a1346ff201939944c484228d983243d",
+   "age": 0,
+   "age_flag": "свіжий",
+   "doc_commits": 2,
+   "refs": [
+    ".github/pull_request_template.md",
+    "README.md",
+    "docs/isd.md",
+    "docs/sdd.md",
+    "tools/doc_currency.py"
+   ],
+   "touched_30d": 2,
+   "code_total": 0,
+   "code_after": 0,
+   "drift": false,
+   "consumer": true
+  }
+ },
+ "extra": {
+  "docstrings": [
+   102,
+   371
+  ],
+  "commits": [
+   60,
+   67
+  ],
+  "schema": {
+   "documented": 0,
+   "actual": 45,
+   "undocumented": [
+    "analytics_events",
+    "cart",
+    "categories",
+    "computer_configurations",
+    "config_components",
+    "contract_obligations",
+    "contracts",
+    "delivery_items",
+    "delivery_methods",
+    "keys",
+    "marketing_outbox",
+    "news",
+    "order_items",
+    "orders",
+    "payment_methods",
+    "privacy_audit_log",
+    "product_attributes",
+    "product_images",
+    "product_reviews",
+    "products",
+    "promotion_products",
+    "promotions",
+    "query_results",
+    "registration_requests",
+    "repair_parts",
+    "repair_requests",
+    "repair_status_history",
+    "repairs",
+    "return_items",
+    "returns",
+    "sale_items",
+    "sales",
+    "saved_queries",
+    "service_orders",
+    "service_types",
+    "software_requests",
+    "software_status_history",
+    "sql_execution_log",
+    "suppliers",
+    "supply_deliveries",
+    "user_activity_log",
+    "user_consent_history",
+    "user_consents",
+    "warranties",
+    "wishlist"
+   ],
+   "gone": []
+  }
+ }
+}

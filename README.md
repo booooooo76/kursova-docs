@@ -87,6 +87,7 @@ docs/           SDD, ISD, ADR, регламент; docs/labN - протокол�
 | [docs/isd.md](docs/isd.md) | де й на чому працює, як підняти, перевірити й відновити |
 | [docs/architecture/adr/](docs/architecture/adr/) | чому прийнято ключові рішення |
 | [docs/maintenance.md](docs/maintenance.md) | хто відповідає за документи, як часто їх переглядати, які зміни коду вимагають оновлення |
+| [docs/handover.md](docs/handover.md) | пакет передачі системи команді супроводу: онбординг, Bus Factor, темні зони |
 | [docs/lab4/](docs/lab4/) | політики приватності (згоди, журнали, інвентар PII) |
 | [docs/archive/](docs/archive/README.md) | застарілі документи, лише для історії |
 

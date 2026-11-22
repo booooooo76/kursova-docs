@@ -1,0 +1,116 @@
+[
+ {
+  "component": "Маршрути (app.py)",
+  "files": 1,
+  "lines": 1284,
+  "bus_factor": 1,
+  "owners": {
+   "Biba": 71.3,
+   "booooooo76": 28.7
+  },
+  "docstrings": 22,
+  "risk": "високий"
+ },
+ {
+  "component": "Операційні модулі (routers/)",
+  "files": 6,
+  "lines": 3279,
+  "bus_factor": 1,
+  "owners": {
+   "Biba": 71.3,
+   "booooooo76": 28.7
+  },
+  "docstrings": 18,
+  "risk": "високий"
+ },
+ {
+  "component": "Оформлення замовлення (services/)",
+  "files": 10,
+  "lines": 535,
+  "bus_factor": 1,
+  "owners": {
+   "booooooo76": 100.0
+  },
+  "docstrings": 15,
+  "risk": "середній"
+ },
+ {
+  "component": "Приватність (privacy/)",
+  "files": 10,
+  "lines": 1822,
+  "bus_factor": 1,
+  "owners": {
+   "booooooo76": 100.0
+  },
+  "docstrings": 46,
+  "risk": "високий"
+ },
+ {
+  "component": "Доступ до даних (models/)",
+  "files": 3,
+  "lines": 152,
+  "bus_factor": 1,
+  "owners": {
+   "booooooo76": 54.6,
+   "Biba": 45.4
+  },
+  "docstrings": 89,
+  "risk": "середній"
+ },
+ {
+  "component": "Схема й міграції",
+  "files": 3,
+  "lines": 3663,
+  "bus_factor": 1,
+  "owners": {
+   "booooooo76": 100.0
+  },
+  "docstrings": null,
+  "risk": "високий"
+ },
+ {
+  "component": "Шаблони й JS (templates/, static/js/)",
+  "files": 57,
+  "lines": 12541,
+  "bus_factor": 1,
+  "owners": {
+   "Biba": 56.2,
+   "booooooo76": 43.8
+  },
+  "docstrings": null,
+  "risk": "високий"
+ },
+ {
+  "component": "Тести (tests/)",
+  "files": 24,
+  "lines": 7299,
+  "bus_factor": 1,
+  "owners": {
+   "booooooo76": 100.0
+  },
+  "docstrings": 15,
+  "risk": "високий"
+ },
+ {
+  "component": "Інструменти якості (tools/, .githooks, CI)",
+  "files": 29,
+  "lines": 3584,
+  "bus_factor": 1,
+  "owners": {
+   "booooooo76": 100.0
+  },
+  "docstrings": 19,
+  "risk": "високий"
+ },
+ {
+  "component": "Паспорт (README, docs/sdd, isd, adr)",
+  "files": 6,
+  "lines": 607,
+  "bus_factor": 1,
+  "owners": {
+   "booooooo76": 100.0
+  },
+  "docstrings": null,
+  "risk": "середній"
+ }
+]
