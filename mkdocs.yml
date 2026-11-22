@@ -29,6 +29,7 @@ exclude_docs: |
   lab8/
   lab9/
   lab10/
+  lab11/
   archive/database/
 
 nav:
@@ -65,7 +66,9 @@ plugins:
   - search:
       lang: [uk, en]
   - tags
-  - mermaid2                     # C4- і ER-діаграми з Лаб.10
+  - mermaid2:                    # C4- і ER-діаграми з Лаб.10
+      arguments:
+        securityLevel: loose     # дозволяє <br/> у підписах вузлів
   - swagger-ui-tag               # <swagger-ui src="openapi.yaml"/>: довідка рендериться з контракту (SSOT)
   - git-revision-date-localized: # дата останнього коміту сторінки: основа метрики актуальності
       type: date
