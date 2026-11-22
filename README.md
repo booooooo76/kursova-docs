@@ -30,6 +30,9 @@ $env:DB_NAME = "computer_store_demo"; .\venv\Scripts\python.exe app.py
 
 Відкрийте http://localhost:5000. Демо-користувачі та їхній пароль описані в docstring `scripts/demo_db.py`.
 
+Перевірка стану: `Invoke-RestMethod http://localhost:5000/api/health` повертає `status: ok`. Відповідь 503 з
+`migrations: missing` означає, що БД не мігрована: виконайте `.\venv\Scripts\python.exe scripts\migrate.py`.
+
 Робоча БД замість демо: створіть `computer_store`, розгорніть схему з `tests/db/schema_base.sql`, застосуйте
 `scripts\migrate.py` (докладно: [ISD, порядок підняття](docs/isd.md#4-порядок-підняття)).
 
@@ -50,6 +53,7 @@ $env:DB_NAME = "computer_store_demo"; .\venv\Scripts\python.exe app.py
 | `git commit` | pre-commit: gitleaks (секрети) і lizard (CC ≤ 10 для нових функцій) |
 | GitHub Actions `quality-metrics` | складність, churn і Hotspots при кожному push |
 | `.\scan.ps1` | SonarQube (окремий сервер у Docker, див. ISD) |
+| `tools\doc_currency.py` | ворота документації: код не змінено без оновлення README / SDD / ISD |
 
 ## Клавіатура
 
@@ -64,7 +68,7 @@ $env:DB_NAME = "computer_store_demo"; .\venv\Scripts\python.exe app.py
 
 ```
 app.py          маршрути, ролі, сесія (точка входу)
-routers/        оператор, адміністратор, постачальники, SQL-консоль, конфігуратор ПК
+routers/        оператор, адміністратор, постачальники, SQL-консоль, конфігуратор ПК, перевірка стану (health)
 services/       оформлення замовлення через контракти (Protocol) і Composition Root
 privacy/        експорт, анонімізація, згоди, безпечний журнал
 models/         доступ до БД, термін доставки

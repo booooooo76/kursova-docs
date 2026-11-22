@@ -81,6 +81,8 @@ flowchart LR
     R --> DAL[models/database.py<br/>з'єднання, транзакції, retry]
     R --> LOG[privacy/secure_logging<br/>correlation ID, санітайзер]
     SV --> DLV[models/delivery.py]
+    R --> HC[routers/health.py<br/>GET /api/health]
+    HC --> DAL
   end
   DAL --> DB[(PostgreSQL)]
   RT --> FS[/static/uploads/]
@@ -89,11 +91,12 @@ flowchart LR
 
 | Компонент | Відповідальність | Ключові файли | Залежить від | Розгортання |
 |---|---|---|---|---|
-| <a id="c-web"></a>**Маршрути й сесія** | точка входу Flask: 34 власні маршрути (каталог, кошик, обране, замовлення, профіль, заявки, новини), реєстрація 61 маршруту з `routers/` через `add_url_rule`, 2 blueprint-и приватності; авторизація Flask-Login і декоратор `require_permission(role)` | `app.py`, `config.py`, `templates/`, `static/js/` | [Операційні модулі](#c-routers), [Оформлення замовлення](#c-services), [Приватність](#c-privacy), [Доступ до даних](#c-dal), [Журнал](#c-log) | [ISD: вебзастосунок](isd.md#web) |
+| <a id="c-web"></a>**Маршрути й сесія** | точка входу Flask: 34 власні маршрути (каталог, кошик, обране, замовлення, профіль, заявки, новини), реєстрація 62 маршрутів з `routers/` через `add_url_rule`, 2 blueprint-и приватності; авторизація Flask-Login і декоратор `require_permission(role)` | `app.py`, `config.py`, `templates/`, `static/js/` | [Операційні модулі](#c-routers), [Оформлення замовлення](#c-services), [Приватність](#c-privacy), [Перевірка стану](#c-health), [Доступ до даних](#c-dal), [Журнал](#c-log) | [ISD: вебзастосунок](isd.md#web) |
 | <a id="c-routers"></a>**Операційні модулі** | `operator.py` товари, зображення, замовлення, заявки, новини; `admin.py` користувачі, заявки на права, статистика; `suppliers.py` постачальники, контракти, зобов'язання, поставки; `sql_queries.py` SQL-консоль, бібліотека й історія запитів; `pc_builder.py` конфігуратор ПК | `routers/*.py` | [Доступ до даних](#c-dal), файлове сховище | [ISD: файли](isd.md#files) |
 | <a id="c-services"></a>**Оформлення замовлення** | сценарій checkout після декомпозиції God Object (Лаб.8): кошик, каталог, ціни й доставка, термін доставки, запис замовлення в одній транзакції; залежить лише від Protocol-контрактів, реалізації підставляє Composition Root | `services/contracts.py`, `checkout.py`, `cart.py`, `pricing.py`, `delivery_estimate.py`, `orders.py`, `composition.py`, `values.py`, `promotions.py` | [Доступ до даних](#c-dal), `models/delivery.py` | [ISD: вебзастосунок](isd.md#web) |
 | <a id="c-privacy"></a>**Приватність** | REST API експорту даних суб'єкта й анонімізації (право на забуття), згоди за цілями з історією, черга маркетингу (outbox), аналітика лише за згодою, аудит без PII; правила в `consent.py`, політики в `policy.py` (Лаб.4, 7) | `privacy/api.py`, `consent_api.py`, `consent.py`, `erasure.py`, `export.py`, `actions.py`, `policy.py` | [Доступ до даних](#c-dal), [Журнал](#c-log) | [ISD: вебзастосунок](isd.md#web) |
 | <a id="c-dal"></a>**Доступ до даних** | з'єднання psycopg2 (`get_db_connection`), `execute_query`, `transaction()` (Лаб.7), `execute_query_resilient` з обмеженими повторами й експоненційною паузою (Лаб.2), перевірка пароля за хешем | `models/database.py` | PostgreSQL | [ISD: БД](isd.md#db) |
+| <a id="c-health"></a>**Перевірка стану** | `GET /api/health`: перевіряє з'єднання з БД (`SELECT 1`) і наявність таблиць міграцій (`privacy_audit_log`, `user_consents`, `user_consent_history`, `marketing_outbox`); 200 `ok` або 503 `degraded` без деталей помилок і PII; використовується скриптом розгортання й моніторингом | `routers/health.py` | [Доступ до даних](#c-dal) | [ISD: порядок підняття](isd.md#4-порядок-підняття), [моніторинг](isd.md#6-моніторинг-і-резервне-копіювання) |
 | <a id="c-log"></a>**Безпечний журнал** | формат text або JSON (`LOG_FORMAT`), correlation ID на кожен запит, санітайзер PII і секретів, `security_event` для подій безпеки (Лаб.4) | `privacy/secure_logging.py`, `privacy/sanitizer.py` | stderr | [ISD: журнал](isd.md#logs) |
 
 ## 4. Модель даних
@@ -217,6 +220,7 @@ erDiagram
 
 | Метод і шлях | Що робить | Доступ |
 |---|---|---|
+| `GET /api/health` | стан екземпляра: БД і міграції; 200 `{"status": "ok", "checks": {...}}` або 503 `degraded` (+ `missing_tables`) | без автентифікації (моніторинг) |
 | `GET /api/cart/count` | кількість позицій у кошику (сесія або БД) | guest / authorized |
 | `GET /api/wishlist/count` | кількість товарів в обраному | authorized |
 | `POST /api/products/<id>/delete` | приховати товар (м'яке видалення) | operator |
