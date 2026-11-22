@@ -1,0 +1,213 @@
+-- DEPRECATED (Лаб.10, аудит документації 22.11.2026): стан на 17.10.2025, НЕ відповідає поточній БД.
+-- Аудит: у документі 23 таблиці, у реальній схемі 45; 24 не описано, clients і employees більше не існують.
+-- Актуальне джерело: tests/db/schema_base.sql + migrations/*.sql; модель даних - docs/sdd.md (розділ 4).
+
+-- =====================================================
+-- СТВОРЕННЯ ТАБЛИЦІ КОРИСТУВАЧІВ СИСТЕМИ
+-- =====================================================
+
+-- Таблиця Keys для зберігання логінів, паролів та прав доступу
+CREATE TABLE keys (
+    user_id SERIAL PRIMARY KEY,
+    login VARCHAR(50) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL, -- Для зберігання хешованого пароля
+    access_right VARCHAR(20) NOT NULL, -- admin/operator/authorized/guest
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    last_login TIMESTAMP,
+    is_active BOOLEAN DEFAULT TRUE,
+    email VARCHAR(100),
+    full_name VARCHAR(200),
+    CONSTRAINT chk_access_right CHECK (access_right IN ('admin', 'operator', 'authorized', 'guest'))
+);
+
+-- Таблиця для заявок на реєстрацію від гостей
+CREATE TABLE registration_requests (
+    request_id SERIAL PRIMARY KEY,
+    guest_login VARCHAR(50) NOT NULL,
+    requested_access VARCHAR(20) DEFAULT 'authorized',
+    request_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    status VARCHAR(20) DEFAULT 'pending', -- pending/approved/rejected
+    admin_id INTEGER REFERENCES keys(user_id),
+    response_date TIMESTAMP,
+    message TEXT,
+    CONSTRAINT chk_request_status CHECK (status IN ('pending', 'approved', 'rejected'))
+);
+
+-- Таблиця для логування дій користувачів (опціонально, але корисно)
+CREATE TABLE user_activity_log (
+    log_id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES keys(user_id),
+    action VARCHAR(100) NOT NULL,
+    table_affected VARCHAR(50),
+    record_id INTEGER,
+    action_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    ip_address VARCHAR(45),
+    details TEXT
+);
+
+-- Створення індексів
+CREATE INDEX idx_keys_login ON keys(login);
+CREATE INDEX idx_keys_access ON keys(access_right);
+CREATE INDEX idx_requests_status ON registration_requests(status);
+CREATE INDEX idx_activity_user ON user_activity_log(user_id);
+CREATE INDEX idx_activity_timestamp ON user_activity_log(action_timestamp);
+
+-- =====================================================
+-- ПОЧАТКОВІ КОРИСТУВАЧІ
+-- =====================================================
+
+-- Додавання користувачів з різними правами
+-- Примітка: У реальній системі паролі мають бути хешовані!
+-- Тут для прикладу використовуємо прості паролі
+
+-- [вилучено під час архівації: стартові облікові записи з паролями відкритим текстом]
+
+-- =====================================================
+-- ФУНКЦІЇ ДЛЯ РОБОТИ З КОРИСТУВАЧАМИ
+-- =====================================================
+
+-- Функція для перевірки прав доступу
+CREATE OR REPLACE FUNCTION check_user_permission(
+    p_user_id INTEGER,
+    p_required_permission VARCHAR
+)
+RETURNS BOOLEAN AS $$
+DECLARE
+    v_user_right VARCHAR;
+BEGIN
+    SELECT access_right INTO v_user_right
+    FROM keys
+    WHERE user_id = p_user_id AND is_active = TRUE;
+    
+    -- Ієрархія прав: admin > operator > authorized > guest
+    CASE p_required_permission
+        WHEN 'guest' THEN
+            RETURN v_user_right IN ('admin', 'operator', 'authorized', 'guest');
+        WHEN 'authorized' THEN
+            RETURN v_user_right IN ('admin', 'operator', 'authorized');
+        WHEN 'operator' THEN
+            RETURN v_user_right IN ('admin', 'operator');
+        WHEN 'admin' THEN
+            RETURN v_user_right = 'admin';
+        ELSE
+            RETURN FALSE;
+    END CASE;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Функція для логування дій користувача
+CREATE OR REPLACE FUNCTION log_user_action(
+    p_user_id INTEGER,
+    p_action VARCHAR,
+    p_table VARCHAR DEFAULT NULL,
+    p_record_id INTEGER DEFAULT NULL,
+    p_details TEXT DEFAULT NULL
+)
+RETURNS VOID AS $$
+BEGIN
+    INSERT INTO user_activity_log (user_id, action, table_affected, record_id, details)
+    VALUES (p_user_id, p_action, p_table, p_record_id, p_details);
+END;
+$$ LANGUAGE plpgsql;
+
+-- =====================================================
+-- ПРЕДСТАВЛЕННЯ ДЛЯ РІЗНИХ РІВНІВ ДОСТУПУ
+-- =====================================================
+
+-- Представлення для гостей (тільки перегляд основної інформації)
+CREATE VIEW guest_products_view AS
+SELECT 
+    p.name,
+    p.brand,
+    p.model,
+    c.name as category,
+    p.price,
+    CASE 
+        WHEN p.quantity_in_stock > 0 THEN 'В наявності'
+        ELSE 'Немає в наявності'
+    END as availability
+FROM products p
+JOIN categories c ON p.category_id = c.category_id
+WHERE p.is_active = TRUE;
+
+-- Представлення для авторизованих (більше деталей)
+CREATE VIEW authorized_products_view AS
+SELECT 
+    p.product_id,
+    p.name,
+    p.brand,
+    p.model,
+    c.name as category,
+    p.subcategory,
+    p.specifications,
+    p.price,
+    p.quantity_in_stock,
+    p.warranty_period
+FROM products p
+JOIN categories c ON p.category_id = c.category_id
+WHERE p.is_active = TRUE;
+
+-- =====================================================
+-- ПРИКЛАДИ SQL-ЗАПИТІВ ДЛЯ РІЗНИХ КОРИСТУВАЧІВ
+-- =====================================================
+
+-- Для адміністратора - повний доступ
+-- SELECT * FROM products;
+-- INSERT INTO products (...) VALUES (...);
+-- UPDATE products SET ... WHERE ...;
+-- DELETE FROM products WHERE ...;
+
+-- Для оператора - CRUD операції
+-- SELECT * FROM products;
+-- INSERT INTO products (...) VALUES (...);
+-- UPDATE products SET ... WHERE ...;
+-- DELETE FROM products WHERE ...;
+
+-- Для авторизованого - читання та пошук
+-- SELECT * FROM authorized_products_view;
+-- SELECT * FROM sales WHERE client_id = ?;
+
+-- Для гостя - тільки перегляд
+-- SELECT * FROM guest_products_view;
+
+-- =====================================================
+-- ЗАБЕЗПЕЧЕННЯ БЕЗПЕКИ
+-- =====================================================
+
+-- Створення ролей PostgreSQL для різних типів користувачів
+CREATE ROLE computer_store_admin;
+CREATE ROLE computer_store_operator;
+CREATE ROLE computer_store_authorized;
+CREATE ROLE computer_store_guest;
+
+-- Надання прав для адміністратора
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO computer_store_admin;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO computer_store_admin;
+
+-- Надання прав для оператора
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO computer_store_operator;
+GRANT USAGE ON ALL SEQUENCES IN SCHEMA public TO computer_store_operator;
+REVOKE ALL ON TABLE keys FROM computer_store_operator;
+GRANT SELECT ON TABLE keys TO computer_store_operator;
+
+-- Надання прав для авторизованого користувача
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO computer_store_authorized;
+REVOKE SELECT ON TABLE keys FROM computer_store_authorized;
+
+-- Надання прав для гостя
+GRANT SELECT ON guest_products_view TO computer_store_guest;
+GRANT SELECT ON categories TO computer_store_guest;
+
+-- =====================================================
+-- ТЕСТОВІ ЗАПИТИ
+-- =====================================================
+
+-- Перевірка користувачів
+SELECT login, access_right, full_name FROM keys ORDER BY access_right;
+
+-- Перевірка прав користувача
+SELECT check_user_permission(1, 'admin'); -- admin може все
+SELECT check_user_permission(4, 'operator'); -- user не може виконувати операторські функції
+
+-- Приклад логування
+SELECT log_user_action(1, 'LOGIN', NULL, NULL, 'Successful login from 192.168.1.1');

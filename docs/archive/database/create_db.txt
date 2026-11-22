@@ -1,0 +1,376 @@
+-- DEPRECATED (Лаб.10, аудит документації 22.11.2026): стан на 17.10.2025, НЕ відповідає поточній БД.
+-- Аудит: у документі 23 таблиці, у реальній схемі 45; 24 не описано, clients і employees більше не існують.
+-- Актуальне джерело: tests/db/schema_base.sql + migrations/*.sql; модель даних - docs/sdd.md (розділ 4).
+
+-- Створення бази даних
+CREATE DATABASE computer_store
+    WITH 
+    OWNER = postgres
+    ENCODING = 'UTF8'
+    LC_COLLATE = 'Ukrainian_Ukraine.1251'
+    LC_CTYPE = 'Ukrainian_Ukraine.1251'
+    TABLESPACE = pg_default
+    CONNECTION LIMIT = -1;
+
+-- Підключення до бази даних
+\c computer_store;
+
+-- =====================================================
+-- СТВОРЕННЯ ТАБЛИЦЬ
+-- =====================================================
+
+-- 1. Категорії товарів
+CREATE TABLE categories (
+    category_id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL UNIQUE,
+    description TEXT
+);
+
+-- 2. Постачальники
+CREATE TABLE suppliers (
+    supplier_id SERIAL PRIMARY KEY,
+    company_name VARCHAR(200) NOT NULL,
+    contact_person VARCHAR(100),
+    phone VARCHAR(20),
+    email VARCHAR(100),
+    address TEXT,
+    registration_date DATE DEFAULT CURRENT_DATE,
+    is_active BOOLEAN DEFAULT TRUE
+);
+
+-- 3. Товари
+CREATE TABLE products (
+    product_id SERIAL PRIMARY KEY,
+    name VARCHAR(200) NOT NULL,
+    category_id INTEGER REFERENCES categories(category_id),
+    product_type VARCHAR(50), -- component/peripheral/laptop
+    subcategory VARCHAR(100), -- processor/motherboard/ram/gpu/storage/psu/case/monitor/keyboard/mouse/printer/laptop
+    brand VARCHAR(100),
+    model VARCHAR(100),
+    specifications TEXT,
+    price DECIMAL(10,2) NOT NULL,
+    quantity_in_stock INTEGER DEFAULT 0,
+    min_stock_level INTEGER DEFAULT 5,
+    warranty_period INTEGER DEFAULT 12, -- в місяцях
+    date_added DATE DEFAULT CURRENT_DATE,
+    is_active BOOLEAN DEFAULT TRUE
+);
+
+-- 4. Клієнти
+CREATE TABLE clients (
+    client_id SERIAL PRIMARY KEY,
+    first_name VARCHAR(100) NOT NULL,
+    last_name VARCHAR(100) NOT NULL,
+    phone VARCHAR(20),
+    email VARCHAR(100),
+    address TEXT,
+    registration_date DATE DEFAULT CURRENT_DATE,
+    client_type VARCHAR(20) DEFAULT 'individual', -- individual/company
+    company_name VARCHAR(200),
+    tax_id VARCHAR(20), -- ІПН або ЄДРПОУ
+    discount_percent DECIMAL(5,2) DEFAULT 0
+);
+
+-- 5. Працівники
+CREATE TABLE employees (
+    employee_id SERIAL PRIMARY KEY,
+    first_name VARCHAR(100) NOT NULL,
+    last_name VARCHAR(100) NOT NULL,
+    position VARCHAR(100),
+    department VARCHAR(100), -- sales/service/management/accounting
+    phone VARCHAR(20),
+    email VARCHAR(100),
+    hire_date DATE DEFAULT CURRENT_DATE,
+    dismissal_date DATE,
+    salary DECIMAL(10,2),
+    is_active BOOLEAN DEFAULT TRUE
+);
+
+-- 6. Договори з постачальниками
+CREATE TABLE contracts (
+    contract_id SERIAL PRIMARY KEY,
+    supplier_id INTEGER REFERENCES suppliers(supplier_id),
+    contract_number VARCHAR(50) UNIQUE NOT NULL,
+    contract_date DATE NOT NULL,
+    start_date DATE NOT NULL,
+    end_date DATE,
+    total_amount DECIMAL(12,2),
+    paid_amount DECIMAL(12,2) DEFAULT 0,
+    status VARCHAR(20) DEFAULT 'active' -- active/completed/terminated
+);
+
+-- 7. Зобов'язання за договорами (для контролю виконання)
+CREATE TABLE contract_obligations (
+    obligation_id SERIAL PRIMARY KEY,
+    contract_id INTEGER REFERENCES contracts(contract_id),
+    product_id INTEGER REFERENCES products(product_id),
+    planned_quantity INTEGER NOT NULL,
+    planned_price DECIMAL(10,2) NOT NULL,
+    delivered_quantity INTEGER DEFAULT 0,
+    delivery_deadline DATE,
+    status VARCHAR(20) DEFAULT 'pending' -- pending/partial/completed/overdue
+);
+
+-- 8. Продажі
+CREATE TABLE sales (
+    sale_id SERIAL PRIMARY KEY,
+    client_id INTEGER REFERENCES clients(client_id),
+    employee_id INTEGER REFERENCES employees(employee_id),
+    sale_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    total_amount DECIMAL(10,2) NOT NULL,
+    discount_amount DECIMAL(10,2) DEFAULT 0,
+    payment_method VARCHAR(50), -- cash/card/transfer
+    payment_status VARCHAR(20) DEFAULT 'paid', -- paid/pending/partial
+    status VARCHAR(20) DEFAULT 'completed' -- completed/pending/cancelled/returned
+);
+
+-- 9. Товари в продажі
+CREATE TABLE sale_items (
+    sale_item_id SERIAL PRIMARY KEY,
+    sale_id INTEGER REFERENCES sales(sale_id) ON DELETE CASCADE,
+    product_id INTEGER REFERENCES products(product_id),
+    quantity INTEGER NOT NULL,
+    unit_price DECIMAL(10,2) NOT NULL,
+    discount_percent DECIMAL(5,2) DEFAULT 0,
+    total_price DECIMAL(10,2) NOT NULL,
+    warranty_start_date DATE DEFAULT CURRENT_DATE,
+    warranty_end_date DATE
+);
+
+-- 10. Гарантійні талони
+CREATE TABLE warranties (
+    warranty_id SERIAL PRIMARY KEY,
+    sale_item_id INTEGER REFERENCES sale_items(sale_item_id),
+    warranty_number VARCHAR(50) UNIQUE NOT NULL,
+    start_date DATE NOT NULL,
+    end_date DATE NOT NULL,
+    terms TEXT,
+    is_active BOOLEAN DEFAULT TRUE
+);
+
+-- 11. Конфігурації комп'ютерів
+CREATE TABLE computer_configurations (
+    config_id SERIAL PRIMARY KEY,
+    client_id INTEGER REFERENCES clients(client_id),
+    employee_id INTEGER REFERENCES employees(employee_id),
+    config_name VARCHAR(200) NOT NULL,
+    purpose VARCHAR(100), -- gaming/office/workstation/home
+    total_price DECIMAL(10,2) DEFAULT 0,
+    creation_date DATE DEFAULT CURRENT_DATE,
+    assembly_date DATE,
+    status VARCHAR(20) DEFAULT 'draft' -- draft/approved/assembling/ready/delivered
+);
+
+-- 12. Компоненти конфігурації
+CREATE TABLE config_components (
+    config_component_id SERIAL PRIMARY KEY,
+    config_id INTEGER REFERENCES computer_configurations(config_id) ON DELETE CASCADE,
+    product_id INTEGER REFERENCES products(product_id),
+    component_type VARCHAR(50), -- processor/motherboard/ram/gpu/storage/psu/case
+    quantity INTEGER NOT NULL DEFAULT 1,
+    price_at_config DECIMAL(10,2) -- ціна на момент конфігурації
+);
+
+-- 13. Типи послуг
+CREATE TABLE service_types (
+    service_type_id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL UNIQUE,
+    category VARCHAR(50), -- software/hardware/consultation/maintenance
+    description TEXT,
+    base_price DECIMAL(8,2),
+    duration_hours DECIMAL(4,2),
+    is_active BOOLEAN DEFAULT TRUE
+);
+
+-- 14. Замовлення послуг (встановлення ПЗ, налаштування, консультації)
+CREATE TABLE service_orders (
+    service_order_id SERIAL PRIMARY KEY,
+    client_id INTEGER REFERENCES clients(client_id),
+    employee_id INTEGER REFERENCES employees(employee_id),
+    service_type_id INTEGER REFERENCES service_types(service_type_id),
+    order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    scheduled_date DATE,
+    completion_date DATE,
+    description TEXT,
+    hours_spent DECIMAL(4,2),
+    total_cost DECIMAL(10,2),
+    payment_status VARCHAR(20) DEFAULT 'pending', -- pending/paid/cancelled
+    status VARCHAR(20) DEFAULT 'scheduled' -- scheduled/in_progress/completed/cancelled
+);
+
+-- 15. Ремонтні роботи
+CREATE TABLE repairs (
+    repair_id SERIAL PRIMARY KEY,
+    client_id INTEGER REFERENCES clients(client_id),
+    employee_id INTEGER REFERENCES employees(employee_id),
+    product_id INTEGER REFERENCES products(product_id), -- може бути NULL
+    external_product_description TEXT, -- якщо товар не з магазину
+    serial_number VARCHAR(100),
+    acceptance_date DATE DEFAULT CURRENT_DATE,
+    planned_completion_date DATE,
+    completion_date DATE,
+    problem_description TEXT NOT NULL,
+    diagnostic_result TEXT,
+    repair_description TEXT,
+    parts_cost DECIMAL(10,2) DEFAULT 0,
+    labor_cost DECIMAL(10,2) DEFAULT 0,
+    total_cost DECIMAL(10,2) DEFAULT 0,
+    is_warranty BOOLEAN DEFAULT FALSE,
+    warranty_id INTEGER REFERENCES warranties(warranty_id),
+    status VARCHAR(20) DEFAULT 'accepted', -- accepted/diagnosing/waiting_parts/in_progress/completed/cancelled
+    client_notified BOOLEAN DEFAULT FALSE
+);
+
+-- 16. Використані запчастини в ремонті
+CREATE TABLE repair_parts (
+    repair_part_id SERIAL PRIMARY KEY,
+    repair_id INTEGER REFERENCES repairs(repair_id),
+    product_id INTEGER REFERENCES products(product_id),
+    quantity INTEGER NOT NULL DEFAULT 1,
+    unit_price DECIMAL(10,2) NOT NULL
+);
+
+-- 17. Поставки товарів
+CREATE TABLE supply_deliveries (
+    delivery_id SERIAL PRIMARY KEY,
+    contract_id INTEGER REFERENCES contracts(contract_id),
+    invoice_number VARCHAR(50),
+    delivery_date DATE DEFAULT CURRENT_DATE,
+    expected_date DATE,
+    total_amount DECIMAL(10,2),
+    status VARCHAR(20) DEFAULT 'expected' -- expected/received/partial/returned
+);
+
+-- 18. Товари в поставці
+CREATE TABLE delivery_items (
+    delivery_item_id SERIAL PRIMARY KEY,
+    delivery_id INTEGER REFERENCES supply_deliveries(delivery_id) ON DELETE CASCADE,
+    product_id INTEGER REFERENCES products(product_id),
+    ordered_quantity INTEGER NOT NULL,
+    received_quantity INTEGER DEFAULT 0,
+    unit_cost DECIMAL(10,2) NOT NULL
+);
+
+-- 19. Повернення товарів
+CREATE TABLE returns (
+    return_id SERIAL PRIMARY KEY,
+    sale_id INTEGER REFERENCES sales(sale_id),
+    client_id INTEGER REFERENCES clients(client_id),
+    employee_id INTEGER REFERENCES employees(employee_id),
+    return_date DATE DEFAULT CURRENT_DATE,
+    reason VARCHAR(200),
+    description TEXT,
+    total_amount DECIMAL(10,2),
+    status VARCHAR(20) DEFAULT 'pending' -- pending/approved/rejected/completed
+);
+
+-- 20. Товари в поверненні
+CREATE TABLE return_items (
+    return_item_id SERIAL PRIMARY KEY,
+    return_id INTEGER REFERENCES returns(return_id),
+    product_id INTEGER REFERENCES products(product_id),
+    quantity INTEGER NOT NULL,
+    unit_price DECIMAL(10,2) NOT NULL,
+    condition VARCHAR(50) -- new/used/damaged/defective
+);
+
+-- =====================================================
+-- СТВОРЕННЯ ІНДЕКСІВ
+-- =====================================================
+
+-- Індекси для products
+CREATE INDEX idx_products_category ON products(category_id);
+CREATE INDEX idx_products_type ON products(product_type);
+CREATE INDEX idx_products_subcategory ON products(subcategory);
+CREATE INDEX idx_products_brand ON products(brand);
+CREATE INDEX idx_products_active ON products(is_active);
+
+-- Індекси для sales
+CREATE INDEX idx_sales_date ON sales(sale_date);
+CREATE INDEX idx_sales_client ON sales(client_id);
+CREATE INDEX idx_sales_employee ON sales(employee_id);
+CREATE INDEX idx_sales_status ON sales(status);
+
+-- Індекси для repairs
+CREATE INDEX idx_repairs_date ON repairs(acceptance_date);
+CREATE INDEX idx_repairs_client ON repairs(client_id);
+CREATE INDEX idx_repairs_employee ON repairs(employee_id);
+CREATE INDEX idx_repairs_warranty ON repairs(is_warranty);
+CREATE INDEX idx_repairs_status ON repairs(status);
+
+-- Індекси для service_orders
+CREATE INDEX idx_services_date ON service_orders(order_date);
+CREATE INDEX idx_services_client ON service_orders(client_id);
+CREATE INDEX idx_services_employee ON service_orders(employee_id);
+CREATE INDEX idx_services_status ON service_orders(status);
+
+-- Індекси для contracts
+CREATE INDEX idx_contracts_supplier ON contracts(supplier_id);
+CREATE INDEX idx_contracts_status ON contracts(status);
+
+-- Індекси для deliveries
+CREATE INDEX idx_deliveries_contract ON supply_deliveries(contract_id);
+CREATE INDEX idx_deliveries_date ON supply_deliveries(delivery_date);
+CREATE INDEX idx_deliveries_status ON supply_deliveries(status);
+
+-- =====================================================
+-- ДОДАВАННЯ ОБМЕЖЕНЬ
+-- =====================================================
+
+-- Обмеження для products
+ALTER TABLE products ADD CONSTRAINT chk_product_price_positive CHECK (price >= 0);
+ALTER TABLE products ADD CONSTRAINT chk_stock_non_negative CHECK (quantity_in_stock >= 0);
+ALTER TABLE products ADD CONSTRAINT chk_min_stock_non_negative CHECK (min_stock_level >= 0);
+
+-- Обмеження для sales
+ALTER TABLE sales ADD CONSTRAINT chk_sale_amounts CHECK (total_amount >= 0 AND discount_amount >= 0);
+
+-- Обмеження для sale_items
+ALTER TABLE sale_items ADD CONSTRAINT chk_sale_quantity_positive CHECK (quantity > 0);
+ALTER TABLE sale_items ADD CONSTRAINT chk_sale_price_positive CHECK (unit_price >= 0);
+ALTER TABLE sale_items ADD CONSTRAINT chk_item_discount CHECK (discount_percent >= 0 AND discount_percent <= 100);
+
+-- Обмеження для clients
+ALTER TABLE clients ADD CONSTRAINT chk_client_type CHECK (client_type IN ('individual', 'company'));
+ALTER TABLE clients ADD CONSTRAINT chk_discount_range CHECK (discount_percent >= 0 AND discount_percent <= 100);
+
+-- Обмеження для employees
+ALTER TABLE employees ADD CONSTRAINT chk_salary_positive CHECK (salary >= 0);
+ALTER TABLE employees ADD CONSTRAINT chk_dismissal_after_hire CHECK (dismissal_date IS NULL OR dismissal_date > hire_date);
+
+-- Обмеження для contracts
+ALTER TABLE contracts ADD CONSTRAINT chk_contract_dates CHECK (end_date IS NULL OR end_date >= start_date);
+ALTER TABLE contracts ADD CONSTRAINT chk_contract_amounts CHECK (total_amount >= 0 AND paid_amount >= 0);
+
+-- Обмеження для contract_obligations
+ALTER TABLE contract_obligations ADD CONSTRAINT chk_obligation_quantities CHECK (planned_quantity > 0 AND delivered_quantity >= 0);
+ALTER TABLE contract_obligations ADD CONSTRAINT chk_obligation_price CHECK (planned_price >= 0);
+
+-- Обмеження для repairs
+ALTER TABLE repairs ADD CONSTRAINT chk_repair_dates CHECK (completion_date IS NULL OR completion_date >= acceptance_date);
+ALTER TABLE repairs ADD CONSTRAINT chk_repair_costs CHECK (parts_cost >= 0 AND labor_cost >= 0 AND total_cost >= 0);
+
+-- Обмеження для repair_parts
+ALTER TABLE repair_parts ADD CONSTRAINT chk_repair_part_quantity CHECK (quantity > 0);
+ALTER TABLE repair_parts ADD CONSTRAINT chk_repair_part_price CHECK (unit_price >= 0);
+
+-- Обмеження для service_types
+ALTER TABLE service_types ADD CONSTRAINT chk_service_price CHECK (base_price >= 0);
+
+-- Обмеження для service_orders
+ALTER TABLE service_orders ADD CONSTRAINT chk_service_cost CHECK (total_cost >= 0);
+ALTER TABLE service_orders ADD CONSTRAINT chk_service_dates CHECK (completion_date IS NULL OR completion_date >= order_date::date);
+
+-- Обмеження для warranties
+ALTER TABLE warranties ADD CONSTRAINT chk_warranty_dates CHECK (end_date > start_date);
+
+-- Обмеження для delivery_items
+ALTER TABLE delivery_items ADD CONSTRAINT chk_delivery_quantities CHECK (ordered_quantity > 0 AND received_quantity >= 0);
+ALTER TABLE delivery_items ADD CONSTRAINT chk_delivery_cost CHECK (unit_cost >= 0);
+
+-- Обмеження для returns
+ALTER TABLE returns ADD CONSTRAINT chk_return_amount CHECK (total_amount >= 0);
+
+-- Обмеження для return_items
+ALTER TABLE return_items ADD CONSTRAINT chk_return_quantity CHECK (quantity > 0);
+ALTER TABLE return_items ADD CONSTRAINT chk_return_price CHECK (unit_price >= 0);
