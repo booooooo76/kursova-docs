@@ -1,0 +1,353 @@
+{
+ "today": "2026-11-22",
+ "metrics": {
+  "A01": {
+   "updated": null,
+   "age": null,
+   "age_flag": "файлу немає",
+   "doc_commits": 0,
+   "refs": [],
+   "touched_30d": 0,
+   "code_total": 30,
+   "code_after": 30,
+   "drift": true,
+   "consumer": false
+  },
+  "A02": {
+   "updated": "2025-10-17",
+   "age": 401,
+   "age_flag": "ймовірно застарілий",
+   "doc_commits": 1,
+   "refs": [],
+   "touched_30d": 0,
+   "code_total": 12,
+   "code_after": 11,
+   "drift": false,
+   "consumer": false
+  },
+  "A03": {
+   "updated": "2025-10-17",
+   "age": 401,
+   "age_flag": "ймовірно застарілий",
+   "doc_commits": 1,
+   "refs": [],
+   "touched_30d": 0,
+   "code_total": 4,
+   "code_after": 4,
+   "drift": false,
+   "consumer": false
+  },
+  "A04": {
+   "updated": "2025-11-27",
+   "age": 360,
+   "age_flag": "ймовірно застарілий",
+   "doc_commits": 1,
+   "refs": [],
+   "touched_30d": 0,
+   "code_total": 30,
+   "code_after": 23,
+   "drift": true,
+   "consumer": false
+  },
+  "A05": {
+   "updated": "2025-11-14",
+   "age": 373,
+   "age_flag": "ймовірно застарілий",
+   "doc_commits": 1,
+   "refs": [],
+   "touched_30d": 0,
+   "code_total": 6,
+   "code_after": 4,
+   "drift": false,
+   "consumer": false
+  },
+  "A06": {
+   "updated": "2025-11-14",
+   "age": 373,
+   "age_flag": "ймовірно застарілий",
+   "doc_commits": 1,
+   "refs": [],
+   "touched_30d": 0,
+   "code_total": 7,
+   "code_after": 5,
+   "drift": false,
+   "consumer": false
+  },
+  "A07": {
+   "updated": "2025-11-14",
+   "age": 373,
+   "age_flag": "ймовірно застарілий",
+   "doc_commits": 1,
+   "refs": [],
+   "touched_30d": 0,
+   "code_total": 7,
+   "code_after": 5,
+   "drift": false,
+   "consumer": false
+  },
+  "A08": {
+   "updated": "2025-11-14",
+   "age": 373,
+   "age_flag": "ймовірно застарілий",
+   "doc_commits": 1,
+   "refs": [],
+   "touched_30d": 0,
+   "code_total": 7,
+   "code_after": 5,
+   "drift": false,
+   "consumer": false
+  },
+  "A09": {
+   "updated": "2025-11-14",
+   "age": 373,
+   "age_flag": "ймовірно застарілий",
+   "doc_commits": 1,
+   "refs": [
+    "templates/my_requests.html"
+   ],
+   "touched_30d": 0,
+   "code_total": 17,
+   "code_after": 15,
+   "drift": false,
+   "consumer": true
+  },
+  "A10": {
+   "updated": "2026-10-04",
+   "age": 49,
+   "age_flag": "свіжий",
+   "doc_commits": 2,
+   "refs": [
+    ".githooks/pre-commit",
+    ".gitleaks.toml",
+    "config.py",
+    "docs/lab3/secrets_prevention.md",
+    "scripts/dump_schema.ps1"
+   ],
+   "touched_30d": 0,
+   "code_total": 3,
+   "code_after": 0,
+   "drift": false,
+   "consumer": true
+  },
+  "A11": {
+   "updated": "2026-11-14",
+   "age": 8,
+   "age_flag": "свіжий",
+   "doc_commits": 8,
+   "refs": [
+    "docs/lab3/sca_triage.md",
+    "docs/lab5/measurement_protocol.md",
+    "docs/lab6/halstead.md",
+    "docs/lab7/hotspots.md",
+    "docs/lab9/data/github/pr3026_files_p1.json",
+    "docs/lab9/data/github/pr3488_files_p1.json",
+    "requirements-dev.txt",
+    "scripts/sca.ps1",
+    "tools/metrics/slo_decision.py"
+   ],
+   "touched_30d": 3,
+   "code_total": 30,
+   "code_after": 0,
+   "drift": false,
+   "consumer": true
+  },
+  "A12": {
+   "updated": "2026-10-31",
+   "age": 22,
+   "age_flag": "свіжий",
+   "doc_commits": 1,
+   "refs": [
+    "docs/lab7/hotspots.md"
+   ],
+   "touched_30d": 1,
+   "code_total": 3,
+   "code_after": 0,
+   "drift": false,
+   "consumer": true
+  },
+  "A13": {
+   "updated": "2026-10-24",
+   "age": 29,
+   "age_flag": "свіжий",
+   "doc_commits": 3,
+   "refs": [
+    ".complexity-baseline",
+    "docs/lab3/secrets_prevention.md",
+    "docs/lab6/precommit.md",
+    "docs/lab7/hotspots.md",
+    "scripts/secrets_scan.ps1",
+    "tools/complexity_baseline.py",
+    "tools/hotspots.py"
+   ],
+   "touched_30d": 2,
+   "code_total": 1,
+   "code_after": 0,
+   "drift": false,
+   "consumer": true
+  },
+  "A14": {
+   "updated": "2026-09-13",
+   "age": 70,
+   "age_flag": "свіжий",
+   "doc_commits": 1,
+   "refs": [
+    "docs/lab8/ck_mood.md"
+   ],
+   "touched_30d": 0,
+   "code_total": 30,
+   "code_after": 19,
+   "drift": false,
+   "consumer": true
+  },
+  "A15": {
+   "updated": "2026-10-18",
+   "age": 35,
+   "age_flag": "свіжий",
+   "doc_commits": 6,
+   "refs": [],
+   "touched_30d": 0,
+   "code_total": 10,
+   "code_after": 4,
+   "drift": false,
+   "consumer": false
+  },
+  "A16": {
+   "updated": "2026-10-04",
+   "age": 49,
+   "age_flag": "свіжий",
+   "doc_commits": 1,
+   "refs": [],
+   "touched_30d": 0,
+   "code_total": 2,
+   "code_after": 1,
+   "drift": false,
+   "consumer": false
+  },
+  "A17": {
+   "updated": "2026-11-14",
+   "age": 8,
+   "age_flag": "свіжий",
+   "doc_commits": 15,
+   "refs": [
+    ".github/workflows/quality-metrics.yml",
+    "privacy/consent.py",
+    "tests/test_consent_rules.py",
+    "tools/cfg_count.py",
+    "tools/fpa_ucp.py"
+   ],
+   "touched_30d": 13,
+   "code_total": 30,
+   "code_after": 0,
+   "drift": false,
+   "consumer": true
+  },
+  "A18": {
+   "updated": "2026-11-14",
+   "age": 8,
+   "age_flag": "свіжий",
+   "doc_commits": 1,
+   "refs": [
+    "docs/lab9/economics.md",
+    "tests/test_financial_ledger.py",
+    "tools/financial_ledger.py"
+   ],
+   "touched_30d": 1,
+   "code_total": 1,
+   "code_after": 0,
+   "drift": false,
+   "consumer": true
+  },
+  "A19": {
+   "updated": null,
+   "age": null,
+   "age_flag": "н/д (не файл)",
+   "doc_commits": 0,
+   "refs": [],
+   "touched_30d": 0,
+   "code_total": 30,
+   "code_after": 0,
+   "drift": false,
+   "consumer": false
+  },
+  "A20": {
+   "updated": null,
+   "age": null,
+   "age_flag": "н/д (не файл)",
+   "doc_commits": 0,
+   "refs": [],
+   "touched_30d": 0,
+   "code_total": 0,
+   "code_after": 0,
+   "drift": false,
+   "consumer": false
+  },
+  "A21": {
+   "updated": null,
+   "age": null,
+   "age_flag": "н/д (не файл)",
+   "doc_commits": 0,
+   "refs": [],
+   "touched_30d": 0,
+   "code_total": 0,
+   "code_after": 0,
+   "drift": false,
+   "consumer": false
+  },
+  "A22": {
+   "updated": null,
+   "age": null,
+   "age_flag": "н/д (не файл)",
+   "doc_commits": 0,
+   "refs": [],
+   "touched_30d": 0,
+   "code_total": 0,
+   "code_after": 0,
+   "drift": false,
+   "consumer": false
+  }
+ },
+ "extra": {
+  "docstrings": [
+   101,
+   368
+  ],
+  "commits": [
+   52,
+   59
+  ],
+  "schema": {
+   "documented": 23,
+   "actual": 45,
+   "undocumented": [
+    "analytics_events",
+    "cart",
+    "delivery_methods",
+    "marketing_outbox",
+    "news",
+    "order_items",
+    "orders",
+    "payment_methods",
+    "privacy_audit_log",
+    "product_attributes",
+    "product_images",
+    "product_reviews",
+    "promotion_products",
+    "promotions",
+    "query_results",
+    "repair_requests",
+    "repair_status_history",
+    "saved_queries",
+    "software_requests",
+    "software_status_history",
+    "sql_execution_log",
+    "user_consent_history",
+    "user_consents",
+    "wishlist"
+   ],
+   "gone": [
+    "clients",
+    "employees"
+   ]
+  }
+ }
+}
