@@ -1,0 +1,71 @@
+# Лаб.11: правила якості контракту docs/api/openapi.yaml. Поріг проходження: 0 errors.
+# Запуск: npx @stoplight/spectral-cli@6.11.1 lint docs/api/openapi.yaml
+extends: ["spectral:oas"]
+
+rules:
+  # кожна операція має непорожній опис
+  operation-description: error
+
+  kursova-operation-description-length:
+    description: Опис операції має пояснювати поведінку (не менше 40 символів).
+    severity: error
+    given: "$.paths[*][get,post,put,patch,delete]"
+    then:
+      field: description
+      function: length
+      functionOptions: {min: 40}
+
+  # кожна схема має приклад
+  kursova-schema-example:
+    description: Кожна схема components.schemas має example.
+    severity: error
+    given: "$.components.schemas[*]"
+    then:
+      field: example
+      function: defined
+
+  # помилки описано узгоджено: 4xx і 5xx (крім 503 перевірки готовності) - лише спільний об'єкт Error
+  kursova-error-schema:
+    description: Відповіді 4xx/5xx мають посилатися на спільну схему Error або на components.responses.
+    severity: error
+    resolved: false
+    given: "$.paths[*][*].responses[?(@property.match(/^[45][0-9][0-9]$/) && @property != '503')]"
+    then:
+      function: schema
+      functionOptions:
+        schema:
+          anyOf:
+            - required: ["$ref"]
+              properties:
+                $ref: {pattern: "^#/components/responses/"}
+            - required: [content]
+              properties:
+                content:
+                  required: [application/json]
+                  properties:
+                    application/json:
+                      required: [schema]
+                      properties:
+                        schema:
+                          required: ["$ref"]
+                          properties:
+                            $ref: {const: "#/components/schemas/Error"}
+
+  kursova-shared-responses-use-error:
+    description: Спільні відповіді components.responses повертають Error.
+    severity: error
+    resolved: false
+    given: "$.components.responses[*].content.application/json.schema"
+    then:
+      field: $ref
+      function: pattern
+      functionOptions: {match: "^#/components/schemas/Error$"}
+
+  # контракт є знімком у часі: версія за SemVer
+  kursova-semver:
+    description: info.version у форматі SemVer (MAJOR.MINOR.PATCH).
+    severity: error
+    given: "$.info.version"
+    then:
+      function: pattern
+      functionOptions: {match: "^[0-9]+\\.[0-9]+\\.[0-9]+$"}

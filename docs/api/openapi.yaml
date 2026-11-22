@@ -1,0 +1,326 @@
+openapi: 3.0.3
+info:
+  title: Kursova PC Shop API
+  version: 1.0.0
+  description: |
+    Машинно-читний контракт JSON API вебзастосунку Kursova PC Shop (Single Source of Truth для довідки,
+    SDK і контрактних тестів). Версія за SemVer: MAJOR — несумісна зміна формату, MINOR — новий ендпоінт,
+    PATCH — уточнення опису.
+    Автентифікація — сесійна cookie Flask-Login (`session`), яку видає форма входу `/login`.
+  contact:
+    name: Загребенюк Б.
+servers:
+  - url: http://localhost:5000
+    description: Локальний екземпляр (dev / demo)
+tags:
+  - name: ops
+    description: Моніторинг і розгортання
+  - name: cart
+    description: Кошик покупця
+  - name: privacy
+    description: Згоди на обробку персональних даних (GDPR, Лаб.4)
+
+paths:
+  /api/health:
+    get:
+      tags: [ops]
+      operationId: getHealth
+      summary: Готовність екземпляра
+      description: |
+        Перевіряє з'єднання з БД (`SELECT 1`) і наявність таблиць міграцій приватності. Повертає 200, коли екземпляр
+        готовий приймати користувачів, і 503 зі звітом про перевірки, коли ні. Автентифікація не потрібна:
+        ендпоінт опитують моніторинг і скрипт розгортання. Деталей помилок і персональних даних не містить.
+      security: []
+      responses:
+        "200":
+          description: Екземпляр готовий.
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/HealthStatus"}
+              example: {status: ok, checks: {database: ok, migrations: ok}}
+        "500":
+          $ref: "#/components/responses/InternalError"
+        "503":
+          description: |
+            Екземпляр не готовий: БД недоступна або міграції не застосовано. Тіло — звіт про перевірки
+            (HealthStatus), а не Error, бо це штатна відповідь моніторингу, а не помилка запиту.
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/HealthStatus"}
+              examples:
+                migrationsMissing:
+                  summary: Міграції не застосовано
+                  value: {status: degraded, checks: {database: ok, migrations: missing}, missing_tables: [user_consents]}
+                databaseDown:
+                  summary: БД недоступна
+                  value: {status: degraded, checks: {database: unavailable, migrations: missing}}
+
+  /api/cart/count:
+    get:
+      tags: [cart]
+      operationId: getCartCount
+      summary: Кількість позицій у кошику
+      description: |
+        Кількість позицій у кошику поточного відвідувача: для гостя — з сесії, для авторизованого — з БД.
+        Використовується лічильником у шапці сайту.
+      security:
+        - {}
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Кількість позицій.
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/CartCount"}
+              example: {count: 3}
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /api/users/{user_id}/consents:
+    get:
+      tags: [privacy]
+      operationId: listConsents
+      summary: Стан згод суб'єкта
+      description: |
+        Стан згоди для кожної мети обробки (навіть якщо користувач ще не відповідав — NOT_SET) і повна історія змін.
+        Доступно самому користувачу або адміністратору.
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/UserId"
+      responses:
+        "200":
+          description: Згоди за цілями та історія.
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/ConsentList"}
+              example:
+                subject_id: 1
+                consents:
+                  - {purpose: MARKETING_EMAIL, status: GRANTED, policy_version: "2026-10", current_policy_version: "2026-10",
+                     policy_up_to_date: true, granted_at: "2026-11-20T10:00:00+00:00", withdrawn_at: null,
+                     updated_at: "2026-11-20T10:00:00+00:00", source: WEB}
+                  - {purpose: OPTIONAL_ANALYTICS, status: NOT_SET, policy_version: null, current_policy_version: "2026-10",
+                     policy_up_to_date: false, granted_at: null, withdrawn_at: null, updated_at: null, source: null}
+                history:
+                  - {event_id: 7, purpose: MARKETING_EMAIL, action: GRANT, policy_version: "2026-10", source: WEB,
+                     occurred_at: "2026-11-20T10:00:00+00:00"}
+        "401": {$ref: "#/components/responses/Unauthorized"}
+        "403": {$ref: "#/components/responses/Forbidden"}
+        "404": {$ref: "#/components/responses/NotFound"}
+        "500": {$ref: "#/components/responses/InternalError"}
+
+  /api/users/{user_id}/consents/{purpose}/grant:
+    post:
+      tags: [privacy]
+      operationId: grantConsent
+      summary: Надати згоду
+      description: |
+        Фіксує згоду на мету обробки для чинної версії політики. Надати згоду може лише сам суб'єкт (адміністратор —
+        ні: згода є волею людини). Повторний виклик ідемпотентний (`status: unchanged`).
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/UserId"
+        - name: purpose
+          in: path
+          required: true
+          description: Мета обробки.
+          schema: {$ref: "#/components/schemas/Purpose"}
+          example: MARKETING_EMAIL
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: "#/components/schemas/GrantRequest"}
+            example: {policy_version: "2026-10", source: WEB}
+      responses:
+        "200":
+          description: Згоду надано або вона вже діяла.
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/ConsentChange"}
+              example:
+                status: granted
+                consent: {purpose: MARKETING_EMAIL, status: GRANTED, policy_version: "2026-10", current_policy_version: "2026-10",
+                          policy_up_to_date: true, granted_at: "2026-11-22T12:00:00+00:00", withdrawn_at: null,
+                          updated_at: "2026-11-22T12:00:00+00:00", source: WEB}
+        "400":
+          description: Невідома мета, невідоме джерело або тіло без JSON.
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/Error"}
+              examples:
+                unknownPurpose:
+                  value: {error: unknown_purpose, allowed: [MARKETING_EMAIL, OPTIONAL_ANALYTICS]}
+                invalidRequest:
+                  value: {error: invalid_request, hint: 'JSON {"policy_version": "...", "source": "WEB"} з Content-Type: application/json'}
+        "401": {$ref: "#/components/responses/Unauthorized"}
+        "403": {$ref: "#/components/responses/Forbidden"}
+        "404": {$ref: "#/components/responses/NotFound"}
+        "409":
+          description: Версія політики не чинна або суб'єкта анонімізовано.
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/Error"}
+              example: {error: policy_version_mismatch, current: "2026-10"}
+        "500": {$ref: "#/components/responses/InternalError"}
+
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: session
+      description: Сесійна cookie Flask-Login після входу через /login.
+
+  parameters:
+    UserId:
+      name: user_id
+      in: path
+      required: true
+      description: Ідентифікатор суб'єкта (keys.user_id).
+      schema: {type: integer, minimum: 1}
+      example: 1
+
+  responses:
+    Unauthorized:
+      description: Не виконано вхід.
+      content:
+        application/json:
+          schema: {$ref: "#/components/schemas/Error"}
+          example: {error: authentication_required}
+    Forbidden:
+      description: Користувач не є суб'єктом і не має ролі admin.
+      content:
+        application/json:
+          schema: {$ref: "#/components/schemas/Error"}
+          example: {error: forbidden}
+    NotFound:
+      description: Суб'єкта не знайдено.
+      content:
+        application/json:
+          schema: {$ref: "#/components/schemas/Error"}
+          example: {error: not_found}
+    InternalError:
+      description: Неочікувана помилка сервера; деталі лише в журналі (за correlation ID).
+      content:
+        application/json:
+          schema: {$ref: "#/components/schemas/Error"}
+          example: {error: internal_error}
+
+  schemas:
+    Error:
+      type: object
+      description: Єдиний формат помилки всіх JSON-маршрутів. Поле error — машинний код, решта — підказки.
+      required: [error]
+      properties:
+        error:
+          type: string
+          description: Машинний код помилки (snake_case).
+          enum: [authentication_required, forbidden, not_found, unknown_purpose, invalid_source, invalid_request,
+                 policy_version_mismatch, subject_anonymized, internal_error]
+          example: forbidden
+        hint: {type: string, description: "Підказка, як виправити запит.", example: 'JSON {"policy_version": "..."}'}
+        allowed:
+          type: array
+          description: Допустимі значення для поля, що не пройшло перевірку.
+          items: {type: string}
+          example: [MARKETING_EMAIL, OPTIONAL_ANALYTICS]
+      additionalProperties: true
+      example: {error: forbidden}
+
+    HealthStatus:
+      type: object
+      description: Звіт перевірки готовності.
+      required: [status, checks]
+      properties:
+        status: {type: string, enum: [ok, degraded], example: ok}
+        checks:
+          type: object
+          required: [database, migrations]
+          properties:
+            database: {type: string, enum: [ok, unavailable], example: ok}
+            migrations: {type: string, enum: [ok, missing], example: ok}
+          example: {database: ok, migrations: ok}
+        missing_tables:
+          type: array
+          description: Таблиці міграцій, яких немає (лише коли БД доступна).
+          items: {type: string, enum: [privacy_audit_log, user_consents, user_consent_history, marketing_outbox]}
+          example: [user_consents]
+      example: {status: ok, checks: {database: ok, migrations: ok}}
+
+    CartCount:
+      type: object
+      description: Кількість позицій у кошику.
+      required: [count]
+      properties:
+        count: {type: integer, minimum: 0, example: 3}
+      example: {count: 3}
+
+    Purpose:
+      type: string
+      description: Мета обробки персональних даних (окрема згода для кожної).
+      enum: [MARKETING_EMAIL, OPTIONAL_ANALYTICS]
+      example: MARKETING_EMAIL
+
+    ConsentState:
+      type: object
+      description: Стан згоди на одну мету.
+      required: [purpose, status, current_policy_version, policy_up_to_date]
+      properties:
+        purpose: {$ref: "#/components/schemas/Purpose"}
+        status: {type: string, enum: [GRANTED, WITHDRAWN, NOT_SET], example: GRANTED}
+        policy_version: {type: string, nullable: true, example: "2026-10"}
+        current_policy_version: {type: string, example: "2026-10"}
+        policy_up_to_date: {type: boolean, example: true}
+        granted_at: {type: string, format: date-time, nullable: true, example: "2026-11-20T10:00:00+00:00"}
+        withdrawn_at: {type: string, format: date-time, nullable: true, example: null}
+        updated_at: {type: string, format: date-time, nullable: true, example: "2026-11-20T10:00:00+00:00"}
+        source: {type: string, nullable: true, enum: [WEB, MOBILE, API, SUPPORT, ERASURE, null], example: WEB}
+      example: {purpose: MARKETING_EMAIL, status: GRANTED, policy_version: "2026-10", current_policy_version: "2026-10",
+                policy_up_to_date: true, granted_at: "2026-11-20T10:00:00+00:00", withdrawn_at: null,
+                updated_at: "2026-11-20T10:00:00+00:00", source: WEB}
+
+    ConsentEvent:
+      type: object
+      description: Подія історії згод.
+      required: [event_id, purpose, action, occurred_at]
+      properties:
+        event_id: {type: integer, example: 7}
+        purpose: {$ref: "#/components/schemas/Purpose"}
+        action: {type: string, enum: [GRANT, REVOKE], example: GRANT}
+        policy_version: {type: string, nullable: true, example: "2026-10"}
+        source: {type: string, nullable: true, example: WEB}
+        occurred_at: {type: string, format: date-time, example: "2026-11-20T10:00:00+00:00"}
+      example: {event_id: 7, purpose: MARKETING_EMAIL, action: GRANT, policy_version: "2026-10", source: WEB,
+                occurred_at: "2026-11-20T10:00:00+00:00"}
+
+    ConsentList:
+      type: object
+      description: Згоди суб'єкта за цілями та історія змін.
+      required: [subject_id, consents, history]
+      properties:
+        subject_id: {type: integer, example: 1}
+        consents: {type: array, items: {$ref: "#/components/schemas/ConsentState"}}
+        history: {type: array, items: {$ref: "#/components/schemas/ConsentEvent"}}
+      example: {subject_id: 1, consents: [], history: []}
+
+    GrantRequest:
+      type: object
+      description: Тіло запиту на згоду.
+      required: [policy_version, source]
+      properties:
+        policy_version: {type: string, description: "Версія політики, з якою погоджується користувач.", example: "2026-10"}
+        source: {type: string, enum: [WEB, MOBILE, API], example: WEB}
+      example: {policy_version: "2026-10", source: WEB}
+
+    ConsentChange:
+      type: object
+      description: Результат команди над згодою.
+      required: [status, consent]
+      properties:
+        status: {type: string, enum: [granted, revoked, unchanged], example: granted}
+        consent: {$ref: "#/components/schemas/ConsentState"}
+      example: {status: unchanged, consent: {purpose: MARKETING_EMAIL, status: GRANTED, current_policy_version: "2026-10",
+                                             policy_up_to_date: true}}
