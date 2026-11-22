@@ -1,0 +1,125 @@
+# Documentation Decay Audit, дата аудиту 2026-11-22, HEAD = 5b59e70
+$ git rev-parse --short HEAD
+  5b59e70
+$ git log -1 --format=%cs -- README.md
+  2026-11-22
+$ git log -1 "--format=%cs %H" -- README.md
+  2026-11-22 f4556062b6e3b1b5ced26f313692e5a0b3c62889
+$ git log --oneline -- README.md
+  f455606 docs(maintenance): documentation maintenance regime, owners, review cycles and currency gate
+  e6c7732 docs(architecture): deliver design and infrastructure passport
+$ git grep -I -l -w -F README.md HEAD -- . :(exclude)docs/lab10
+  HEAD:.github/pull_request_template.md
+  HEAD:README.md
+  HEAD:docs/isd.md
+  HEAD:docs/maintenance.md
+  HEAD:docs/sdd.md
+  ... (усього рядків: 7)
+$ git log --oneline --since=2026-10-23 -- README.md
+  f455606 docs(maintenance): documentation maintenance regime, owners, review cycles and currency gate
+  e6c7732 docs(architecture): deliver design and infrastructure passport
+$ git log --oneline -- app.py routers requirements.txt .env.example scripts/demo_db.py static/js/keyboard-shortcuts.js
+  c534260 refactor(audit): eliminate god object via interface decomposition, PASS
+  de3b723 arch(audit): Baseline - God Object OrderManager (логіка замовлень з app.py, CBO 18, LCOM 0.91), матриця звязності
+  c555562 feat: Лаб.4 Завд.4 - Consent Management Engine (GRANT/REVOKE, Policy Gate, фонова черга, історія згод)
+  ... (усього рядків: 22)
+$ git log --oneline f4556062b6e3b1b5ced26f313692e5a0b3c62889..HEAD -- app.py routers requirements.txt .env.example scripts/demo_db.py static/js/keyboard-shortcuts.js
+  (порожньо)
+$ git log -1 --format=%cs -- docs/sdd.md
+  2026-11-22
+$ git log -1 "--format=%cs %H" -- docs/sdd.md
+  2026-11-22 f4556062b6e3b1b5ced26f313692e5a0b3c62889
+$ git log --oneline -- docs/sdd.md
+  f455606 docs(maintenance): documentation maintenance regime, owners, review cycles and currency gate
+  e6c7732 docs(architecture): deliver design and infrastructure passport
+$ git grep -I -l -w -F sdd.md HEAD -- . :(exclude)docs/lab10
+  HEAD:.github/pull_request_template.md
+  HEAD:README.md
+  HEAD:docs/architecture/adr/0001-postgresql-psycopg2.md
+  HEAD:docs/architecture/adr/0002-privacy-by-design-module.md
+  HEAD:docs/archive/README.md
+  ... (усього рядків: 10)
+$ git log --oneline --since=2026-10-23 -- docs/sdd.md
+  f455606 docs(maintenance): documentation maintenance regime, owners, review cycles and currency gate
+  e6c7732 docs(architecture): deliver design and infrastructure passport
+$ git log --oneline -- app.py routers services privacy models migrations tests/db/schema_base.sql
+  4449b3f refactor(audit): replace inheritance with composition pattern, PASS
+  e8cc224 arch(audit): capture inheritance fragility crash, FAIL
+  ab6df23 arch(audit): Baseline - ієрархія калькуляторів ціни (DIT 3, PIM 21, 6 перевизначених методів)
+  ... (усього рядків: 31)
+$ git log --oneline f4556062b6e3b1b5ced26f313692e5a0b3c62889..HEAD -- app.py routers services privacy models migrations tests/db/schema_base.sql
+  (порожньо)
+$ git log -1 --format=%cs -- docs/isd.md
+  2026-11-22
+$ git log -1 "--format=%cs %H" -- docs/isd.md
+  2026-11-22 f4556062b6e3b1b5ced26f313692e5a0b3c62889
+$ git log --oneline -- docs/isd.md
+  f455606 docs(maintenance): documentation maintenance regime, owners, review cycles and currency gate
+  e6c7732 docs(architecture): deliver design and infrastructure passport
+$ git grep -I -l -w -F isd.md HEAD -- . :(exclude)docs/lab10
+  HEAD:.github/pull_request_template.md
+  HEAD:README.md
+  HEAD:docs/architecture/adr/0001-postgresql-psycopg2.md
+  HEAD:docs/maintenance.md
+  HEAD:docs/sdd.md
+  ... (усього рядків: 6)
+$ git log --oneline --since=2026-10-23 -- docs/isd.md
+  f455606 docs(maintenance): documentation maintenance regime, owners, review cycles and currency gate
+  e6c7732 docs(architecture): deliver design and infrastructure passport
+$ git log --oneline -- app.py config.py .env.example requirements.txt migrations scripts/migrate.py .github/workflows .githooks sonar-project.properties scan.ps1
+  c534260 refactor(audit): eliminate god object via interface decomposition, PASS
+  de3b723 arch(audit): Baseline - God Object OrderManager (логіка замовлень з app.py, CBO 18, LCOM 0.91), матриця звязності
+  1f241fd ci: Лаб.7 Завд.3 - GitHub Actions збирає метрики (lizard, radon, churn 90 днів) і матрицю Hotspots як артефакт
+  ... (усього рядків: 26)
+$ git log --oneline f4556062b6e3b1b5ced26f313692e5a0b3c62889..HEAD -- app.py config.py .env.example requirements.txt migrations scripts/migrate.py .github/workflows .githooks sonar-project.properties scan.ps1
+  (порожньо)
+$ git log -1 --format=%cs -- docs/architecture/adr
+  2026-11-22
+$ git log -1 "--format=%cs %H" -- docs/architecture/adr
+  2026-11-22 5b59e70c904347beff269b176664f6c3b438ffaf
+$ git log --oneline -- docs/architecture/adr
+  5b59e70 docs(maintenance): review date for ADR register
+  e6c7732 docs(architecture): deliver design and infrastructure passport
+$ git grep -I -l -w -F adr HEAD -- . :(exclude)docs/lab10
+  HEAD:.github/pull_request_template.md
+  HEAD:README.md
+  HEAD:docs/isd.md
+  HEAD:docs/maintenance.md
+  HEAD:docs/sdd.md
+  ... (усього рядків: 6)
+$ git log --oneline --since=2026-10-23 -- docs/architecture/adr
+  5b59e70 docs(maintenance): review date for ADR register
+  e6c7732 docs(architecture): deliver design and infrastructure passport
+$ git log --oneline -- requirements.txt models/database.py privacy/policy.py migrations
+  e5ea852 refactor(audit): reduce Chapin complexity using immutable Value Objects, PASS
+  c555562 feat: Лаб.4 Завд.4 - Consent Management Engine (GRANT/REVOKE, Policy Gate, фонова черга, історія згод)
+  3fd933a feat: Лаб.4 Завд.3 — Right to Erasure (POST /api/users/id/anonymize, атомарна ідемпотентна анонімізація, audit без PII)
+  ... (усього рядків: 12)
+$ git log --oneline 5b59e70c904347beff269b176664f6c3b438ffaf..HEAD -- requirements.txt models/database.py privacy/policy.py migrations
+  (порожньо)
+$ git log -1 --format=%cs -- docs/maintenance.md
+  2026-11-22
+$ git log -1 "--format=%cs %H" -- docs/maintenance.md
+  2026-11-22 f4556062b6e3b1b5ced26f313692e5a0b3c62889
+$ git log --oneline -- docs/maintenance.md
+  f455606 docs(maintenance): documentation maintenance regime, owners, review cycles and currency gate
+$ git grep -I -l -w -F maintenance.md HEAD -- . :(exclude)docs/lab10
+  HEAD:.github/pull_request_template.md
+  HEAD:README.md
+  HEAD:docs/isd.md
+  HEAD:docs/maintenance.md
+  HEAD:docs/sdd.md
+  ... (усього рядків: 6)
+$ git log --oneline --since=2026-10-23 -- docs/maintenance.md
+  f455606 docs(maintenance): documentation maintenance regime, owners, review cycles and currency gate
+$ git log --format=%s
+  docs(maintenance): review date for ADR register
+  docs(maintenance): documentation maintenance regime, owners, review cycles and currency gate
+  docs(architecture): deliver design and infrastructure passport
+  docs(audit): apply audit verdicts - remove dead documentation, archive deprecated schema
+  docs(audit): Лаб.10 Завд.1 - інвентаризація документації, метрики актуальності через Git CLI, вердикти
+  ... (усього рядків: 64)
+$ git show HEAD:database/create_db.txt
+  (порожньо)
+$ git show HEAD:database/users_table_sql.txt
+  (порожньо)

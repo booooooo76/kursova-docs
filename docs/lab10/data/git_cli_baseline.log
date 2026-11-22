@@ -3,6 +3,8 @@ $ git rev-parse --short HEAD
   215d7a3
 $ git log -1 --format=%cs -- README.md
   (порожньо)
+$ git log -1 "--format=%cs %H" -- README.md
+  (порожньо)
 $ git log --oneline -- README.md
   (порожньо)
 $ git grep -I -l -w -F README.md HEAD -- . :(exclude)docs/lab10
@@ -18,6 +20,8 @@ $ git log -1 --format=%cs -- database/create_db.txt
   2025-10-17
 $ git log -1 --format=%cs -- database/users_table_sql.txt
   2025-10-17
+$ git log -1 "--format=%cs %H" -- database/create_db.txt database/users_table_sql.txt
+  2025-10-17 a68b439f618c33460c295c0319f34f58c079af4e
 $ git log --oneline -- database/create_db.txt database/users_table_sql.txt
   a68b439 first commit
 $ git grep -I -l -w -F create_db.txt HEAD -- . :(exclude)docs/lab10
@@ -31,13 +35,15 @@ $ git log --oneline -- tests/db/schema_base.sql migrations models scripts/migrat
   e5ea852 refactor(audit): reduce Chapin complexity using immutable Value Objects, PASS
   ebcbdd5 feat: delivery_days через довідник даних (lookup table), CC 12 -> 2
   ... (усього рядків: 12)
-$ git log --oneline "--since=2025-10-17 23:59:59" -- tests/db/schema_base.sql migrations models scripts/migrate.py
+$ git log --oneline a68b439f618c33460c295c0319f34f58c079af4e..HEAD -- tests/db/schema_base.sql migrations models scripts/migrate.py
   ae834ff arch(audit): capture god object coupling failure, FAIL
   e5ea852 refactor(audit): reduce Chapin complexity using immutable Value Objects, PASS
   ebcbdd5 feat: delivery_days через довідник даних (lookup table), CC 12 -> 2
   ... (усього рядків: 11)
 $ git log -1 --format=%cs -- database/insert_sample_data.txt
   2025-10-17
+$ git log -1 "--format=%cs %H" -- database/insert_sample_data.txt
+  2025-10-17 a68b439f618c33460c295c0319f34f58c079af4e
 $ git log --oneline -- database/insert_sample_data.txt
   a68b439 first commit
 $ git grep -I -l -w -F insert_sample_data.txt HEAD -- . :(exclude)docs/lab10
@@ -49,13 +55,15 @@ $ git log --oneline -- tests/factories.py scripts/demo_db.py tests/db/schema_bas
   c18ec93 feat: Лаб.4 Завд.2 — Personal Data Export (GET /api/users/id/personal-data, контроль доступу, аудит, демо-БД)
   8fe44cb feat: Лаб.4 Етап 1 — PII inventory (реєстр privacy/policy.py, фабрика синтетичних даних, тести повноти)
   ... (усього рядків: 4)
-$ git log --oneline "--since=2025-10-17 23:59:59" -- tests/factories.py scripts/demo_db.py tests/db/schema_base.sql
+$ git log --oneline a68b439f618c33460c295c0319f34f58c079af4e..HEAD -- tests/factories.py scripts/demo_db.py tests/db/schema_base.sql
   c555562 feat: Лаб.4 Завд.4 - Consent Management Engine (GRANT/REVOKE, Policy Gate, фонова черга, історія згод)
   c18ec93 feat: Лаб.4 Завд.2 — Personal Data Export (GET /api/users/id/personal-data, контроль доступу, аудит, демо-БД)
   8fe44cb feat: Лаб.4 Етап 1 — PII inventory (реєстр privacy/policy.py, фабрика синтетичних даних, тести повноти)
   ... (усього рядків: 4)
 $ git log -1 --format=%cs -- 777.mb
   2025-11-27
+$ git log -1 "--format=%cs %H" -- 777.mb
+  2025-11-27 f048921ed2287aad7df888a929c34e40c1b77c9a
 $ git log --oneline -- 777.mb
   f048921 кінець
 $ git grep -I -l -w -F 777.mb HEAD -- . :(exclude)docs/lab10
@@ -67,13 +75,15 @@ $ git log --oneline -- app.py models services privacy routers
   e8cc224 arch(audit): capture inheritance fragility crash, FAIL
   ab6df23 arch(audit): Baseline - ієрархія калькуляторів ціни (DIT 3, PIM 21, 6 перевизначених методів)
   ... (усього рядків: 30)
-$ git log --oneline "--since=2025-11-27 23:59:59" -- app.py models services privacy routers
+$ git log --oneline f048921ed2287aad7df888a929c34e40c1b77c9a..HEAD -- app.py models services privacy routers
   4449b3f refactor(audit): replace inheritance with composition pattern, PASS
   e8cc224 arch(audit): capture inheritance fragility crash, FAIL
   ab6df23 arch(audit): Baseline - ієрархія калькуляторів ціни (DIT 3, PIM 21, 6 перевизначених методів)
   ... (усього рядків: 23)
 $ git log -1 --format=%cs -- keyboard_user_manual.txt
   2025-11-14
+$ git log -1 "--format=%cs %H" -- keyboard_user_manual.txt
+  2025-11-14 0354db59e0601470a5d54908aa01264c95698675
 $ git log --oneline -- keyboard_user_manual.txt
   0354db5 працююча версія
 $ git grep -I -l -w -F keyboard_user_manual.txt HEAD -- . :(exclude)docs/lab10
@@ -85,13 +95,15 @@ $ git log --oneline -- static/js/keyboard-shortcuts.js templates/base.html
   5c22ac9 1.4
   d67becd 1.3
   ... (усього рядків: 6)
-$ git log --oneline "--since=2025-11-14 23:59:59" -- static/js/keyboard-shortcuts.js templates/base.html
+$ git log --oneline 0354db59e0601470a5d54908aa01264c95698675..HEAD -- static/js/keyboard-shortcuts.js templates/base.html
   f048921 кінець
   5c22ac9 1.4
   d67becd 1.3
   ... (усього рядків: 4)
 $ git log -1 --format=%cs -- QUICK_TEST_SCENARIO.txt
   2025-11-14
+$ git log -1 "--format=%cs %H" -- QUICK_TEST_SCENARIO.txt
+  2025-11-14 0354db59e0601470a5d54908aa01264c95698675
 $ git log --oneline -- QUICK_TEST_SCENARIO.txt
   0354db5 працююча версія
 $ git grep -I -l -w -F QUICK_TEST_SCENARIO.txt HEAD -- . :(exclude)docs/lab10
@@ -103,13 +115,15 @@ $ git log --oneline -- templates static/js
   5c22ac9 1.4
   d67becd 1.3
   ... (усього рядків: 7)
-$ git log --oneline "--since=2025-11-14 23:59:59" -- templates static/js
+$ git log --oneline 0354db59e0601470a5d54908aa01264c95698675..HEAD -- templates static/js
   f048921 кінець
   5c22ac9 1.4
   d67becd 1.3
   ... (усього рядків: 5)
 $ git log -1 --format=%cs -- TESTING_CHECKLIST.txt
   2025-11-14
+$ git log -1 "--format=%cs %H" -- TESTING_CHECKLIST.txt
+  2025-11-14 0354db59e0601470a5d54908aa01264c95698675
 $ git log --oneline -- TESTING_CHECKLIST.txt
   0354db5 працююча версія
 $ git grep -I -l -w -F TESTING_CHECKLIST.txt HEAD -- . :(exclude)docs/lab10
@@ -121,13 +135,15 @@ $ git log --oneline -- templates static/js
   5c22ac9 1.4
   d67becd 1.3
   ... (усього рядків: 7)
-$ git log --oneline "--since=2025-11-14 23:59:59" -- templates static/js
+$ git log --oneline 0354db59e0601470a5d54908aa01264c95698675..HEAD -- templates static/js
   f048921 кінець
   5c22ac9 1.4
   d67becd 1.3
   ... (усього рядків: 5)
 $ git log -1 --format=%cs -- SCREENSHOTS_GUIDE.txt
   2025-11-14
+$ git log -1 "--format=%cs %H" -- SCREENSHOTS_GUIDE.txt
+  2025-11-14 0354db59e0601470a5d54908aa01264c95698675
 $ git log --oneline -- SCREENSHOTS_GUIDE.txt
   0354db5 працююча версія
 $ git grep -I -l -w -F SCREENSHOTS_GUIDE.txt HEAD -- . :(exclude)docs/lab10
@@ -139,13 +155,15 @@ $ git log --oneline -- templates static/js
   5c22ac9 1.4
   d67becd 1.3
   ... (усього рядків: 7)
-$ git log --oneline "--since=2025-11-14 23:59:59" -- templates static/js
+$ git log --oneline 0354db59e0601470a5d54908aa01264c95698675..HEAD -- templates static/js
   f048921 кінець
   5c22ac9 1.4
   d67becd 1.3
   ... (усього рядків: 5)
 $ git log -1 --format=%cs -- dd
   2025-11-14
+$ git log -1 "--format=%cs %H" -- dd
+  2025-11-14 0354db59e0601470a5d54908aa01264c95698675
 $ git log --oneline -- dd
   0354db5 працююча версія
 $ git grep -I -l -w -F dd HEAD -- . :(exclude)docs/lab10
@@ -157,13 +175,15 @@ $ git log --oneline -- templates/product_detail.html app.py
   de3b723 arch(audit): Baseline - God Object OrderManager (логіка замовлень з app.py, CBO 18, LCOM 0.91), матриця звязності
   c555562 feat: Лаб.4 Завд.4 - Consent Management Engine (GRANT/REVOKE, Policy Gate, фонова черга, історія згод)
   ... (усього рядків: 17)
-$ git log --oneline "--since=2025-11-14 23:59:59" -- templates/product_detail.html app.py
+$ git log --oneline 0354db59e0601470a5d54908aa01264c95698675..HEAD -- templates/product_detail.html app.py
   c534260 refactor(audit): eliminate god object via interface decomposition, PASS
   de3b723 arch(audit): Baseline - God Object OrderManager (логіка замовлень з app.py, CBO 18, LCOM 0.91), матриця звязності
   c555562 feat: Лаб.4 Завд.4 - Consent Management Engine (GRANT/REVOKE, Policy Gate, фонова черга, історія згод)
   ... (усього рядків: 15)
 $ git log -1 --format=%cs -- .env.example
   2026-10-04
+$ git log -1 "--format=%cs %H" -- .env.example
+  2026-10-04 db2b707eb66f88a5c2723278c7a478734f455759
 $ git log --oneline -- .env.example
   db2b707 fix: Лаб.3 Завд.3 — секрети лише зі змінних середовища
   7ab8346 chore: прибрати venv, __pycache__ та .env з git-трекінгу
@@ -179,12 +199,14 @@ $ git log --oneline -- config.py
   db2b707 fix: Лаб.3 Завд.3 — секрети лише зі змінних середовища
   bd23ef1 feat: інтеграція SonarQube CE (Завд.1) + перевірка автооновлення метрик
   a68b439 first commit
-$ git log --oneline "--since=2026-10-04 23:59:59" -- config.py
+$ git log --oneline db2b707eb66f88a5c2723278c7a478734f455759..HEAD -- config.py
   (порожньо)
 $ git log -1 --format=%cs -- requirements.txt
   2026-10-04
 $ git log -1 --format=%cs -- requirements-dev.txt
   2026-11-14
+$ git log -1 "--format=%cs %H" -- requirements.txt requirements-dev.txt
+  2026-11-14 fb4958fc9118896db219ed322c31445fd23c0fc1
 $ git log --oneline -- requirements.txt requirements-dev.txt
   fb4958f feat(lab9): FPA 51 FP and UCP 74 for lear Staff Review, git effort 92.9 h, PF 1.26 h per UCP
   de3b723 arch(audit): Baseline - God Object OrderManager (логіка замовлень з app.py, CBO 18, LCOM 0.91), матриця звязності
@@ -212,10 +234,12 @@ $ git log --oneline -- tools app.py
   fb4958f feat(lab9): FPA 51 FP and UCP 74 for lear Staff Review, git effort 92.9 h, PF 1.26 h per UCP
   16df7c1 feat(lab9): financial simulator - Cost of Delay, NPV over 6 months, FINANCIAL_LEDGER PASS at month 2
   ... (усього рядків: 30)
-$ git log --oneline "--since=2026-11-14 23:59:59" -- tools app.py
-  (порожньо)
+$ git log --oneline fb4958fc9118896db219ed322c31445fd23c0fc1..HEAD -- tools app.py
+  215d7a3 docs(lab9): machine-readable FPA and UCP results for report builder
 $ git log -1 --format=%cs -- .github/workflows/quality-metrics.yml
   2026-10-31
+$ git log -1 "--format=%cs %H" -- .github/workflows/quality-metrics.yml
+  2026-10-31 1f241fd4e61decd8e59977d161b02bddc655ad61
 $ git log --oneline -- .github/workflows/quality-metrics.yml
   1f241fd ci: Лаб.7 Завд.3 - GitHub Actions збирає метрики (lizard, radon, churn 90 днів) і матрицю Hotspots як артефакт
 $ git grep -I -l -w -F quality-metrics.yml HEAD -- . :(exclude)docs/lab10
@@ -226,12 +250,14 @@ $ git log --oneline -- tools/ci_metrics.sh tools/hotspots.py tools/chapin_vars.p
   8af7dfc ci: ci_metrics.sh працює і з шляхом до python із пробілами
   1f241fd ci: Лаб.7 Завд.3 - GitHub Actions збирає метрики (lizard, radon, churn 90 днів) і матрицю Hotspots як артефакт
   03dbdfa docs(audit): Лаб.7 Завд.1 - семантичний аудит anonymize_subject за Чепіним (CC=4, Cch=16), інструмент chapin_vars
-$ git log --oneline "--since=2026-10-31 23:59:59" -- tools/ci_metrics.sh tools/hotspots.py tools/chapin_vars.py
-  (порожньо)
+$ git log --oneline 1f241fd4e61decd8e59977d161b02bddc655ad61..HEAD -- tools/ci_metrics.sh tools/hotspots.py tools/chapin_vars.py
+  8af7dfc ci: ci_metrics.sh працює і з шляхом до python із пробілами
 $ git log -1 --format=%cs -- .githooks/pre-commit
   2026-10-24
 $ git log -1 --format=%cs -- docs/lab6/precommit.md
   2026-10-24
+$ git log -1 "--format=%cs %H" -- .githooks/pre-commit docs/lab6/precommit.md
+  2026-10-24 4b0a7f9eab9a4549c18f6b62fecfd2049626cab9
 $ git log --oneline -- .githooks/pre-commit docs/lab6/precommit.md
   4b0a7f9 docs(audit): Лаб.6 Завд.3 - результати демонстрації pre-commit хука (FAIL, PASS, храповик)
   313ec12 feat(audit): Лаб.6 Завд.3 - pre-commit хук складності (lizard, CC<=10 для staged-файлів, базова лінія старого боргу)
@@ -250,12 +276,14 @@ $ git log --oneline --since=2026-10-23 -- .githooks/pre-commit docs/lab6/precomm
   313ec12 feat(audit): Лаб.6 Завд.3 - pre-commit хук складності (lizard, CC<=10 для staged-файлів, базова лінія старого боргу)
 $ git log --oneline -- .complexity-baseline tools/complexity_baseline.py
   313ec12 feat(audit): Лаб.6 Завд.3 - pre-commit хук складності (lizard, CC<=10 для staged-файлів, базова лінія старого боргу)
-$ git log --oneline "--since=2026-10-24 23:59:59" -- .complexity-baseline tools/complexity_baseline.py
+$ git log --oneline 4b0a7f9eab9a4549c18f6b62fecfd2049626cab9..HEAD -- .complexity-baseline tools/complexity_baseline.py
   (порожньо)
 $ git log -1 --format=%cs -- sonar-project.properties
   2026-09-13
 $ git log -1 --format=%cs -- scan.ps1
   2026-09-13
+$ git log -1 "--format=%cs %H" -- sonar-project.properties scan.ps1
+  2026-09-13 bd23ef153c4da493d226db15926b5003ab93c56f
 $ git log --oneline -- sonar-project.properties scan.ps1
   bd23ef1 feat: інтеграція SonarQube CE (Завд.1) + перевірка автооновлення метрик
 $ git grep -I -l -w -F sonar-project.properties HEAD -- . :(exclude)docs/lab10
@@ -270,11 +298,11 @@ $ git log --oneline -- app.py models services privacy routers
   e8cc224 arch(audit): capture inheritance fragility crash, FAIL
   ab6df23 arch(audit): Baseline - ієрархія калькуляторів ціни (DIT 3, PIM 21, 6 перевизначених методів)
   ... (усього рядків: 30)
-$ git log --oneline "--since=2026-09-13 23:59:59" -- app.py models services privacy routers
+$ git log --oneline bd23ef153c4da493d226db15926b5003ab93c56f..HEAD -- app.py models services privacy routers
   4449b3f refactor(audit): replace inheritance with composition pattern, PASS
   e8cc224 arch(audit): capture inheritance fragility crash, FAIL
   ab6df23 arch(audit): Baseline - ієрархія калькуляторів ціни (DIT 3, PIM 21, 6 перевизначених методів)
-  ... (усього рядків: 19)
+  ... (усього рядків: 22)
 $ git log -1 --format=%cs -- docs/lab4/consent.md
   2026-10-18
 $ git log -1 --format=%cs -- docs/lab4/logging_policy.md
@@ -285,6 +313,8 @@ $ git log -1 --format=%cs -- docs/lab4/anonymization.md
   2026-10-11
 $ git log -1 --format=%cs -- docs/lab4/personal_data_export.md
   2026-10-18
+$ git log -1 "--format=%cs %H" -- docs/lab4/consent.md docs/lab4/logging_policy.md docs/lab4/pii_inventory.md docs/lab4/anonymization.md docs/lab4/personal_data_export.md
+  2026-10-18 7b17e575e9bd2fa3ba24f827155586508be0b117
 $ git log --oneline -- docs/lab4/consent.md docs/lab4/logging_policy.md docs/lab4/pii_inventory.md docs/lab4/anonymization.md docs/lab4/personal_data_export.md
   7b17e57 fix: Лаб.4 Завд.1 - охоронець виводу не склеює рядки JSON-логу (регресійний тест)
   c555562 feat: Лаб.4 Завд.4 - Consent Management Engine (GRANT/REVOKE, Policy Gate, фонова черга, історія згод)
@@ -307,13 +337,15 @@ $ git log --oneline -- privacy
   36dd3df feat(audit): simulate data mutation issue, FAIL
   eb53844 refactor(audit): eliminate conditional branches using lookup table, PASS
   ... (усього рядків: 10)
-$ git log --oneline "--since=2026-10-18 23:59:59" -- privacy
+$ git log --oneline 7b17e575e9bd2fa3ba24f827155586508be0b117..HEAD -- privacy
   e5ea852 refactor(audit): reduce Chapin complexity using immutable Value Objects, PASS
   36dd3df feat(audit): simulate data mutation issue, FAIL
   eb53844 refactor(audit): eliminate conditional branches using lookup table, PASS
   ... (усього рядків: 4)
 $ git log -1 --format=%cs -- docs/lab3/secrets_prevention.md
   2026-10-04
+$ git log -1 "--format=%cs %H" -- docs/lab3/secrets_prevention.md
+  2026-10-04 d154ab82cfeec9ec8c191f14ab5d7125a745b8a6
 $ git log --oneline -- docs/lab3/secrets_prevention.md
   d154ab8 docs: Лаб.3 Завд.3 — Secrets Leak Prevention (логи FAIL/PASS, відкликання секретів)
 $ git grep -I -l -w -F secrets_prevention.md HEAD -- . :(exclude)docs/lab10
@@ -323,7 +355,7 @@ $ git log --oneline --since=2026-10-23 -- docs/lab3/secrets_prevention.md
 $ git log --oneline -- .gitleaks.toml .gitleaksignore scripts/secrets_scan.ps1 .githooks/pre-commit
   313ec12 feat(audit): Лаб.6 Завд.3 - pre-commit хук складності (lizard, CC<=10 для staged-файлів, базова лінія старого боргу)
   295f926 feat: Лаб.3 Завд.3 — secret scanner (Gitleaks) + pre-commit hook
-$ git log --oneline "--since=2026-10-04 23:59:59" -- .gitleaks.toml .gitleaksignore scripts/secrets_scan.ps1 .githooks/pre-commit
+$ git log --oneline d154ab82cfeec9ec8c191f14ab5d7125a745b8a6..HEAD -- .gitleaks.toml .gitleaksignore scripts/secrets_scan.ps1 .githooks/pre-commit
   313ec12 feat(audit): Лаб.6 Завд.3 - pre-commit хук складності (lizard, CC<=10 для staged-файлів, базова лінія старого боргу)
 $ git log -1 --format=%cs -- docs/lab3/sca_triage.md
   2026-10-04
@@ -349,6 +381,8 @@ $ git log -1 --format=%cs -- docs/lab9/economics.md
   2026-11-14
 $ git log -1 --format=%cs -- docs/lab9/fpa_ucp.md
   2026-11-14
+$ git log -1 "--format=%cs %H" -- docs/lab3/sca_triage.md docs/lab5/measurement_protocol.md docs/lab6/halstead.md docs/lab6/cfg.md docs/lab7/chapin.md docs/lab7/hotspots.md docs/lab8/ck_mood.md docs/lab8/god_object.md docs/lab8/inheritance.md docs/lab9/sqale.md docs/lab9/economics.md docs/lab9/fpa_ucp.md
+  2026-11-14 fb4958fc9118896db219ed322c31445fd23c0fc1
 $ git log --oneline -- docs/lab3/sca_triage.md docs/lab5/measurement_protocol.md docs/lab6/halstead.md docs/lab6/cfg.md docs/lab7/chapin.md docs/lab7/hotspots.md docs/lab8/ck_mood.md docs/lab8/god_object.md docs/lab8/inheritance.md docs/lab9/sqale.md docs/lab9/economics.md docs/lab9/fpa_ucp.md
   fb4958f feat(lab9): FPA 51 FP and UCP 74 for lear Staff Review, git effort 92.9 h, PF 1.26 h per UCP
   16df7c1 feat(lab9): financial simulator - Cost of Delay, NPV over 6 months, FINANCIAL_LEDGER PASS at month 2
@@ -392,10 +426,12 @@ $ git log --oneline -- app.py models services privacy routers
   e8cc224 arch(audit): capture inheritance fragility crash, FAIL
   ab6df23 arch(audit): Baseline - ієрархія калькуляторів ціни (DIT 3, PIM 21, 6 перевизначених методів)
   ... (усього рядків: 30)
-$ git log --oneline "--since=2026-11-14 23:59:59" -- app.py models services privacy routers
+$ git log --oneline fb4958fc9118896db219ed322c31445fd23c0fc1..HEAD -- app.py models services privacy routers
   (порожньо)
 $ git log -1 --format=%cs -- FINANCIAL_LEDGER.md
   2026-11-14
+$ git log -1 "--format=%cs %H" -- FINANCIAL_LEDGER.md
+  2026-11-14 16df7c13f10d6974da33f4c9c9a7b60859b80599
 $ git log --oneline -- FINANCIAL_LEDGER.md
   16df7c1 feat(lab9): financial simulator - Cost of Delay, NPV over 6 months, FINANCIAL_LEDGER PASS at month 2
 $ git grep -I -l -w -F FINANCIAL_LEDGER.md HEAD -- . :(exclude)docs/lab10
@@ -406,7 +442,7 @@ $ git log --oneline --since=2026-10-23 -- FINANCIAL_LEDGER.md
   16df7c1 feat(lab9): financial simulator - Cost of Delay, NPV over 6 months, FINANCIAL_LEDGER PASS at month 2
 $ git log --oneline -- tools/financial_ledger.py
   16df7c1 feat(lab9): financial simulator - Cost of Delay, NPV over 6 months, FINANCIAL_LEDGER PASS at month 2
-$ git log --oneline "--since=2026-11-14 23:59:59" -- tools/financial_ledger.py
+$ git log --oneline 16df7c13f10d6974da33f4c9c9a7b60859b80599..HEAD -- tools/financial_ledger.py
   (порожньо)
 $ git log --oneline -- app.py models services privacy routers
   4449b3f refactor(audit): replace inheritance with composition pattern, PASS

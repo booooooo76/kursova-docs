@@ -3,6 +3,7 @@
  "metrics": {
   "A01": {
    "updated": null,
+   "sha": null,
    "age": null,
    "age_flag": "файлу немає",
    "doc_commits": 0,
@@ -15,6 +16,7 @@
   },
   "A02": {
    "updated": "2025-10-17",
+   "sha": "a68b439f618c33460c295c0319f34f58c079af4e",
    "age": 401,
    "age_flag": "ймовірно застарілий",
    "doc_commits": 1,
@@ -27,6 +29,7 @@
   },
   "A03": {
    "updated": "2025-10-17",
+   "sha": "a68b439f618c33460c295c0319f34f58c079af4e",
    "age": 401,
    "age_flag": "ймовірно застарілий",
    "doc_commits": 1,
@@ -39,6 +42,7 @@
   },
   "A04": {
    "updated": "2025-11-27",
+   "sha": "f048921ed2287aad7df888a929c34e40c1b77c9a",
    "age": 360,
    "age_flag": "ймовірно застарілий",
    "doc_commits": 1,
@@ -51,6 +55,7 @@
   },
   "A05": {
    "updated": "2025-11-14",
+   "sha": "0354db59e0601470a5d54908aa01264c95698675",
    "age": 373,
    "age_flag": "ймовірно застарілий",
    "doc_commits": 1,
@@ -63,6 +68,7 @@
   },
   "A06": {
    "updated": "2025-11-14",
+   "sha": "0354db59e0601470a5d54908aa01264c95698675",
    "age": 373,
    "age_flag": "ймовірно застарілий",
    "doc_commits": 1,
@@ -75,6 +81,7 @@
   },
   "A07": {
    "updated": "2025-11-14",
+   "sha": "0354db59e0601470a5d54908aa01264c95698675",
    "age": 373,
    "age_flag": "ймовірно застарілий",
    "doc_commits": 1,
@@ -87,6 +94,7 @@
   },
   "A08": {
    "updated": "2025-11-14",
+   "sha": "0354db59e0601470a5d54908aa01264c95698675",
    "age": 373,
    "age_flag": "ймовірно застарілий",
    "doc_commits": 1,
@@ -99,6 +107,7 @@
   },
   "A09": {
    "updated": "2025-11-14",
+   "sha": "0354db59e0601470a5d54908aa01264c95698675",
    "age": 373,
    "age_flag": "ймовірно застарілий",
    "doc_commits": 1,
@@ -113,6 +122,7 @@
   },
   "A10": {
    "updated": "2026-10-04",
+   "sha": "db2b707eb66f88a5c2723278c7a478734f455759",
    "age": 49,
    "age_flag": "свіжий",
    "doc_commits": 2,
@@ -131,6 +141,7 @@
   },
   "A11": {
    "updated": "2026-11-14",
+   "sha": "fb4958fc9118896db219ed322c31445fd23c0fc1",
    "age": 8,
    "age_flag": "свіжий",
    "doc_commits": 8,
@@ -147,12 +158,13 @@
    ],
    "touched_30d": 3,
    "code_total": 30,
-   "code_after": 0,
+   "code_after": 1,
    "drift": false,
    "consumer": true
   },
   "A12": {
    "updated": "2026-10-31",
+   "sha": "1f241fd4e61decd8e59977d161b02bddc655ad61",
    "age": 22,
    "age_flag": "свіжий",
    "doc_commits": 1,
@@ -161,12 +173,13 @@
    ],
    "touched_30d": 1,
    "code_total": 3,
-   "code_after": 0,
+   "code_after": 1,
    "drift": false,
    "consumer": true
   },
   "A13": {
    "updated": "2026-10-24",
+   "sha": "4b0a7f9eab9a4549c18f6b62fecfd2049626cab9",
    "age": 29,
    "age_flag": "свіжий",
    "doc_commits": 3,
@@ -187,6 +200,7 @@
   },
   "A14": {
    "updated": "2026-09-13",
+   "sha": "bd23ef153c4da493d226db15926b5003ab93c56f",
    "age": 70,
    "age_flag": "свіжий",
    "doc_commits": 1,
@@ -195,12 +209,13 @@
    ],
    "touched_30d": 0,
    "code_total": 30,
-   "code_after": 19,
-   "drift": false,
+   "code_after": 22,
+   "drift": true,
    "consumer": true
   },
   "A15": {
    "updated": "2026-10-18",
+   "sha": "7b17e575e9bd2fa3ba24f827155586508be0b117",
    "age": 35,
    "age_flag": "свіжий",
    "doc_commits": 6,
@@ -213,6 +228,7 @@
   },
   "A16": {
    "updated": "2026-10-04",
+   "sha": "d154ab82cfeec9ec8c191f14ab5d7125a745b8a6",
    "age": 49,
    "age_flag": "свіжий",
    "doc_commits": 1,
@@ -225,6 +241,7 @@
   },
   "A17": {
    "updated": "2026-11-14",
+   "sha": "fb4958fc9118896db219ed322c31445fd23c0fc1",
    "age": 8,
    "age_flag": "свіжий",
    "doc_commits": 15,
@@ -243,6 +260,7 @@
   },
   "A18": {
    "updated": "2026-11-14",
+   "sha": "16df7c13f10d6974da33f4c9c9a7b60859b80599",
    "age": 8,
    "age_flag": "свіжий",
    "doc_commits": 1,
@@ -259,6 +277,7 @@
   },
   "A19": {
    "updated": null,
+   "sha": null,
    "age": null,
    "age_flag": "н/д (не файл)",
    "doc_commits": 0,
@@ -271,6 +290,7 @@
   },
   "A20": {
    "updated": null,
+   "sha": null,
    "age": null,
    "age_flag": "н/д (не файл)",
    "doc_commits": 0,
@@ -283,6 +303,7 @@
   },
   "A21": {
    "updated": null,
+   "sha": null,
    "age": null,
    "age_flag": "н/д (не файл)",
    "doc_commits": 0,
@@ -295,6 +316,7 @@
   },
   "A22": {
    "updated": null,
+   "sha": null,
    "age": null,
    "age_flag": "н/д (не файл)",
    "doc_commits": 0,
@@ -308,7 +330,7 @@
  },
  "extra": {
   "docstrings": [
-   101,
+   104,
    368
   ],
   "commits": [

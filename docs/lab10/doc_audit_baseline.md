@@ -45,10 +45,10 @@
 | A08 | 2025-11-14 | 373 | ймовірно застарілий | 1 | 7 | 5 | 0 | 0 |
 | A09 | 2025-11-14 | 373 | ймовірно застарілий | 1 | 17 | 15 | 1 | 0 |
 | A10 | 2026-10-04 | 49 | свіжий | 2 | 3 | 0 | 5 | 0 |
-| A11 | 2026-11-14 | 8 | свіжий | 8 | 30 | 0 | 9 | 3 |
-| A12 | 2026-10-31 | 22 | свіжий | 1 | 3 | 0 | 1 | 1 |
+| A11 | 2026-11-14 | 8 | свіжий | 8 | 30 | 1 | 9 | 3 |
+| A12 | 2026-10-31 | 22 | свіжий | 1 | 3 | 1 | 1 | 1 |
 | A13 | 2026-10-24 | 29 | свіжий | 3 | 1 | 0 | 7 | 2 |
-| A14 | 2026-09-13 | 70 | свіжий | 1 | 30 | 19 | 1 | 0 |
+| A14 | 2026-09-13 | 70 | свіжий | 1 | 30 | 22 ⚠ | 1 | 0 |
 | A15 | 2026-10-18 | 35 | свіжий | 6 | 10 | 4 | 0 | 0 |
 | A16 | 2026-10-04 | 49 | свіжий | 1 | 2 | 1 | 0 | 0 |
 | A17 | 2026-11-14 | 8 | свіжий | 15 | 30 | 0 | 5 | 13 |
@@ -58,7 +58,7 @@
 | A21 | - | - | н/д (не файл) | 0 | 0 | 0 | 0 | 0 |
 | A22 | - | - | н/д (не файл) | 0 | 0 | 0 | 0 | 0 |
 
-Коментарі в коді (A19): docstring мають 101 з 368 функцій і класів коду застосунку (27%).
+Коментарі в коді (A19): docstring мають 104 з 368 функцій і класів коду застосунку (28%).
 Коміти (A20): 52 з 59 повідомлень у форматі Conventional Commits (88%).
 
 Дрейф схеми БД (A02): у документі 23 таблиць, у реальній схемі (tests/db/schema_base.sql + migrations/) 45. Не описано 24: analytics_events, cart, delivery_methods, marketing_outbox, news, order_items, orders, payment_methods, privacy_audit_log, product_attributes, product_images, product_reviews, promotion_products, promotions, query_results, repair_requests, repair_status_history, saved_queries, software_requests, software_status_history, sql_execution_log, user_consent_history, user_consents, wishlist. Описано, але не існує 2: clients, employees.
@@ -80,7 +80,7 @@
 | A11 | requirements.txt, requirements-dev.txt | актуальний | **оновити** | версії закріплені, коментарі пояснюють, навіщо інструмент; підтримувати разом із кодом |
 | A12 | CI .github/workflows/quality-metrics.yml | актуальний | **оновити** | конфігурація жива; опис стадій і тригерів переноситься в ISD |
 | A13 | Pre-commit хук (.githooks/pre-commit + docs/lab6/precommit.md) | актуальний | **оновити** | актуальний; крок налаштування хука додати в онбординг README |
-| A14 | SonarQube (sonar-project.properties, scan.ps1) | на межі дрейфу | **оновити** | 70 днів без змін, а код застосунку отримав 19 комітів (поріг 20); конфіг працює (Лаб.8), опис запуску перенести в ISD |
+| A14 | SonarQube (sonar-project.properties, scan.ps1) | сигнал дрейфу | **оновити** | 70 днів без змін, а код застосунку отримав 22 коміти (> 20); конфіг досі коректний (сканування Лаб.8 пройшло), але як підняти SonarQube ніде не описано - перенести в ISD |
 | A15 | Політики приватності docs/lab4/*.md (consent, logging_policy, pii_inventory, anonymization, personal_data_export) | ризик Dead | **оновити** | зміст відповідає privacy/ (4 коміти коду після оновлення), але жоден файл репозиторію на них не посилається і за 30 днів їх не відкривали в Git; дати вхід із SDD (компонент Privacy) |
 | A16 | Запобігання секретам docs/lab3/secrets_prevention.md | ризик Dead | **оновити** | зміст актуальний, але без посилань; хук відтоді отримав етап lizard (Лаб.6) - описати обидва етапи в ISD |
 | A17 | Звіти-протоколи лаб у репозиторії docs/lab3, lab5-lab9 (sca_triage, measurement_protocol, halstead, cfg, chapin, hotspots, ck_mood, god_object, inheritance, sqale, economics, fpa_ucp) | історичний запис | **deprecated** | документація процесу: фіксує факт на дату лаби й не має оновлюватися; позначити як архів (docs/labN/), поточну архітектуру описують SDD та ADR |

@@ -57,7 +57,7 @@
   {"id": "A14", "name": "SonarQube (sonar-project.properties, scan.ps1)", "paths": ["sonar-project.properties", "scan.ps1"], "type": "продукт", "category": "експлуатаційна",
    "audiences": ["DevOps", "QA"], "uncovered": "DevOps: не описано, що SonarQube підіймається окремо (sonarqube-server, Docker)",
    "component": ["app.py", "models", "services", "privacy", "routers"],
-   "verdict": "оновити", "diagnosis": "на межі дрейфу", "rationale": "70 днів без змін, а код застосунку отримав 19 комітів (поріг 20); конфіг працює (Лаб.8), опис запуску перенести в ISD"},
+   "verdict": "оновити", "diagnosis": "сигнал дрейфу", "rationale": "70 днів без змін, а код застосунку отримав 22 коміти (> 20); конфіг досі коректний (сканування Лаб.8 пройшло), але як підняти SonarQube ніде не описано - перенести в ISD"},
   {"id": "A15", "name": "Політики приватності docs/lab4/*.md (consent, logging_policy, pii_inventory, anonymization, personal_data_export)",
    "paths": ["docs/lab4/consent.md", "docs/lab4/logging_policy.md", "docs/lab4/pii_inventory.md", "docs/lab4/anonymization.md", "docs/lab4/personal_data_export.md"],
    "type": "продукт", "category": "технічна", "audiences": ["розробники", "QA", "бізнес"], "uncovered": "бізнес: розкидані по папці лаби, без єдиного входу",
