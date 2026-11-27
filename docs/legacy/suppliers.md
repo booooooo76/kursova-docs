@@ -57,7 +57,7 @@ flowchart LR
 |---|---|
 | `app.py` — 18 правил `add_url_rule` (verified) | `models.database.execute_query` — 61 виклик, жодного `transaction()` (verified) |
 | 12 шаблонів `templates/suppliers/` — форми й посилання (verified) | Flask: `render_template`, `flash`, `redirect`; `flask_login.current_user` (verified) |
-| інших модулів-клієнтів немає (verified: `grep "from routers.suppliers"` — лише `app.py`) | `print()` замість журналу — 7 місць (verified) |
+| інших модулів-клієнтів немає (verified: `grep "from routers.suppliers"` — лише `app.py`) | `print()` замість журналу — 7 місць до v1.1.0, 6 після (verified) |
 
 ## 3. Схема даних
 
@@ -90,22 +90,23 @@ erDiagram
 |---|---|---|---|---|
 | `add_delivery()` | створює поставку; відмовляє, якщо товару немає в зобов'язаннях договору | 8 / 3 | вставка поставки й позицій окремими COMMIT: збій → поставка без позицій | verified |
 | `edit_delivery()` | лише для `expected`; видаляє всі позиції й вставляє знову | 9 / 4 | збій після DELETE → поставка без позицій | verified |
-| **`receive_delivery()`** | додає `ordered_quantity` кожної позиції до залишку, ставить `received` | 3 / 2 + N | **немає транзакції й перевірки статусу**: повторний POST додає залишки вдруге; збій посередині лишає залишки збільшеними | verified (тест, симуляція INC-001) |
+| **`receive_delivery()`** | до v1.1.0: додавала `ordered_quantity` кожної позиції окремим COMMIT; з v1.1.0 (RFC-001): `apply_delivery()` в одній транзакції з `FOR UPDATE` і перевіркою статусу `expected` | 3 запити в 1 транзакції | **виправлено**: повтор не змінює склад, збій відкочує все й пише `delivery_receive_failed` | verified (6 тестів, симуляції PASS) |
 | `delete_contract()` | забороняє, якщо є поставки; видаляє зобов'язання, потім договір | 3 / 2 | збій між DELETE → договір без зобов'язань | verified |
 | `delete_delivery()` | забороняє для `received`; видаляє позиції, потім поставку | 3 / 2 | те саме | verified |
 | `*_list`, `*_detail` | читання з фільтрами; `except Exception` → `print` + flash | — | помилки не потрапляють у журнал і моніторинг | verified |
 
-7 функцій виконують ≥ 2 записи без транзакції (`legacy_map.py`, ознака `non_atomic_multi_write`): `add_contract`,
-`edit_contract`, `add_delivery`, `edit_delivery`, `receive_delivery`, `delete_contract`, `delete_delivery`.
+До INC-001 7 функцій виконували ≥ 2 записи без транзакції (`legacy_map.py`, ознака `non_atomic_multi_write`):
+`add_contract`, `edit_contract`, `add_delivery`, `edit_delivery`, `receive_delivery`, `delete_contract`,
+`delete_delivery`. Після RFC-001 лишилось 6, вони в `.atomicity-baseline` (CAPA-3).
 
 ## 5. Реєстр технічного боргу
 
 | ID | Тип | Борг | Наслідок | Імовірність / вплив | Пріоритет |
 |---|---|---|---|---|---|
-| TD-1 | code | `receive_delivery` без транзакції й без перевірки статусу | подвійні або часткові залишки, продаж відсутнього товару (**стався: INC-001**) | висока / високий | **P1** |
+| TD-1 | code | `receive_delivery` без транзакції й без перевірки статусу | подвійні або часткові залишки, продаж відсутнього товару (**стався: INC-001**) | висока / високий | **закрито** v1.1.0 (CAPA-1) |
 | TD-2 | architecture | `execute_query` комітить кожен запит окремо; модуль не використовує `transaction()` (Unit of Work з Лаб.7) | ще 6 функцій можуть лишити неузгоджені дані | середня / високий | **P1** |
 | TD-3 | test | 0 тестів до Лаб.12 | регресії не помічаються; рефакторинг небезпечний | висока / середній | P2 |
-| TD-4 | code | `except Exception` + `print()` (7 місць), сирий текст винятку у flash | збої не видно в журналі (сліпа зона моніторингу), витік деталей БД користувачу | висока / середній | P2 |
+| TD-4 | code | `except Exception` + `print()` (6 місць; `receive_delivery` виправлено), сирий текст винятку у flash | збої не видно в журналі (сліпа зона моніторингу), витік деталей БД користувачу | висока / середній | P2 |
 | TD-5 | architecture | `delivered_quantity`, `received_quantity`, `paid_amount` ніхто не оновлює | виконання договорів і часткові поставки не обліковуються | висока / середній | P3 |
 | TD-6 | code | `supply_deliveries.status` без CHECK; `received_by` означає «створив» | будь-який рядок як статус; хибний аудит «хто прийняв» | середня / низький | P3 |
 | TD-7 | documentation | 0 docstring-ів, у SDD один рядок | знання тільки в коді й у одного автора (Bus Factor 1, Лаб.10) | висока / середній | P2 (частково закрито цим документом) |

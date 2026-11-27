@@ -1,0 +1,129 @@
+{
+  "result": "PASS",
+  "delivery_id": 2,
+  "delivery_status": "expected",
+  "excess_units": 0,
+  "stock": [
+    {
+      "product_id": 5,
+      "name": "Демо SSD 1 ТБ",
+      "before": 10,
+      "in_delivery": 4,
+      "expected": 10,
+      "actual": 10,
+      "excess": 0
+    },
+    {
+      "product_id": 6,
+      "name": "Демо RAM 16 ГБ",
+      "before": 5,
+      "in_delivery": 2,
+      "expected": 5,
+      "actual": 5,
+      "excess": 0
+    },
+    {
+      "product_id": 7,
+      "name": "Демо БЖ 650 Вт",
+      "before": 3,
+      "in_delivery": 6,
+      "expected": 3,
+      "actual": 3,
+      "excess": 0
+    }
+  ],
+  "timeline": [
+    {
+      "utc": "2026-11-27T20:29:42.941+00:00",
+      "event": "setup",
+      "delivery_id": 2,
+      "products": [
+        {
+          "id": 5,
+          "name": "Демо SSD 1 ТБ",
+          "stock": 10,
+          "in_delivery": 4
+        },
+        {
+          "id": 6,
+          "name": "Демо RAM 16 ГБ",
+          "stock": 5,
+          "in_delivery": 2
+        },
+        {
+          "id": 7,
+          "name": "Демо БЖ 650 Вт",
+          "stock": 3,
+          "in_delivery": 6
+        }
+      ]
+    },
+    {
+      "utc": "2026-11-27T20:29:45.191+00:00",
+      "event": "db_fault_injected",
+      "table": "supply_deliveries"
+    },
+    {
+      "utc": "2026-11-27T20:29:45.191+00:00",
+      "event": "operator_click",
+      "attempt": 1,
+      "url": "/deliveries/2/receive"
+    },
+    {
+      "utc": "2026-11-27T20:29:47.323+00:00",
+      "event": "operator_response",
+      "attempt": 1,
+      "http": 302,
+      "location": "/deliveries/2",
+      "waited_s": 2.1
+    },
+    {
+      "utc": "2026-11-27T20:29:49.423+00:00",
+      "event": "monitoring_probe",
+      "alert": "A1 HealthDown",
+      "http": 200,
+      "status": "ok",
+      "result": "OK"
+    },
+    {
+      "utc": "2026-11-27T20:29:49.478+00:00",
+      "event": "db_fault_removed",
+      "table": "supply_deliveries"
+    },
+    {
+      "utc": "2026-11-27T20:29:49.520+00:00",
+      "event": "reconciliation",
+      "delivery_status": "expected",
+      "excess_units": 0,
+      "products": [
+        {
+          "product_id": 5,
+          "name": "Демо SSD 1 ТБ",
+          "before": 10,
+          "in_delivery": 4,
+          "expected": 10,
+          "actual": 10,
+          "excess": 0
+        },
+        {
+          "product_id": 6,
+          "name": "Демо RAM 16 ГБ",
+          "before": 5,
+          "in_delivery": 2,
+          "expected": 5,
+          "actual": 5,
+          "excess": 0
+        },
+        {
+          "product_id": 7,
+          "name": "Демо БЖ 650 Вт",
+          "before": 3,
+          "in_delivery": 6,
+          "expected": 3,
+          "actual": 3,
+          "excess": 0
+        }
+      ]
+    }
+  ]
+}

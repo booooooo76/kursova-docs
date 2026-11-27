@@ -32,7 +32,10 @@ Pull request, що змінює **публічну поведінку** (нов�
 - [ ] `markdownlint` і `mkdocs build --strict` проходять (у CI це робить `docs.yml`);
 - [ ] додано запис у `CHANGELOG.md`;
 - [ ] у зачеплених сторінках оновлено `review_date` у front matter;
-- [ ] `python tools/doc_currency.py` показує `RESULT: PASS`.
+- [ ] `python tools/doc_currency.py` показує `RESULT: PASS`;
+- [ ] операція з кількома записами в БД виконується в одній транзакції `transaction()`, а повторний запит
+      (подвійне натискання, повтор проксі) не змінює дані вдруге ([ADR-0003](../architecture/adr/0003-atomic-multi-write.md),
+      перевіряє pre-commit, етап 3 `tools/atomicity_check.py`).
 
 | Перевірка DoD | Інструмент | Що ловить |
 |---|---|---|
@@ -40,6 +43,7 @@ Pull request, що змінює **публічну поведінку** (нов�
 | Розмітка | markdownlint | зламані списки, заголовки, блоки коду |
 | Посилання | `mkdocs build --strict` | мертве посилання, сторінка поза навігацією, зламаний синтаксис |
 | Актуальність | `tools/doc_review_dates.py` | прострочений `review_date` |
+| Атомарність | `tools/atomicity_check.py` (pre-commit) | нова функція з ≥ 2 записами поза транзакцією (клас дефекту INC-001) |
 
 ## Життєвий цикл сторінки
 

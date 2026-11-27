@@ -3,6 +3,29 @@
 Формат — [Keep a Changelog](https://keepachangelog.com/uk/1.1.0/); версія контракту API — за SemVer
 (`info.version` у `docs/api/openapi.yaml`), версії документації — теги `docs-vX.Y`.
 
+## [1.1.0] — 2026-11-27
+
+Реліз застосунку за [RFC-001](docs/change/RFC-001.md) (CCB-2026-11-27), усуває причину інциденту INC-001.
+
+### Виправлено
+
+- Приймання поставки (`POST /deliveries/{id}/receive`) виконується в одній транзакції з блокуванням рядка поставки й
+  змінює залишки лише для статусу `expected`. Повторне натискання більше не додає поставку до складу вдруге, а збій БД
+  не лишає частково збільшених залишків (CAPA-1, ADR-0003).
+- Оператор більше не бачить тексту винятку БД; замість нього — загальне повідомлення.
+
+### Додано
+
+- Подія журналу `delivery_receive_failed`, алерт A5 і runbook RB-002.
+- `scripts/migrate.py` виконує міграції з `lock_timeout` 5 с (змінна `MIGRATION_LOCK_TIMEOUT`, CAPA-2).
+- Pre-commit, етап 3: перевірка атомарності `tools/atomicity_check.py` з базовою лінією `.atomicity-baseline` (CAPA-3).
+- Експлуатаційний пакет: резервне копіювання й restore drill (`scripts/ops/`), `docs/slo.yaml`, `tools/error_budget.py`,
+  `tools/ops_check.py`, RB-001.
+
+### Змінено
+
+- Контракт API (`docs/api/openapi.yaml`, 1.0.1) не змінювався: зачеплений маршрут — HTML-форма поза `/api`.
+
 ## [docs-v2.0] — 2026-11-22
 
 ### Додано

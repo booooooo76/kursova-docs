@@ -1,0 +1,5 @@
+﻿ops_check 2026-11-27 20:29:49 UTC
+A1 HealthDown             OK      SEV-1  -> RB-001  | HTTP 200 {'database': 'ok', 'migrations': 'ok'}
+A2 BackupStale            OK      SEV-2  -> RB-001  | остання копія computer_store_demo_20261127T200920Z_daily.dump, 0.3 год тому (поріг 26 год)
+A3 RestoreDrillOverdue    OK      SEV-3  -> RB-001  | останній drill 0.0 дн. тому, PASS (поріг 35 дн.)
+A5 DeliveryReceiveFailed  FIRING  SEV-2  -> RB-002  | 1 подій delivery_receive_failed за 15 хв

@@ -49,6 +49,7 @@ nav:
           - architecture/adr/index.md
           - architecture/adr/0001-postgresql-psycopg2.md
           - architecture/adr/0002-privacy-by-design-module.md
+          - architecture/adr/0003-atomic-multi-write.md
       - architecture/maintenance.md
       - architecture/handover.md
       - Політики приватності:
@@ -61,6 +62,22 @@ nav:
           - lab3/secrets_prevention.md
           - lab6/precommit.md
       - archive/README.md
+  - "Експлуатація і супровід":
+      - maintenance-plan.md
+      - Runbook-и:
+          - runbooks/RB-001.md
+          - runbooks/RB-002.md
+      - ops/alerts.md
+      - ops/slo-policy.md
+      - "Управління змінами":
+          - change/ccb-regulation.md
+          - change/RFC-001.md
+          - change/CCB-2026-11-27.md
+      - "Інциденти":
+          - incidents/INC-001.md
+          - incidents/postmortem-INC-001.md
+          - incidents/capa-INC-001.md
+      - legacy/suppliers.md
 
 plugins:
   - search:
