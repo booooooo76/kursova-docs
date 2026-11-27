@@ -1,0 +1,5 @@
+FAILED tests/test_receive_delivery.py::test_repeated_receive_does_not_add_stock_again
+FAILED tests/test_receive_delivery.py::test_failure_midway_leaves_stock_unchanged
+FAILED tests/test_receive_delivery.py::test_failure_is_logged_for_alert_and_hidden_from_operator
+FAILED tests/test_receive_delivery.py::test_double_click_while_table_is_locked_applies_delivery_once
+4 failed, 1 passed, 1 warning in 6.91s

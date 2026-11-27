@@ -45,8 +45,8 @@ slis:
       Погана хвилина рахується від першого незавершеного запису до виправлення даних.
     good_event: "немає поставок у стані partially_applied / double_applied"
     source: >-
-      до CAPA - лише ручне виявлення (сліпа зона, див. INC-001); після CAPA-1 - подія журналу
-      delivery_receive_failed (алерт A5) і запит звірки tools/stock_reconcile.py
+      до CAPA - лише ручна звірка залишків (сліпа зона, див. INC-001); після CAPA-1 - подія журналу
+      delivery_receive_failed (алерт A5), а подвійне застосування неможливе конструктивно (транзакція + перевірка статусу)
     slo: 99.9
     sla: 99.5
     rationale: >-
@@ -56,5 +56,5 @@ slis:
 # Погані хвилини поточного вікна (заповнюються з Incident Report; посилання - джерело доказу)
 spent:
   - sli: SLI-3
-    minutes: 0
-    ref: ""
+    minutes: 3.1
+    ref: docs/incidents/INC-001.md (20:16:08 - 20:19:15 UTC, docs/incidents/data/INC-001_workaround.json)

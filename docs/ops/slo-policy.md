@@ -29,7 +29,7 @@ SLA завжди нижча за SLO: різниця — **буфер надій
 |---|---|---|
 | SLI-1 availability | частка хвилин за 30 днів, у яких `GET /api/health` повернув 200 протягом 5 с | `tools/ops_check.py` (A1), щохвилини |
 | SLI-2 latency | частка хвилин за 30 днів, у яких p95 часу відповіді `GET /products` < 300 мс | k6 `loadtest/products_slo.js` (Лаб.2) |
-| SLI-3 supply-receipt-integrity | частка хвилин за 30 днів без частково або двічі застосованих приймань поставок | після CAPA-1: подія `delivery_receive_failed` (A5), `tools/stock_reconcile.py` |
+| SLI-3 supply-receipt-integrity | частка хвилин за 30 днів без частково або двічі застосованих приймань поставок | після CAPA-1: подія журналу `delivery_receive_failed` (A5); до CAPA — лише ручна звірка (INC-001) |
 
 Обґрунтування порогів SLI-2 — виміри Лаб.2: p95 93,9 мс (1 VU), 192,15 мс (5 VU, PASS), 1,2 с (50 VU, FAIL).
 

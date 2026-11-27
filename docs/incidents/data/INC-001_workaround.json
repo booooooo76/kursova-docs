@@ -1,0 +1,30 @@
+{
+  "action": "workaround: subtract double-applied quantities in one transaction (guard: only if stock still equals the corrupted value)",
+  "started_utc": "2026-11-27T20:19:15+00:00",
+  "stabilized_utc": "2026-11-27T20:19:15+00:00",
+  "products": [
+    {
+      "product_id": 2,
+      "name": "Демо SSD 1 ТБ",
+      "was": 18,
+      "now": 14,
+      "expected": 14
+    },
+    {
+      "product_id": 3,
+      "name": "Демо RAM 16 ГБ",
+      "was": 9,
+      "now": 7,
+      "expected": 7
+    },
+    {
+      "product_id": 4,
+      "name": "Демо БЖ 650 Вт",
+      "was": 15,
+      "now": 9,
+      "expected": 9
+    }
+  ],
+  "inconsistency_from_utc": "2026-11-27T20:16:08.515+00:00",
+  "bad_minutes_sli3": 3.1
+}
