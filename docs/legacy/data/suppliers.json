@@ -1,0 +1,1106 @@
+{
+  "module": "routers/suppliers.py",
+  "lines": 790,
+  "module_docstring": false,
+  "functions": [
+    {
+      "name": "operator_or_admin_required",
+      "line": 6,
+      "end_line": 18,
+      "docstring": false,
+      "decorators": [],
+      "queries": 0,
+      "writes": 0,
+      "tables": [],
+      "uses_transaction": false,
+      "non_atomic_multi_write": false,
+      "catches_broad_exception": false,
+      "calls": [
+        "flash",
+        "redirect"
+      ],
+      "write_lines": []
+    },
+    {
+      "name": "suppliers_list",
+      "line": 20,
+      "end_line": 74,
+      "docstring": false,
+      "decorators": [],
+      "queries": 1,
+      "writes": 0,
+      "tables": [
+        "contracts",
+        "suppliers",
+        "supply_deliveries"
+      ],
+      "uses_transaction": false,
+      "non_atomic_multi_write": false,
+      "catches_broad_exception": true,
+      "calls": [
+        "execute_query",
+        "flash",
+        "print",
+        "redirect",
+        "render_template"
+      ],
+      "write_lines": []
+    },
+    {
+      "name": "supplier_detail",
+      "line": 76,
+      "end_line": 132,
+      "docstring": false,
+      "decorators": [],
+      "queries": 4,
+      "writes": 0,
+      "tables": [
+        "contracts",
+        "suppliers",
+        "supply_deliveries"
+      ],
+      "uses_transaction": false,
+      "non_atomic_multi_write": false,
+      "catches_broad_exception": true,
+      "calls": [
+        "execute_query",
+        "flash",
+        "print",
+        "redirect",
+        "render_template"
+      ],
+      "write_lines": []
+    },
+    {
+      "name": "contracts_list",
+      "line": 134,
+      "end_line": 187,
+      "docstring": false,
+      "decorators": [],
+      "queries": 2,
+      "writes": 0,
+      "tables": [
+        "contracts",
+        "suppliers",
+        "supply_deliveries"
+      ],
+      "uses_transaction": false,
+      "non_atomic_multi_write": false,
+      "catches_broad_exception": true,
+      "calls": [
+        "execute_query",
+        "flash",
+        "print",
+        "redirect",
+        "render_template"
+      ],
+      "write_lines": []
+    },
+    {
+      "name": "contract_detail",
+      "line": 189,
+      "end_line": 252,
+      "docstring": false,
+      "decorators": [],
+      "queries": 5,
+      "writes": 0,
+      "tables": [
+        "contract_obligations",
+        "contracts",
+        "keys",
+        "products",
+        "suppliers",
+        "supply_deliveries"
+      ],
+      "uses_transaction": false,
+      "non_atomic_multi_write": false,
+      "catches_broad_exception": true,
+      "calls": [
+        "execute_query",
+        "flash",
+        "print",
+        "redirect",
+        "render_template"
+      ],
+      "write_lines": []
+    },
+    {
+      "name": "add_contract_obligation",
+      "line": 255,
+      "end_line": 272,
+      "docstring": false,
+      "decorators": [
+        "operator_or_admin_required"
+      ],
+      "queries": 1,
+      "writes": 1,
+      "tables": [
+        "contract_obligations"
+      ],
+      "uses_transaction": false,
+      "non_atomic_multi_write": false,
+      "catches_broad_exception": false,
+      "calls": [
+        "execute_query",
+        "flash",
+        "redirect"
+      ],
+      "write_lines": [
+        267
+      ]
+    },
+    {
+      "name": "delete_contract_obligation",
+      "line": 275,
+      "end_line": 285,
+      "docstring": false,
+      "decorators": [
+        "operator_or_admin_required"
+      ],
+      "queries": 2,
+      "writes": 1,
+      "tables": [
+        "contract_obligations"
+      ],
+      "uses_transaction": false,
+      "non_atomic_multi_write": false,
+      "catches_broad_exception": false,
+      "calls": [
+        "execute_query",
+        "flash",
+        "redirect"
+      ],
+      "write_lines": [
+        282
+      ]
+    },
+    {
+      "name": "deliveries_list",
+      "line": 287,
+      "end_line": 366,
+      "docstring": false,
+      "decorators": [],
+      "queries": 3,
+      "writes": 0,
+      "tables": [
+        "contracts",
+        "keys",
+        "suppliers",
+        "supply_deliveries"
+      ],
+      "uses_transaction": false,
+      "non_atomic_multi_write": false,
+      "catches_broad_exception": true,
+      "calls": [
+        "execute_query",
+        "flash",
+        "print",
+        "redirect",
+        "render_template"
+      ],
+      "write_lines": []
+    },
+    {
+      "name": "add_supplier",
+      "line": 369,
+      "end_line": 386,
+      "docstring": false,
+      "decorators": [
+        "operator_or_admin_required"
+      ],
+      "queries": 1,
+      "writes": 1,
+      "tables": [
+        "suppliers"
+      ],
+      "uses_transaction": false,
+      "non_atomic_multi_write": false,
+      "catches_broad_exception": false,
+      "calls": [
+        "execute_query",
+        "flash",
+        "redirect",
+        "render_template"
+      ],
+      "write_lines": [
+        382
+      ]
+    },
+    {
+      "name": "edit_supplier",
+      "line": 389,
+      "end_line": 411,
+      "docstring": false,
+      "decorators": [
+        "operator_or_admin_required"
+      ],
+      "queries": 2,
+      "writes": 1,
+      "tables": [
+        "suppliers"
+      ],
+      "uses_transaction": false,
+      "non_atomic_multi_write": false,
+      "catches_broad_exception": false,
+      "calls": [
+        "execute_query",
+        "flash",
+        "redirect",
+        "render_template"
+      ],
+      "write_lines": [
+        403
+      ]
+    },
+    {
+      "name": "add_contract",
+      "line": 414,
+      "end_line": 460,
+      "docstring": false,
+      "decorators": [
+        "operator_or_admin_required"
+      ],
+      "queries": 4,
+      "writes": 2,
+      "tables": [
+        "contract_obligations",
+        "contracts",
+        "products",
+        "suppliers"
+      ],
+      "uses_transaction": false,
+      "non_atomic_multi_write": true,
+      "catches_broad_exception": false,
+      "calls": [
+        "execute_query",
+        "flash",
+        "redirect",
+        "render_template"
+      ],
+      "write_lines": [
+        444,
+        452
+      ]
+    },
+    {
+      "name": "edit_contract",
+      "line": 463,
+      "end_line": 524,
+      "docstring": false,
+      "decorators": [
+        "operator_or_admin_required"
+      ],
+      "queries": 6,
+      "writes": 3,
+      "tables": [
+        "contract_obligations",
+        "contracts",
+        "products",
+        "suppliers"
+      ],
+      "uses_transaction": false,
+      "non_atomic_multi_write": true,
+      "catches_broad_exception": false,
+      "calls": [
+        "execute_query",
+        "flash",
+        "redirect",
+        "render_template"
+      ],
+      "write_lines": [
+        493,
+        495,
+        502
+      ]
+    },
+    {
+      "name": "add_delivery",
+      "line": 527,
+      "end_line": 603,
+      "docstring": false,
+      "decorators": [
+        "operator_or_admin_required"
+      ],
+      "queries": 8,
+      "writes": 3,
+      "tables": [
+        "contract_obligations",
+        "contracts",
+        "delivery_items",
+        "products",
+        "supply_deliveries"
+      ],
+      "uses_transaction": false,
+      "non_atomic_multi_write": true,
+      "catches_broad_exception": false,
+      "calls": [
+        "execute_query",
+        "flash",
+        "redirect",
+        "render_template"
+      ],
+      "write_lines": [
+        556,
+        573,
+        571
+      ]
+    },
+    {
+      "name": "edit_delivery",
+      "line": 606,
+      "end_line": 661,
+      "docstring": false,
+      "decorators": [
+        "operator_or_admin_required"
+      ],
+      "queries": 9,
+      "writes": 4,
+      "tables": [
+        "contracts",
+        "delivery_items",
+        "products",
+        "supply_deliveries"
+      ],
+      "uses_transaction": false,
+      "non_atomic_multi_write": true,
+      "catches_broad_exception": false,
+      "calls": [
+        "execute_query",
+        "flash",
+        "redirect",
+        "render_template"
+      ],
+      "write_lines": [
+        618,
+        624,
+        642,
+        637
+      ]
+    },
+    {
+      "name": "receive_delivery",
+      "line": 664,
+      "end_line": 693,
+      "docstring": false,
+      "decorators": [
+        "operator_or_admin_required"
+      ],
+      "queries": 3,
+      "writes": 2,
+      "tables": [
+        "delivery_items",
+        "products",
+        "supply_deliveries"
+      ],
+      "uses_transaction": false,
+      "non_atomic_multi_write": true,
+      "catches_broad_exception": true,
+      "calls": [
+        "execute_query",
+        "flash",
+        "print",
+        "redirect"
+      ],
+      "write_lines": [
+        686,
+        679
+      ]
+    },
+    {
+      "name": "delivery_detail",
+      "line": 695,
+      "end_line": 749,
+      "docstring": false,
+      "decorators": [],
+      "queries": 2,
+      "writes": 0,
+      "tables": [
+        "contracts",
+        "delivery_items",
+        "keys",
+        "products",
+        "suppliers",
+        "supply_deliveries"
+      ],
+      "uses_transaction": false,
+      "non_atomic_multi_write": false,
+      "catches_broad_exception": true,
+      "calls": [
+        "execute_query",
+        "flash",
+        "print",
+        "redirect",
+        "render_template"
+      ],
+      "write_lines": []
+    },
+    {
+      "name": "delete_supplier",
+      "line": 752,
+      "end_line": 760,
+      "docstring": false,
+      "decorators": [
+        "operator_or_admin_required"
+      ],
+      "queries": 2,
+      "writes": 1,
+      "tables": [
+        "contracts",
+        "suppliers"
+      ],
+      "uses_transaction": false,
+      "non_atomic_multi_write": false,
+      "catches_broad_exception": false,
+      "calls": [
+        "execute_query",
+        "flash",
+        "redirect"
+      ],
+      "write_lines": [
+        758
+      ]
+    },
+    {
+      "name": "delete_contract",
+      "line": 763,
+      "end_line": 773,
+      "docstring": false,
+      "decorators": [
+        "operator_or_admin_required"
+      ],
+      "queries": 3,
+      "writes": 2,
+      "tables": [
+        "contract_obligations",
+        "contracts",
+        "supply_deliveries"
+      ],
+      "uses_transaction": false,
+      "non_atomic_multi_write": true,
+      "catches_broad_exception": false,
+      "calls": [
+        "execute_query",
+        "flash",
+        "redirect"
+      ],
+      "write_lines": [
+        769,
+        770
+      ]
+    },
+    {
+      "name": "delete_delivery",
+      "line": 776,
+      "end_line": 790,
+      "docstring": false,
+      "decorators": [
+        "operator_or_admin_required"
+      ],
+      "queries": 3,
+      "writes": 2,
+      "tables": [
+        "delivery_items",
+        "supply_deliveries"
+      ],
+      "uses_transaction": false,
+      "non_atomic_multi_write": true,
+      "catches_broad_exception": false,
+      "calls": [
+        "execute_query",
+        "flash",
+        "redirect"
+      ],
+      "write_lines": [
+        786,
+        787
+      ]
+    }
+  ],
+  "routes": [
+    {
+      "url": "/suppliers",
+      "function": "suppliers_list",
+      "methods": "['GET']",
+      "wrapped_in_app_py": true
+    },
+    {
+      "url": "/suppliers/<int:supplier_id>",
+      "function": "supplier_detail",
+      "methods": "['GET']",
+      "wrapped_in_app_py": true
+    },
+    {
+      "url": "/contracts",
+      "function": "contracts_list",
+      "methods": "['GET']",
+      "wrapped_in_app_py": true
+    },
+    {
+      "url": "/contracts/<int:contract_id>",
+      "function": "contract_detail",
+      "methods": "['GET']",
+      "wrapped_in_app_py": true
+    },
+    {
+      "url": "/deliveries",
+      "function": "deliveries_list",
+      "methods": "['GET']",
+      "wrapped_in_app_py": true
+    },
+    {
+      "url": "/deliveries/<int:delivery_id>/receive",
+      "function": "receive_delivery",
+      "methods": "['POST']",
+      "wrapped_in_app_py": true
+    },
+    {
+      "url": "/deliveries/<int:delivery_id>",
+      "function": "delivery_detail",
+      "methods": "['GET']",
+      "wrapped_in_app_py": true
+    },
+    {
+      "url": "/suppliers/add",
+      "function": "add_supplier",
+      "methods": "['GET', 'POST']",
+      "wrapped_in_app_py": true
+    },
+    {
+      "url": "/contracts/add",
+      "function": "add_contract",
+      "methods": "['GET', 'POST']",
+      "wrapped_in_app_py": true
+    },
+    {
+      "url": "/deliveries/add",
+      "function": "add_delivery",
+      "methods": "['GET', 'POST']",
+      "wrapped_in_app_py": true
+    },
+    {
+      "url": "/suppliers/<int:supplier_id>/edit",
+      "function": "edit_supplier",
+      "methods": "['GET', 'POST']",
+      "wrapped_in_app_py": false
+    },
+    {
+      "url": "/contracts/<int:contract_id>/edit",
+      "function": "edit_contract",
+      "methods": "['GET', 'POST']",
+      "wrapped_in_app_py": false
+    },
+    {
+      "url": "/deliveries/<int:delivery_id>/edit",
+      "function": "edit_delivery",
+      "methods": "['GET', 'POST']",
+      "wrapped_in_app_py": false
+    },
+    {
+      "url": "/contracts/<int:contract_id>/obligations/add",
+      "function": "add_contract_obligation",
+      "methods": "['POST']",
+      "wrapped_in_app_py": false
+    },
+    {
+      "url": "/obligations/<int:obligation_id>/delete",
+      "function": "delete_contract_obligation",
+      "methods": "['POST']",
+      "wrapped_in_app_py": false
+    },
+    {
+      "url": "/suppliers/<int:supplier_id>/delete",
+      "function": "delete_supplier",
+      "methods": "['POST']",
+      "wrapped_in_app_py": false
+    },
+    {
+      "url": "/contracts/<int:contract_id>/delete",
+      "function": "delete_contract",
+      "methods": "['POST']",
+      "wrapped_in_app_py": false
+    },
+    {
+      "url": "/deliveries/<int:delivery_id>/delete",
+      "function": "delete_delivery",
+      "methods": "['POST']",
+      "wrapped_in_app_py": false
+    }
+  ],
+  "tables": [
+    "contract_obligations",
+    "contracts",
+    "delivery_items",
+    "keys",
+    "products",
+    "suppliers",
+    "supply_deliveries"
+  ],
+  "schema": {
+    "contract_obligations": {
+      "columns": [
+        [
+          "obligation_id",
+          "integer",
+          "NO"
+        ],
+        [
+          "contract_id",
+          "integer",
+          "YES"
+        ],
+        [
+          "product_id",
+          "integer",
+          "YES"
+        ],
+        [
+          "planned_quantity",
+          "integer",
+          "NO"
+        ],
+        [
+          "planned_price",
+          "numeric",
+          "NO"
+        ],
+        [
+          "delivered_quantity",
+          "integer",
+          "YES"
+        ],
+        [
+          "delivery_deadline",
+          "date",
+          "YES"
+        ],
+        [
+          "status",
+          "character varying",
+          "YES"
+        ]
+      ],
+      "foreign_keys": [
+        [
+          "contract_id",
+          "contracts"
+        ],
+        [
+          "product_id",
+          "products"
+        ]
+      ]
+    },
+    "contracts": {
+      "columns": [
+        [
+          "contract_id",
+          "integer",
+          "NO"
+        ],
+        [
+          "supplier_id",
+          "integer",
+          "YES"
+        ],
+        [
+          "contract_number",
+          "character varying",
+          "NO"
+        ],
+        [
+          "contract_date",
+          "date",
+          "NO"
+        ],
+        [
+          "start_date",
+          "date",
+          "NO"
+        ],
+        [
+          "end_date",
+          "date",
+          "YES"
+        ],
+        [
+          "total_amount",
+          "numeric",
+          "YES"
+        ],
+        [
+          "paid_amount",
+          "numeric",
+          "YES"
+        ],
+        [
+          "status",
+          "character varying",
+          "YES"
+        ]
+      ],
+      "foreign_keys": [
+        [
+          "supplier_id",
+          "suppliers"
+        ]
+      ]
+    },
+    "delivery_items": {
+      "columns": [
+        [
+          "delivery_item_id",
+          "integer",
+          "NO"
+        ],
+        [
+          "delivery_id",
+          "integer",
+          "YES"
+        ],
+        [
+          "product_id",
+          "integer",
+          "YES"
+        ],
+        [
+          "ordered_quantity",
+          "integer",
+          "NO"
+        ],
+        [
+          "received_quantity",
+          "integer",
+          "YES"
+        ],
+        [
+          "unit_cost",
+          "numeric",
+          "NO"
+        ]
+      ],
+      "foreign_keys": [
+        [
+          "delivery_id",
+          "supply_deliveries"
+        ],
+        [
+          "product_id",
+          "products"
+        ]
+      ]
+    },
+    "keys": {
+      "columns": [
+        [
+          "user_id",
+          "integer",
+          "NO"
+        ],
+        [
+          "login",
+          "character varying",
+          "NO"
+        ],
+        [
+          "password",
+          "character varying",
+          "NO"
+        ],
+        [
+          "access_right",
+          "character varying",
+          "NO"
+        ],
+        [
+          "created_at",
+          "timestamp without time zone",
+          "YES"
+        ],
+        [
+          "last_login",
+          "timestamp without time zone",
+          "YES"
+        ],
+        [
+          "is_active",
+          "boolean",
+          "YES"
+        ],
+        [
+          "email",
+          "character varying",
+          "YES"
+        ],
+        [
+          "full_name",
+          "character varying",
+          "YES"
+        ],
+        [
+          "anonymized_at",
+          "timestamp with time zone",
+          "YES"
+        ]
+      ],
+      "foreign_keys": []
+    },
+    "products": {
+      "columns": [
+        [
+          "product_id",
+          "integer",
+          "NO"
+        ],
+        [
+          "name",
+          "character varying",
+          "NO"
+        ],
+        [
+          "category_id",
+          "integer",
+          "YES"
+        ],
+        [
+          "product_type",
+          "character varying",
+          "YES"
+        ],
+        [
+          "subcategory",
+          "character varying",
+          "YES"
+        ],
+        [
+          "brand",
+          "character varying",
+          "YES"
+        ],
+        [
+          "model",
+          "character varying",
+          "YES"
+        ],
+        [
+          "specifications",
+          "text",
+          "YES"
+        ],
+        [
+          "price",
+          "numeric",
+          "NO"
+        ],
+        [
+          "quantity_in_stock",
+          "integer",
+          "YES"
+        ],
+        [
+          "min_stock_level",
+          "integer",
+          "YES"
+        ],
+        [
+          "warranty_period",
+          "integer",
+          "YES"
+        ],
+        [
+          "date_added",
+          "date",
+          "YES"
+        ],
+        [
+          "is_active",
+          "boolean",
+          "YES"
+        ],
+        [
+          "sku",
+          "character varying",
+          "YES"
+        ],
+        [
+          "short_description",
+          "text",
+          "YES"
+        ],
+        [
+          "description",
+          "text",
+          "YES"
+        ],
+        [
+          "meta_title",
+          "character varying",
+          "YES"
+        ],
+        [
+          "meta_description",
+          "text",
+          "YES"
+        ],
+        [
+          "meta_keywords",
+          "character varying",
+          "YES"
+        ],
+        [
+          "views_count",
+          "integer",
+          "YES"
+        ],
+        [
+          "sales_count",
+          "integer",
+          "YES"
+        ],
+        [
+          "old_price",
+          "numeric",
+          "YES"
+        ],
+        [
+          "is_featured",
+          "boolean",
+          "YES"
+        ],
+        [
+          "is_new",
+          "boolean",
+          "YES"
+        ],
+        [
+          "manufacturer_country",
+          "character varying",
+          "YES"
+        ],
+        [
+          "supplier_id",
+          "integer",
+          "YES"
+        ],
+        [
+          "main_image",
+          "text",
+          "YES"
+        ]
+      ],
+      "foreign_keys": [
+        [
+          "category_id",
+          "categories"
+        ],
+        [
+          "supplier_id",
+          "suppliers"
+        ]
+      ]
+    },
+    "suppliers": {
+      "columns": [
+        [
+          "supplier_id",
+          "integer",
+          "NO"
+        ],
+        [
+          "company_name",
+          "character varying",
+          "NO"
+        ],
+        [
+          "contact_person",
+          "character varying",
+          "YES"
+        ],
+        [
+          "phone",
+          "character varying",
+          "YES"
+        ],
+        [
+          "email",
+          "character varying",
+          "YES"
+        ],
+        [
+          "address",
+          "text",
+          "YES"
+        ],
+        [
+          "registration_date",
+          "date",
+          "YES"
+        ],
+        [
+          "is_active",
+          "boolean",
+          "YES"
+        ]
+      ],
+      "foreign_keys": []
+    },
+    "supply_deliveries": {
+      "columns": [
+        [
+          "delivery_id",
+          "integer",
+          "NO"
+        ],
+        [
+          "contract_id",
+          "integer",
+          "YES"
+        ],
+        [
+          "invoice_number",
+          "character varying",
+          "YES"
+        ],
+        [
+          "delivery_date",
+          "date",
+          "YES"
+        ],
+        [
+          "expected_date",
+          "date",
+          "YES"
+        ],
+        [
+          "total_amount",
+          "numeric",
+          "YES"
+        ],
+        [
+          "status",
+          "character varying",
+          "YES"
+        ],
+        [
+          "received_by",
+          "integer",
+          "YES"
+        ],
+        [
+          "notes",
+          "text",
+          "YES"
+        ]
+      ],
+      "foreign_keys": [
+        [
+          "received_by",
+          "keys"
+        ],
+        [
+          "contract_id",
+          "contracts"
+        ]
+      ]
+    }
+  }
+}
