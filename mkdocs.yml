@@ -73,6 +73,7 @@ nav:
           - change/ccb-regulation.md
           - change/RFC-001.md
           - change/CCB-2026-11-27.md
+          - change/release-checklist-v1.1.0.md
       - "Інциденти":
           - incidents/INC-001.md
           - incidents/postmortem-INC-001.md

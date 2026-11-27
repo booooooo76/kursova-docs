@@ -1,0 +1,14 @@
+{
+  "started_utc": "2026-11-27T20:34:33+00:00",
+  "backup": "computer_store_demo_20261127T203432Z_daily.dump",
+  "backup_created_utc": "2026-11-27T20:34:32+00:00",
+  "source": "local",
+  "checksum_ok": true,
+  "restored_into": "computer_store_demo_restore_drill",
+  "tables": 45,
+  "rows": 81,
+  "row_count_mismatches": {},
+  "missing_migration_tables": [],
+  "restore_seconds": 27.83,
+  "result": "PASS"
+}

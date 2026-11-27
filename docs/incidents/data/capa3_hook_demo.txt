@@ -1,0 +1,5 @@
+$ git commit -m "feat: cancel delivery"
+  ATOMICITY VIOLATION: routers/demo_capa3.py::cancel_delivery() - 2 writes without transaction(), lines [6, 7]
+atomicity: COMMIT BLOCKED - 1 new function(s) write to the DB in several transactions. Fix: wrap the writes in "with transaction() as cur:" (ADR-0003).
+pre-commit: COMMIT BLOCKED - non-atomic database writes (see above).
+exit code: 1
